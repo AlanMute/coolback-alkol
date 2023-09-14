@@ -12,7 +12,10 @@ func main() {
 	router := gin.Default()
 	repo := repository.NewRepository(db.GetConnection())
 
+	defer repo.CloseConnection()
+
 	router.Handle("GET", "/", handlers.TestHandler(repo))
+	
 
 	router.Run(":8080")
 }
