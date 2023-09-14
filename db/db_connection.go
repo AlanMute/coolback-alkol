@@ -1,18 +1,14 @@
 package db
 
 import (
-	"database/sql"
+	"github.com/jinzhu/gorm"
+	_ "github.com/jinzhu/gorm/dialects/postgres"
 
 	"github.com/KrizzMU/coolback-alkol/config"
 )
 
-func GetConnection() *sql.DB {
-	db, err := sql.Open("postgres", config.GetConnectionString())
-	if err != nil {
-		panic(err)
-	}
-
-	err = db.Ping()
+func GetConnection() *gorm.DB {
+	db, err := gorm.Open("postgres", config.GetConnectionString())
 	if err != nil {
 		panic(err)
 	}
