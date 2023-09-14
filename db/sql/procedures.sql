@@ -8,7 +8,7 @@ CREATE OR REPLACE PROCEDURE add_course(
 BEGIN
     INSERT INTO courses (name, description, name_folder)
     VALUES (course_name, course_description, course_name_folder);
-END;пш
+END;
 $$;
 
 
