@@ -1,6 +1,6 @@
 package repository
 
-import "database/sql"
+import "github.com/jinzhu/gorm"
 
 type Repository interface {
 	AddCourse(name string, description string, folderName string) error
@@ -10,10 +10,10 @@ type Repository interface {
 }
 
 type repository struct {
-	db *sql.DB
+	db *gorm.DB
 }
 
-func NewRepository(db *sql.DB) Repository {
+func NewRepository(db *gorm.DB) Repository {
 	return &repository{
 		db: db,
 	}
