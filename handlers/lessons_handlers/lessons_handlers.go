@@ -1,4 +1,4 @@
-package handlers
+package lessons_handlers
 
 import (
 	"io"
@@ -27,7 +27,7 @@ func AddLessonHandler(repo repository.Repository) gin.HandlerFunc {
 		// SELECT folder_name FROM modules WHERE name = _name
 		id := 0 // SELECT id FROM modules WHERE name = _name
 
-		path := uniqueFile("lesson."+ext, moduleFolderName)
+		path := UniqueFile("lesson."+ext, moduleFolderName)
 		slice := strings.Split(path, "/")
 		fileName := "/" + slice[len(slice)-1]
 
@@ -62,7 +62,7 @@ func AddLessonHandler(repo repository.Repository) gin.HandlerFunc {
 	}
 }
 
-func uniqueFile(name string, folder string) string {
+func UniqueFile(name string, folder string) string {
 	extension := filepath.Ext(name)
 	nameWithoutExt := "lesson"
 

@@ -1,4 +1,4 @@
-package handlers
+package courses_handlers
 
 import (
 	"net/http"
@@ -7,20 +7,21 @@ import (
 	"strconv"
 	"strings"
 
+	"github.com/KrizzMU/coolback-alkol/handlers"
 	"github.com/KrizzMU/coolback-alkol/repository"
 	"github.com/gin-gonic/gin"
 )
 
 func AddCourseHandler(repo repository.Repository) gin.HandlerFunc {
 	return func(c *gin.Context) {
-		var info AddCourseModule
+		var info handlers.AddCourseModule
 
 		if err := c.ShouldBindJSON(&info); err != nil {
 			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 			return
 		}
 
-		path := uniqueFolder("course", "/courses")
+		path := UniqueFolder("course", "/courses")
 		slice := strings.Split(path, "/")
 		folderName := "/" + slice[len(slice)-1]
 
@@ -35,7 +36,7 @@ func AddCourseHandler(repo repository.Repository) gin.HandlerFunc {
 
 }
 
-func uniqueFolder(name string, folder string) string {
+func UniqueFolder(name string, folder string) string {
 	for i := 1; ; i++ {
 		uniqueName := name + "_" + strconv.Itoa(i)
 		filePath := filepath.Join(folder, uniqueName)
