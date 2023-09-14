@@ -6,6 +6,7 @@ type Repository interface {
 	AddCourse(name string, description string, folderName string) error
 	AddModule(name string, description string, id int, folderName string) error
 	AddLesson(name string, description string, id int, fileName string) error
+	GetLesson() error
 	CloseConnection()
 }
 

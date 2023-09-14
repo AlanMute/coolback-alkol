@@ -26,6 +26,10 @@ func (r *repository) AddLesson(name string, description string, id int, fileName
 
 	return nil
 }
+func (r *repository) GetLesson() error {
+
+	return nil
+}
 
 func (r *repository) CloseConnection() {
 	r.db.Close()
