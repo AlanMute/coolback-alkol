@@ -1,0 +1,5 @@
+host: "localhost"
+port: "5433"
+dbname: "eptanitdb"
+user: "postgres"
+password: "Alan123231"

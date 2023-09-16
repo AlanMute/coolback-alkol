@@ -1,23 +1,34 @@
 package main
 
 import (
-	"github.com/KrizzMU/coolback-alkol/db"
-	"github.com/KrizzMU/coolback-alkol/handlers"
-	"github.com/KrizzMU/coolback-alkol/repository"
+	"log"
 
-	"github.com/gin-gonic/gin"
+	"github.com/KrizzMU/coolback-alkol/internal/db"
+	"github.com/KrizzMU/coolback-alkol/internal/repository"
+	"github.com/KrizzMU/coolback-alkol/internal/service"
+	"github.com/KrizzMU/coolback-alkol/internal/transport/rest"
+	"github.com/KrizzMU/coolback-alkol/internal/transport/rest/handler"
+	//"github.com/gin-gonic/gin"
 )
 
 func main() {
-	router := gin.Default()
-	repo := repository.NewRepository(db.GetConnection())
 
-	defer repo.CloseConnection()
+	s := new(rest.Server)
 
-	router.Handle("GET", "/", handlers.TestHandler(repo))
-	router.Handle("POST", "/add/course", handlers.AddCourseHandler(repo))
-	router.Handle("POST", "/add/module", handlers.AddModuleHandler(repo))
-	router.Handle("POST", "/add/lesson", handlers.AddLessonHandler(repo))
+	//router := gin.Default()
 
-	router.Run(":8080")
+	repos := repository.NewRepository(db.GetConnection())
+	services := service.NewService(repos)
+	handlers := handler.NewHandler(services)
+
+	if err := s.Run("8080", handlers.InitRoutes()); err != nil {
+		log.Fatal("ERROR start Server!")
+	}
+
+	//router.Handle("GET", "/", handlers.TestHandler(repo))
+	//router.Handle("POST", "/add/course", handlers.AddCourseHandler(repo))
+	//router.Handle("POST", "/add/module", handlers.AddModuleHandler(repo))
+	//router.Handle("POST", "/add/lesson", handlers.AddLessonHandler(repo))
+
+	//router.Run(":8080")
 }
