@@ -23,9 +23,7 @@ func (h *Handler) GetCourseByName(c *gin.Context) {
 }
 
 func (h *Handler) GetAllCourses(c *gin.Context) {
-	courseName := ""
-
-	courses, err := h.services.Course.GetByName(courseName)
+	courses, err := h.services.Course.GetAll()
 	if err != nil {
 		c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return

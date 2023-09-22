@@ -22,3 +22,8 @@ func (s *CourseService) GetByName(name string) ([]core.Course, error) {
 
 	return s.repo.GetByName(name)
 }
+
+func (s *CourseService) GetAll() ([]core.Course, error) {
+
+	return s.repo.GetAll()
+}

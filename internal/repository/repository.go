@@ -8,6 +8,7 @@ import (
 type Course interface {
 	Add(name string, description string, folderName string) error
 	GetByName(name string) ([]core.Course, error)
+	GetAll() ([]core.Course, error)
 }
 
 type Module interface {

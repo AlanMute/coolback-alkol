@@ -25,3 +25,10 @@ func (r *CoursePostgres) GetByName(name string) ([]core.Course, error) {
 
 	return courses, nil
 }
+
+func (r *CoursePostgres) GetAll() ([]core.Course, error) {
+
+	var courses []core.Course
+	r.db.Find(&courses)
+	return courses, nil
+}
