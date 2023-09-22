@@ -1,9 +1,13 @@
 package service
 
-import "github.com/KrizzMU/coolback-alkol/internal/repository"
+import (
+	"github.com/KrizzMU/coolback-alkol/internal/core"
+	"github.com/KrizzMU/coolback-alkol/internal/repository"
+)
 
 type Course interface {
 	Add(name string, description string, folderName string) error
+	GetByName(name string) ([]core.Course, error)
 }
 
 type Module interface {

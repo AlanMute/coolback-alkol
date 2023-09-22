@@ -35,6 +35,8 @@ func (h *Handler) InitRoutes() *gin.Engine {
 	course := r.Group("/course")
 	{
 		course.Handle("POST", "/", h.AddCourse)
+		course.Handle("GET", "/:name", h.GetCourseByName)
+		course.Handle("GET", "/", h.GetAllCourses)
 	}
 
 	//router.Handle("GET", "/", handlers.TestHandler(repo))

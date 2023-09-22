@@ -5,6 +5,7 @@ import (
 	_ "github.com/jinzhu/gorm/dialects/postgres"
 
 	"github.com/KrizzMU/coolback-alkol/internal/config"
+	"github.com/KrizzMU/coolback-alkol/internal/core"
 )
 
 func GetConnection() *gorm.DB {
@@ -13,9 +14,9 @@ func GetConnection() *gorm.DB {
 		panic(err)
 	}
 
-	db.AutoMigrate(&Course{})
-	db.AutoMigrate(&Module{})
-	db.AutoMigrate(&Lesson{})
+	db.AutoMigrate(&core.Course{})
+	db.AutoMigrate(&core.Module{})
+	db.AutoMigrate(&core.Course{})
 
 	return db
 }

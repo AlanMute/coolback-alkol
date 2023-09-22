@@ -1,9 +1,13 @@
 package repository
 
-import "github.com/jinzhu/gorm"
+import (
+	"github.com/KrizzMU/coolback-alkol/internal/core"
+	"github.com/jinzhu/gorm"
+)
 
 type Course interface {
 	Add(name string, description string, folderName string) error
+	GetByName(name string) ([]core.Course, error)
 }
 
 type Module interface {

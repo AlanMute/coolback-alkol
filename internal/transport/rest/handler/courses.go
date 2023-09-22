@@ -1,10 +1,36 @@
 package handler
 
 import (
+	"net/http"
+
 	"github.com/gin-gonic/gin"
 )
 
 func (h *Handler) AddCourse(c *gin.Context) {
+
+}
+
+func (h *Handler) GetCourseByName(c *gin.Context) {
+	courseName := c.Param("name")
+
+	courses, err := h.services.Course.GetByName(courseName)
+	if err != nil {
+		c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+	c.JSON(http.StatusOK, courses)
+
+}
+
+func (h *Handler) GetAllCourses(c *gin.Context) {
+	courseName := ""
+
+	courses, err := h.services.Course.GetByName(courseName)
+	if err != nil {
+		c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+	c.JSON(http.StatusOK, courses)
 
 }
 
