@@ -16,7 +16,7 @@ func GetConnection() *gorm.DB {
 
 	db.AutoMigrate(&core.Course{})
 	db.AutoMigrate(&core.Module{})
-	db.AutoMigrate(&core.Course{})
+	db.AutoMigrate(&core.Lesson{})
 
 	return db
 }

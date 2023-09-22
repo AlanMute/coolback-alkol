@@ -9,6 +9,8 @@ type LessonService struct {
 	repo repository.Lesson
 }
 
+var ext string = ".md"
+
 func NewLessonService(repo repository.Lesson) *LessonService {
 	return &LessonService{repo: repo}
 }
@@ -16,7 +18,7 @@ func NewLessonService(repo repository.Lesson) *LessonService {
 func (s *LessonService) Add(name string, description string, id int) error {
 	var path string // ex. "/couse_1/module_1"
 
-	fileName, err := pkg.UniqueFile("/courses" + path)
+	fileName, err := pkg.UniqueFile(ext, "/courses"+path)
 	if err != nil {
 		return err
 	}

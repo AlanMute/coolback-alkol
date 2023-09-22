@@ -1,6 +1,9 @@
 package service
 
 import (
+	"os"
+	"strings"
+
 	"github.com/KrizzMU/coolback-alkol/internal/core"
 	"github.com/KrizzMU/coolback-alkol/internal/repository"
 	"github.com/KrizzMU/coolback-alkol/pkg"
@@ -15,12 +18,19 @@ func NewCourseService(repo repository.Course) *CourseService {
 }
 
 func (s *CourseService) Add(name string, description string) error {
-	folderName, err := pkg.UniqueFolder("course", "/courses")
+	folderName, err := pkg.UniqueFolder("course", "./courses")
 	if err != nil {
 		return err
 	}
 
-	return s.repo.Add(name, description, folderName)
+	if err := os.Mkdir(folderName, os.ModePerm); err != nil {
+		return err
+	}
+
+	splitFileName := strings.Split(folderName, "\\")
+	dbFolderName := splitFileName[len(splitFileName)-1]
+
+	return s.repo.Add(name, description, dbFolderName)
 }
 
 func (s *CourseService) GetByName(name string) ([]core.Course, error) {
