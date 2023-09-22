@@ -4,7 +4,7 @@ import "github.com/jinzhu/gorm"
 
 type Course struct {
 	gorm.Model
-	ID          uint   `gorm:"primary_key"`
+
 	Name        string `gorm:"not null"`
 	Description string
 	NameFolder  string
@@ -12,7 +12,7 @@ type Course struct {
 
 type Module struct {
 	gorm.Model
-	ID          uint   `gorm:"primary_key"`
+
 	Name        string `gorm:"not null"`
 	Description string
 	CoursesID   int
@@ -21,7 +21,7 @@ type Module struct {
 
 type Lesson struct {
 	gorm.Model
-	ID          uint   `gorm:"primary_key"`
+
 	Name        string `gorm:"not null"`
 	Description string
 	ModulesID   int
