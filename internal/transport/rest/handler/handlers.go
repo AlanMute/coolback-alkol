@@ -1,9 +1,6 @@
 package handler
 
 import (
-	//"net/http"
-
-	//"github.com/KrizzMU/coolback-alkol/repository"
 	"github.com/KrizzMU/coolback-alkol/internal/service"
 	"github.com/gin-gonic/gin"
 )
@@ -19,8 +16,6 @@ func NewHandler(s *service.Service) *Handler {
 func (h *Handler) InitRoutes() *gin.Engine {
 	r := gin.New()
 
-	// GET запрос для swagger (later)
-
 	lesson := r.Group("/lesson")
 	{
 		lesson.Handle("GET", "/:id", h.GetLesson)
@@ -34,15 +29,10 @@ func (h *Handler) InitRoutes() *gin.Engine {
 
 	course := r.Group("/course")
 	{
-		course.Handle("POST", "/", h.AddCourse)
-		course.Handle("GET", "/:name", h.GetCourseByName)
-		course.Handle("GET", "/", h.GetAllCourses)
+		course.Handle("POST", "/", h.AddCourse)           // Add swagger
+		course.Handle("GET", "/:name", h.GetCourseByName) // Add swagger
+		course.Handle("GET", "/", h.GetAllCourses)        // Add swagger
 	}
-
-	//router.Handle("GET", "/", handlers.TestHandler(repo))
-	//router.Handle("POST", "/add/course", handlers.AddCourseHandler(repo))
-	//router.Handle("POST", "/add/module", handlers.AddModuleHandler(repo))
-	//router.Handle("POST", "/add/lesson", handlers.AddLessonHandler(repo))
 
 	return r
 }

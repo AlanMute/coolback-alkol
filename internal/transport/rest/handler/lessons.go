@@ -62,17 +62,3 @@ func (h *Handler) GetLesson(c *gin.Context) {
 // 		}
 // 	}
 // }
-
-// func uniqueFile(name string, folder string) string {
-// 	extension := filepath.Ext(name)
-// 	nameWithoutExt := "lesson"
-
-// 	for i := 1; ; i++ {
-// 		uniqueName := nameWithoutExt + "_" + strconv.Itoa(i) + extension
-// 		filePath := filepath.Join(folder, uniqueName)
-// 		_, err := os.Stat(filePath)
-// 		if os.IsNotExist(err) {
-// 			return folder + "/" + uniqueName
-// 		}
-// 	}
-// }
