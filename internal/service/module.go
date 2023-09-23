@@ -13,13 +13,13 @@ func NewModuleService(repo repository.Module) *ModuleService {
 	return &ModuleService{repo: repo}
 }
 
-func (s *ModuleService) Add(name string, description string, id int) error {
-	var path string // ex. "/course_1"
+func (s *ModuleService) Add(name string, description string, courseName string) error {
+	path := pkg.GetPath(courseName, "./courses")
 
-	folderName, err := pkg.UniqueFolder("module", path)
+	dbFolderName, err := pkg.CreateUniqueFolder("module", path)
 	if err != nil {
 		return err
 	}
 
-	return s.repo.Add(name, description, id, folderName)
+	return s.repo.Add(name, description, courseName, dbFolderName)
 }
