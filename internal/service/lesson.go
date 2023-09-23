@@ -1,6 +1,8 @@
 package service
 
 import (
+	"mime/multipart"
+
 	"github.com/KrizzMU/coolback-alkol/internal/repository"
 	"github.com/KrizzMU/coolback-alkol/pkg"
 )
@@ -15,10 +17,10 @@ func NewLessonService(repo repository.Lesson) *LessonService {
 	return &LessonService{repo: repo}
 }
 
-func (s *LessonService) Add(name string, description string, id int) error {
+func (s *LessonService) Add(file multipart.File, name string, description string, id int) error {
 	var path string // ex. "/couse_1/module_1"
 
-	fileName, err := pkg.UniqueFile(ext, "/courses"+path)
+	fileName, err := pkg.CreateUniqueFile(file, name, path, ext)
 	if err != nil {
 		return err
 	}
@@ -27,5 +29,5 @@ func (s *LessonService) Add(name string, description string, id int) error {
 }
 
 func (s *LessonService) Get(name string) error {
-	return s.Get(name)
+	return s.repo.Get(name)
 }
