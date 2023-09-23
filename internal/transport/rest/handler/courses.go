@@ -8,7 +8,7 @@ import (
 )
 
 func (h *Handler) AddCourse(c *gin.Context) {
-	var info AddCourseModule
+	var info AddCourse
 
 	if err := c.ShouldBindJSON(&info); err != nil {
 		c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
