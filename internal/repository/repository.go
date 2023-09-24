@@ -12,11 +12,11 @@ type Course interface {
 }
 
 type Module interface {
-	Add(name string, description string, id int, folderName string) error
+	Add(name string, description string, courseName string, folderName string) error
 }
 
 type Lesson interface {
-	Add(name string, description string, id int, fileName string) error
+	Add(name string, description string, fileName string, courseName string, moduleName string) error
 	Get(name string) error
 }
 

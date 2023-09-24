@@ -1,22 +1,24 @@
 package service
 
 import (
+	"mime/multipart"
+
 	"github.com/KrizzMU/coolback-alkol/internal/core"
 	"github.com/KrizzMU/coolback-alkol/internal/repository"
 )
 
 type Course interface {
-	Add(name string, description string, folderName string) error
+	Add(name string, description string) error
 	GetByName(name string) ([]core.Course, error)
 	GetAll() ([]core.Course, error)
 }
 
 type Module interface {
-	Add(name string, description string, id int, folderName string) error
+	Add(name string, description string, courseName string) error
 }
 
 type Lesson interface {
-	Add(name string, description string, id int, fileName string) error
+	Add(file multipart.File, fileName string, name string, description string, moduleName string, courseName string) error
 	Get(name string) error
 }
 
