@@ -7,25 +7,27 @@ type Course struct {
 
 	Name        string `gorm:"not null; unique"`
 	Description string
-	NameFolder  string
-
-	Modules []Module `gorm:"many2many:courses_modules;"`
+	NameFolder  string `gorm:"not null"`
 }
 
 type Module struct {
 	gorm.Model
 
-	Name        string `gorm:"not null; unique"`
+	Name        string `gorm:"not null"`
 	Description string
-	NameFolder  string
+	NameFolder  string `gorm:"not null"`
+	CourseID    uint
 
-	Lessons []Lesson `gorm:"many2many:modules_lessons;"`
+	Course Course `gorm:"foreignKey:CourseID"`
 }
 
 type Lesson struct {
 	gorm.Model
 
-	Name        string `gorm:"not null; unique"`
+	Name        string `gorm:"not null"`
 	Description string
-	NameFolder  string
+	NameFile    string `gorm:"not null"`
+	ModuleID    uint
+
+	Module Module `gorm:"foreignKey:ModuleID"`
 }
