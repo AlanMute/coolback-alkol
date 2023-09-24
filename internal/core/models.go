@@ -6,15 +6,15 @@ type Course struct {
 	gorm.Model
 
 	Name        string `gorm:"not null; unique"`
-	Description string
+	Description string `gorm:"not null"`
 	NameFolder  string `gorm:"not null"`
 }
 
 type Module struct {
 	gorm.Model
 
-	Name        string
-	Description string
+	Name        string `gorm:"not null"`
+	Description string `gorm:"not null"`
 	NameFolder  string `gorm:"not null"`
 	CourseID    uint
 
@@ -24,8 +24,8 @@ type Module struct {
 type Lesson struct {
 	gorm.Model
 
-	Name        string `gorm:"not null; unique"`
-	Description string
+	Name        string `gorm:"not null"`
+	Description string `gorm:"not null"`
 	NameFile    string `gorm:"not null"`
 	ModuleID    uint
 
