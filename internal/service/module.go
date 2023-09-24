@@ -14,7 +14,10 @@ func NewModuleService(repo repository.Module) *ModuleService {
 }
 
 func (s *ModuleService) Add(name string, description string, courseName string) error {
-	path := pkg.GetPath(courseName, "./courses")
+	path, err := pkg.GetPath(courseName, "./courses")
+	if err != nil {
+		return err
+	}
 
 	dbFolderName, err := pkg.CreateUniqueFolder(name, path)
 	if err != nil {
