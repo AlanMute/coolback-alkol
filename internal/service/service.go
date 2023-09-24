@@ -18,7 +18,7 @@ type Module interface {
 }
 
 type Lesson interface {
-	Add(file multipart.File, name string, description string, id int) error
+	Add(file multipart.File, fileName string, name string, description string, moduleName string, courseName string) error
 	Get(name string) error
 }
 

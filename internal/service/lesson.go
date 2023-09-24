@@ -17,15 +17,23 @@ func NewLessonService(repo repository.Lesson) *LessonService {
 	return &LessonService{repo: repo}
 }
 
-func (s *LessonService) Add(file multipart.File, name string, description string, id int) error {
-	var path string // ex. "/couse_1/module_1"
-
-	fileName, err := pkg.CreateUniqueFile(file, name, path, ext)
+func (s *LessonService) Add(file multipart.File, fileName string, name string, description string, moduleName string, courseName string) error {
+	coursePath, err := pkg.GetPath(courseName, "./courses")
 	if err != nil {
 		return err
 	}
 
-	return s.repo.Add(name, description, id, fileName)
+	path, err := pkg.GetPath(moduleName, coursePath)
+	if err != nil {
+		return err
+	}
+
+	dbfileName, err := pkg.CreateUniqueFile(file, fileName, name, path, ext)
+	if err != nil {
+		return err
+	}
+
+	return s.repo.Add(name, description, dbfileName, courseName, moduleName)
 }
 
 func (s *LessonService) Get(name string) error {

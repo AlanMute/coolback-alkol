@@ -16,7 +16,7 @@ type Module interface {
 }
 
 type Lesson interface {
-	Add(name string, description string, id int, fileName string) error
+	Add(name string, description string, fileName string, courseName string, moduleName string) error
 	Get(name string) error
 }
 
