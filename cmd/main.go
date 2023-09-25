@@ -8,7 +8,6 @@ import (
 	"github.com/KrizzMU/coolback-alkol/internal/service"
 	"github.com/KrizzMU/coolback-alkol/internal/transport/rest"
 	"github.com/KrizzMU/coolback-alkol/internal/transport/rest/handler"
-	//"github.com/gin-gonic/gin"
 )
 
 func main() {
