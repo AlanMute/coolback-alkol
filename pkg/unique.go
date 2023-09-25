@@ -26,6 +26,22 @@ func GetPath(name string, folder string) (string, error) {
 	return "", fmt.Errorf("folder with that name doesn't exist")
 }
 
+func GetPathToFile(name string, ext string, folder string) (string, error) {
+	validName := regexp.MustCompile(`[^\p{L}0-9\s-]`).ReplaceAllString(name, "")
+
+	words := strings.Fields(validName)
+	uniqueName := strings.Join(words, "-")
+
+	dirPath := filepath.Join(folder, uniqueName+ext)
+
+	_, err := os.Stat(dirPath)
+	if !os.IsNotExist(err) {
+		return dirPath, nil
+	}
+
+	return "", fmt.Errorf("folder with that name doesn't exist")
+}
+
 func CreateUniqueFolder(name string, folder string) (string, error) {
 	validName := regexp.MustCompile(`[^\p{L}0-9\s-]`).ReplaceAllString(name, "")
 
