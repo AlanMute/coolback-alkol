@@ -1,7 +1,6 @@
 package service
 
 import (
-	"fmt"
 	"os"
 
 	"github.com/KrizzMU/coolback-alkol/internal/repository"
@@ -42,7 +41,6 @@ func (s *ModuleService) Delete(name string, courseName string) error {
 	}
 
 	if err := os.RemoveAll(dirPath); os.IsNotExist(err) {
-		fmt.Println("Problem after RemoveAll")
 		return err
 	}
 

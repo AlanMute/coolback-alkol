@@ -21,6 +21,8 @@ func (h *Handler) InitRoutes() *gin.Engine {
 		lesson.Handle("GET", "/:id", h.GetLesson)
 		// Add swagger (client -> FormFile: file: file, name: string, description: string, courseName: string, moduleName: string. server -> json: {error: string})
 		lesson.Handle("POST", "/", h.AddLesson)
+
+		lesson.Handle("DELETE", "/", h.DeleteLesson)
 	}
 
 	module := r.Group("/module")

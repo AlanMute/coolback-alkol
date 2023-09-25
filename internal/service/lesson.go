@@ -2,6 +2,7 @@ package service
 
 import (
 	"mime/multipart"
+	"os"
 
 	"github.com/KrizzMU/coolback-alkol/internal/repository"
 	"github.com/KrizzMU/coolback-alkol/pkg"
@@ -39,6 +40,24 @@ func (s *LessonService) Add(file multipart.File, fileName string, name string, d
 }
 
 func (s *LessonService) Delete(name string, courseName string, moduleName string) error {
+	coursePath, err := pkg.GetPath(courseName, "./courses")
+	if err != nil {
+		return err
+	}
+
+	modulePath, err := pkg.GetPath(moduleName, coursePath)
+	if err != nil {
+		return err
+	}
+
+	filePath, err := pkg.GetPathToFile(name, ext, modulePath)
+	if err != nil {
+		return err
+	}
+
+	if err := os.Remove(filePath); os.IsNotExist(err) {
+		return err
+	}
 
 	return s.repo.Delete(name, courseName, moduleName)
 }
