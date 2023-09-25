@@ -27,6 +27,20 @@ func (r *CoursePostgres) Add(name string, description string, folderName string)
 	return nil
 }
 
+func (r *CoursePostgres) Delete(name string) error {
+	var course core.Course
+
+	if result := r.db.Where("name = ?", name).First(&course); result.Error != nil {
+		return result.Error
+	}
+
+	if result := r.db.Where("name = ?", name).Unscoped().Delete(&course); result.Error != nil {
+		return result.Error
+	}
+
+	return nil
+}
+
 func (r *CoursePostgres) GetByName(name string) ([]core.Course, error) {
 
 	var courses []core.Course

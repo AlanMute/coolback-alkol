@@ -1,6 +1,8 @@
 package service
 
 import (
+	"os"
+
 	"github.com/KrizzMU/coolback-alkol/internal/core"
 	"github.com/KrizzMU/coolback-alkol/internal/repository"
 	"github.com/KrizzMU/coolback-alkol/pkg"
@@ -21,6 +23,19 @@ func (s *CourseService) Add(name string, description string) error {
 	}
 
 	return s.repo.Add(name, description, dbFolderName)
+}
+
+func (s *CourseService) Delete(name string) error {
+	dirPath, err := pkg.GetPath(name, "./courses")
+	if err != nil {
+		return err
+	}
+
+	if err := os.RemoveAll(dirPath); os.IsNotExist(err) {
+		return err
+	}
+
+	return s.repo.Delete(name)
 }
 
 func (s *CourseService) GetByName(name string) ([]core.Course, error) {

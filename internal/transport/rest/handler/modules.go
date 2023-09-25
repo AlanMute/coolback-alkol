@@ -31,3 +31,27 @@ func (h *Handler) AddModule(c *gin.Context) {
 
 	c.Status(http.StatusOK)
 }
+
+func (h *Handler) DeleteModule(c *gin.Context) {
+	var info DeleteModule
+
+	if err := c.ShouldBindJSON(&info); err != nil {
+		c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+
+	info.Name = strings.Trim(info.Name, " ")
+	info.CourseName = strings.Trim(info.CourseName, " ")
+
+	if info.Name == "" || info.CourseName == "" {
+		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"error": "Bad module or course name"})
+		return
+	}
+
+	if err := h.services.Module.Delete(info.Name, info.CourseName); err != nil {
+		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	c.Status(http.StatusOK)
+}
