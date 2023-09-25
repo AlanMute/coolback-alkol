@@ -12,10 +12,7 @@ import (
 )
 
 func main() {
-
 	s := new(rest.Server)
-
-	//router := gin.Default()
 
 	repos := repository.NewRepository(db.GetConnection())
 	services := service.NewService(repos)
@@ -24,11 +21,4 @@ func main() {
 	if err := s.Run("8080", handlers.InitRoutes()); err != nil {
 		log.Fatal("ERROR start Server!")
 	}
-
-	//router.Handle("GET", "/", handlers.TestHandler(repo))
-	//router.Handle("POST", "/add/course", handlers.AddCourseHandler(repo))
-	//router.Handle("POST", "/add/module", handlers.AddModuleHandler(repo))
-	//router.Handle("POST", "/add/lesson", handlers.AddLessonHandler(repo))
-
-	//router.Run(":8080")
 }
