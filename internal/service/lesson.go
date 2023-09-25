@@ -7,11 +7,13 @@ import (
 	"github.com/KrizzMU/coolback-alkol/pkg"
 )
 
+const (
+	ext string = ".md"
+)
+
 type LessonService struct {
 	repo repository.Lesson
 }
-
-var ext string = ".md"
 
 func NewLessonService(repo repository.Lesson) *LessonService {
 	return &LessonService{repo: repo}
@@ -34,6 +36,11 @@ func (s *LessonService) Add(file multipart.File, fileName string, name string, d
 	}
 
 	return s.repo.Add(name, description, dbfileName, courseName, moduleName)
+}
+
+func (s *LessonService) Delete(name string, courseName string, moduleName string) error {
+
+	return s.repo.Delete(name, courseName, moduleName)
 }
 
 func (s *LessonService) Get(name string) error {

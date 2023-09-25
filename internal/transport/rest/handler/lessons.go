@@ -34,6 +34,10 @@ func (h *Handler) AddLesson(c *gin.Context) {
 	c.Status(http.StatusOK)
 }
 
+func (h *Handler) DeleteLesson(c *gin.Context) {
+
+}
+
 func (h *Handler) GetLesson(c *gin.Context) {
 
 }

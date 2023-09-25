@@ -32,3 +32,8 @@ func (r *ModulePostgres) Add(name string, description string, courseName string,
 
 	return nil
 }
+
+func (r *ModulePostgres) Delete(name string, courseName string) error {
+
+	return nil
+}

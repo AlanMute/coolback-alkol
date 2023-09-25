@@ -7,16 +7,19 @@ import (
 
 type Course interface {
 	Add(name string, description string, folderName string) error
+	Delete(name string) error
 	GetByName(name string) ([]core.Course, error)
 	GetAll() ([]core.Course, error)
 }
 
 type Module interface {
 	Add(name string, description string, courseName string, folderName string) error
+	Delete(name string, courseName string) error
 }
 
 type Lesson interface {
 	Add(name string, description string, fileName string, courseName string, moduleName string) error
+	Delete(name string, courseName string, moduleName string) error
 	Get(name string) error
 }
 

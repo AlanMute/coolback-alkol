@@ -38,6 +38,11 @@ func (r *LessonPostgres) Add(name string, description string, fileName string, c
 	return nil
 }
 
+func (r *LessonPostgres) Delete(name string, courseName string, moduleName string) error {
+
+	return nil
+}
+
 func (r *LessonPostgres) Get(name string) error {
 
 	return nil

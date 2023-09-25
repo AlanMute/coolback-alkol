@@ -26,3 +26,8 @@ func (s *ModuleService) Add(name string, description string, courseName string) 
 
 	return s.repo.Add(name, description, courseName, dbFolderName)
 }
+
+func (s *ModuleService) Delete(name string, courseName string) error {
+
+	return s.repo.Delete(name, courseName)
+}

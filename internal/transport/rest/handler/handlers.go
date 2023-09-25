@@ -33,6 +33,7 @@ func (h *Handler) InitRoutes() *gin.Engine {
 	{
 		// Add swagger (client -> json:{name: string, description: string}. server -> json: {error: string})
 		course.Handle("POST", "/", h.AddCourse)
+		course.Handle("DELETE", "/", h.DeleteCourse)
 		course.Handle("GET", "/:name", h.GetCourseByName) // Add swagger
 		course.Handle("GET", "/", h.GetAllCourses)        // Add swagger
 	}

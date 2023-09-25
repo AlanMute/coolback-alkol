@@ -31,3 +31,7 @@ func (h *Handler) AddModule(c *gin.Context) {
 
 	c.Status(http.StatusOK)
 }
+
+func (h *Handler) DeleteModule(c *gin.Context) {
+
+}
