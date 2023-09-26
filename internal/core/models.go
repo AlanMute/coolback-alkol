@@ -18,7 +18,7 @@ type Module struct {
 	NameFolder  string `gorm:"not null"`
 	CourseID    uint
 
-	Course Course `gorm:"foreignKey:CourseID"`
+	Course Course `gorm:"foreignKey:CourseID" json:"-"`
 }
 
 type Lesson struct {
@@ -29,7 +29,7 @@ type Lesson struct {
 	NameFile    string `gorm:"not null"`
 	ModuleID    uint
 
-	Module Module `gorm:"foreignKey:ModuleID"`
+	Module Module `gorm:"foreignKey:ModuleID" json:"-"`
 }
 
 type ModLes struct {
