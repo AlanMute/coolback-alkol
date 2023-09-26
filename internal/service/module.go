@@ -2,7 +2,9 @@ package service
 
 import (
 	"os"
+	"path/filepath"
 
+	"github.com/KrizzMU/coolback-alkol/internal/core"
 	"github.com/KrizzMU/coolback-alkol/internal/repository"
 	"github.com/KrizzMU/coolback-alkol/pkg"
 )
@@ -45,4 +47,14 @@ func (s *ModuleService) Delete(name string, courseName string) error {
 	}
 
 	return s.repo.Delete(name, courseName)
+}
+
+func (s *ModuleService) Get(moduleName string, courseName string) (core.ModLes, error) {
+	path := filepath.Join(courseName, moduleName)
+	modles, err := s.repo.Get(path)
+	if err != nil {
+		return modles, err
+	}
+
+	return modles, nil
 }

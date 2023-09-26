@@ -75,3 +75,7 @@ func (h *Handler) GetAllCourses(c *gin.Context) {
 	c.JSON(http.StatusOK, courses)
 
 }
+
+func (h *Handler) GetCourse(c *gin.Context) {
+	//
+}

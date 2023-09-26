@@ -44,5 +44,8 @@ func (h *Handler) InitRoutes() *gin.Engine {
 	//    local/Golang-for-begginer/Begin/Lets-start
 	r.Handle("GET", "/:coursename/:modulename/:lessonname", h.GetLesson)
 
+	r.Handle("GET", "/:coursename/:modulename/", h.GetModule)
+
+	r.Handle("GET", "/:coursename/", h.GetCourse) //
 	return r
 }

@@ -15,6 +15,7 @@ type Course interface {
 type Module interface {
 	Add(name string, description string, courseName string, folderName string) error
 	Delete(name string, courseName string) error
+	Get(path string) (core.ModLes, error)
 }
 
 type Lesson interface {

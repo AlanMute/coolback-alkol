@@ -57,7 +57,17 @@ func (h *Handler) DeleteModule(c *gin.Context) {
 }
 
 func (h *Handler) GetModule(c *gin.Context) {
+	course := c.Param("coursename")
+	module := c.Param("modulename")
 
+	modles, err := h.services.Module.Get(module, course)
+
+	if err != nil {
+		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	c.JSON(http.StatusOK, modles)
 }
 
 // Исправить ошибку когда при создании модуля возникает ошибка но папка остается.
