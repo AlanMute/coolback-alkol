@@ -25,7 +25,6 @@ func (r *ModulePostgres) Add(name string, description string, courseName string,
 		NameFolder:  folderName,
 		CourseID:    course.ID,
 	}
-	fmt.Println(newModule.CourseID)
 
 	if result := r.db.Create(&newModule); result.Error != nil {
 		return result.Error
@@ -45,29 +44,6 @@ func (r *ModulePostgres) Delete(id uint) (string, error) {
 	}
 
 	return module.NameFolder, nil
-}
-
-func (r *ModulePostgres) Get(path string) (core.ModLes, error) {
-	var modles core.ModLes
-
-	var module core.Module
-
-	if result := r.db.Where("NameFolder = ?", path).Find(&module); result.Error != nil {
-		return modles, result.Error
-	}
-
-	var lessons []core.Lesson
-
-	if result := r.db.Where("ModuleID = ?", module.ID).Find(&lessons); result.Error != nil {
-		return modles, result.Error
-	}
-
-	modles = core.ModLes{
-		Module:  module,
-		Lessons: lessons,
-	}
-
-	return modles, nil
 }
 
 func (r *ModulePostgres) Get(path string) (core.ModLes, error) {
