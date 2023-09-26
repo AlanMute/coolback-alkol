@@ -37,7 +37,15 @@ func (s *LessonService) Add(file multipart.File, fileName string, name string, d
 		return err
 	}
 
-	return s.repo.Add(name, description, dbfileName, courseName, moduleName)
+	if err := s.repo.Add(name, description, dbfileName, courseName, moduleName); err != nil {
+		if rmErr := os.Remove(dbfileName); rmErr != nil {
+			return rmErr
+		}
+
+		return err
+	}
+
+	return nil
 }
 
 func (s *LessonService) Delete(id uint) error {

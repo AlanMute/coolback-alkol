@@ -26,7 +26,15 @@ func (s *ModuleService) Add(name string, description string, courseName string) 
 		return err
 	}
 
-	return s.repo.Add(name, description, courseName, dbFolderName)
+	if err := s.repo.Add(name, description, courseName, dbFolderName); err != nil {
+		if rmErr := os.RemoveAll(dbFolderName); rmErr != nil {
+			return rmErr
+		}
+
+		return err
+	}
+
+	return nil
 }
 
 func (s *ModuleService) Delete(id uint) error {

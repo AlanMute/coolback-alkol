@@ -22,7 +22,15 @@ func (s *CourseService) Add(name string, description string) error {
 		return err
 	}
 
-	return s.repo.Add(name, description, dbFolderName)
+	if err := s.repo.Add(name, description, dbFolderName); err != nil {
+		if rmErr := os.RemoveAll(dbFolderName); rmErr != nil {
+			return rmErr
+		}
+
+		return err
+	}
+
+	return nil
 }
 
 func (s *CourseService) Delete(id uint) error {
