@@ -61,3 +61,13 @@ func (s *ModuleService) Get(moduleName string, courseName string) (core.ModLes, 
 
 	return modles, nil
 }
+
+func (s *ModuleService) Get(moduleName string, courseName string) (core.ModLes, error) {
+	path := filepath.Join(courseName, moduleName)
+	modles, err := s.repo.Get(path)
+	if err != nil {
+		return modles, err
+	}
+
+	return modles, nil
+}

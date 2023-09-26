@@ -22,7 +22,6 @@ type Module interface {
 
 type Lesson interface {
 	Add(file multipart.File, fileName string, name string, description string, moduleName string, courseName string) error
-
 	Delete(id uint) error
 	Get(course string, module string, lesson string) ([]string, error)
 }
