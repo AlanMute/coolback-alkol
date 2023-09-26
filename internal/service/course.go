@@ -25,17 +25,17 @@ func (s *CourseService) Add(name string, description string) error {
 	return s.repo.Add(name, description, dbFolderName)
 }
 
-func (s *CourseService) Delete(name string) error {
-	dirPath, err := pkg.GetPath(name, "./courses")
+func (s *CourseService) Delete(id uint) error {
+	dirPath, err := s.repo.Delete(id)
 	if err != nil {
 		return err
 	}
 
-	if err := os.RemoveAll(dirPath); os.IsNotExist(err) {
+	if err := os.RemoveAll(dirPath); !os.IsNotExist(err) {
 		return err
 	}
 
-	return s.repo.Delete(name)
+	return nil
 }
 
 func (s *CourseService) GetByName(name string) ([]core.Course, error) {

@@ -1,6 +1,7 @@
 package service
 
 import (
+	"fmt"
 	"mime/multipart"
 	"os"
 
@@ -39,27 +40,18 @@ func (s *LessonService) Add(file multipart.File, fileName string, name string, d
 	return s.repo.Add(name, description, dbfileName, courseName, moduleName)
 }
 
-func (s *LessonService) Delete(name string, courseName string, moduleName string) error {
-	coursePath, err := pkg.GetPath(courseName, "./courses")
+func (s *LessonService) Delete(id uint) error {
+	filePath, err := s.repo.Delete(id)
 	if err != nil {
 		return err
 	}
 
-	modulePath, err := pkg.GetPath(moduleName, coursePath)
-	if err != nil {
+	if err := os.Remove(filePath); !os.IsNotExist(err) {
+		fmt.Printf("err = %e", err)
 		return err
 	}
 
-	filePath, err := pkg.GetPathToFile(name, ext, modulePath)
-	if err != nil {
-		return err
-	}
-
-	if err := os.Remove(filePath); os.IsNotExist(err) {
-		return err
-	}
-
-	return s.repo.Delete(name, courseName, moduleName)
+	return nil
 }
 
 func (s *LessonService) Get(name string) error {

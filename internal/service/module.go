@@ -29,20 +29,15 @@ func (s *ModuleService) Add(name string, description string, courseName string) 
 	return s.repo.Add(name, description, courseName, dbFolderName)
 }
 
-func (s *ModuleService) Delete(name string, courseName string) error {
-	coursePath, err := pkg.GetPath(courseName, "./courses")
+func (s *ModuleService) Delete(id uint) error {
+	dirPath, err := s.repo.Delete(id)
 	if err != nil {
 		return err
 	}
 
-	dirPath, err := pkg.GetPath(name, coursePath)
-	if err != nil {
+	if err := os.RemoveAll(dirPath); !os.IsNotExist(err) {
 		return err
 	}
 
-	if err := os.RemoveAll(dirPath); os.IsNotExist(err) {
-		return err
-	}
-
-	return s.repo.Delete(name, courseName)
+	return nil
 }

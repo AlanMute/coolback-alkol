@@ -9,19 +9,19 @@ import (
 
 type Course interface {
 	Add(name string, description string) error
-	Delete(name string) error
+	Delete(id uint) error
 	GetByName(name string) ([]core.Course, error)
 	GetAll() ([]core.Course, error)
 }
 
 type Module interface {
 	Add(name string, description string, courseName string) error
-	Delete(name string, courseName string) error
+	Delete(id uint) error
 }
 
 type Lesson interface {
 	Add(file multipart.File, fileName string, name string, description string, moduleName string, courseName string) error
-	Delete(name string, courseName string, moduleName string) error
+	Delete(id uint) error
 	Get(name string) error
 }
 

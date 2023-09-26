@@ -35,23 +35,14 @@ func (h *Handler) AddLesson(c *gin.Context) {
 }
 
 func (h *Handler) DeleteLesson(c *gin.Context) {
-	var info DeleteLesson
+	var info Delete
 
 	if err := c.ShouldBindJSON(&info); err != nil {
 		c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
 
-	info.Name = strings.Trim(info.Name, " ")
-	info.CourseName = strings.Trim(info.CourseName, " ")
-	info.ModuleName = strings.Trim(info.ModuleName, " ")
-
-	if info.Name == "" || info.CourseName == "" || info.ModuleName == "" {
-		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"error": "Bad course, module or lesson name"})
-		return
-	}
-
-	if err := h.services.Lesson.Delete(info.Name, info.CourseName, info.ModuleName); err != nil {
+	if err := h.services.Lesson.Delete(info.ID); err != nil {
 		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
