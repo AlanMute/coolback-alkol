@@ -31,13 +31,3 @@ type Lesson struct {
 
 	Module Module `gorm:"foreignKey:ModuleID" json:"-"`
 }
-
-type ModLes struct {
-	Module
-	Lessons []Lesson
-}
-
-type LesMd struct {
-	Lesson
-	Mdfile []string
-}
