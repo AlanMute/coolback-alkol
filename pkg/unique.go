@@ -50,16 +50,13 @@ func CreateUniqueFolder(name string, folder string) (string, error) {
 
 	dirPath := filepath.Join(folder, uniqueName)
 
-	splitFolderName := strings.Split(dirPath, "\\")
-	dbFolderName := splitFolderName[len(splitFolderName)-1]
-
 	_, err := os.Stat(dirPath)
 	if os.IsNotExist(err) {
 		err := os.Mkdir(dirPath, os.ModePerm)
 		if err != nil {
 			return "", err
 		}
-		return dbFolderName, nil
+		return dirPath, nil
 	}
 
 	return "", fmt.Errorf("directory already exists")
@@ -82,9 +79,6 @@ func CreateUniqueFile(file multipart.File, fileName string, name string, folder 
 
 	filePath := filepath.Join(folder, uniqueName+ext)
 
-	splitFilePath := strings.Split(filePath, "\\")
-	dbFileName := splitFilePath[len(splitFilePath)-1]
-
 	_, err := os.Stat(filePath)
 	if os.IsNotExist(err) {
 		out, err := os.Create(filePath)
@@ -102,7 +96,7 @@ func CreateUniqueFile(file multipart.File, fileName string, name string, folder 
 			return "", err
 		}
 
-		return dbFileName, nil
+		return filePath, nil
 	}
 
 	if err = file.Close(); err != nil {
