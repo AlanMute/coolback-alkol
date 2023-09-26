@@ -60,5 +60,16 @@ func (h *Handler) DeleteLesson(c *gin.Context) {
 }
 
 func (h *Handler) GetLesson(c *gin.Context) {
+	course := c.Param("coursename")
+	module := c.Param("modulename")
+	lesson := c.Param("lessonname")
 
+	strFile, err := h.services.Lesson.Get(course, module, lesson)
+
+	if err != nil {
+		c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+
+	c.JSON(http.StatusOK, strFile)
 }

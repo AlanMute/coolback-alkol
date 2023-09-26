@@ -1,6 +1,7 @@
 package pkg
 
 import (
+	"bufio"
 	"fmt"
 	"io"
 	"mime/multipart"
@@ -110,4 +111,28 @@ func CreateUniqueFile(file multipart.File, fileName string, name string, folder 
 	}
 
 	return "", fmt.Errorf("file already exists")
+}
+
+func ReadFile(path string) ([]string, error) {
+	file, err := os.Open(path)
+
+	if err != nil {
+		return nil, fmt.Errorf("Error opening a file: " + err.Error())
+	}
+
+	defer file.Close()
+
+	var lines []string
+
+	scanner := bufio.NewScanner(file)
+
+	for scanner.Scan() {
+		lines = append(lines, scanner.Text())
+	}
+
+	if err := scanner.Err(); err != nil {
+		return nil, fmt.Errorf("Error scanning a file: " + err.Error())
+	}
+
+	return lines, nil
 }

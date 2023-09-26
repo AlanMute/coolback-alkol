@@ -27,6 +27,7 @@ func (r *ModulePostgres) Add(name string, description string, courseName string,
 		NameFolder:  folderName,
 		CourseID:    course.ID,
 	}
+	fmt.Println(newModule.CourseID)
 
 	if result := r.db.Create(&newModule); result.Error != nil {
 		return result.Error

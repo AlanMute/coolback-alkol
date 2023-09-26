@@ -41,6 +41,8 @@ func (h *Handler) InitRoutes() *gin.Engine {
 		course.Handle("GET", "/:name", h.GetCourseByName) // Add swagger
 		course.Handle("GET", "/", h.GetAllCourses)        // Add swagger
 	}
+	//    local/Golang-for-begginer/Begin/Lets-start
+	r.Handle("GET", "/:coursename/:modulename/:lessonname", h.GetLesson)
 
 	return r
 }
