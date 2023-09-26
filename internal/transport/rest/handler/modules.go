@@ -47,3 +47,10 @@ func (h *Handler) DeleteModule(c *gin.Context) {
 
 	c.Status(http.StatusOK)
 }
+
+func (h *Handler) GetModule(c *gin.Context) {
+
+}
+
+// Исправить ошибку когда при создании модуля возникает ошибка но папка остается.
+// Например когда папка называется Json а я написал JSON он считает из за одинаковые папки а дб нет

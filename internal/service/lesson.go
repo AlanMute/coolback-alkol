@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"mime/multipart"
 	"os"
+	"path/filepath"
 
 	"github.com/KrizzMU/coolback-alkol/internal/repository"
 	"github.com/KrizzMU/coolback-alkol/pkg"
@@ -62,6 +63,14 @@ func (s *LessonService) Delete(id uint) error {
 	return nil
 }
 
-func (s *LessonService) Get(name string) error {
-	return s.repo.Get(name)
+func (s *LessonService) Get(course string, module string, lesson string) ([]string, error) {
+	path := filepath.Join("./courses", course, module, lesson+".md")
+
+	strFile, err := pkg.ReadFile(path)
+
+	if err != nil {
+		return nil, err
+	}
+
+	return strFile, nil
 }
