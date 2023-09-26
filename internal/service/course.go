@@ -17,16 +17,16 @@ func NewCourseService(repo repository.Course) *CourseService {
 }
 
 func (s *CourseService) Add(name string, description string) error {
-	dbFolderName, err := pkg.CreateUniqueFolder(name, "./courses")
+	dbFolderName, err := pkg.GenerateUniqueFolder(name, "./courses")
 	if err != nil {
 		return err
 	}
 
 	if err := s.repo.Add(name, description, dbFolderName); err != nil {
-		if rmErr := os.RemoveAll(dbFolderName); rmErr != nil {
-			return rmErr
-		}
+		return err
+	}
 
+	if err := pkg.CreateFolder(dbFolderName); err != nil {
 		return err
 	}
 

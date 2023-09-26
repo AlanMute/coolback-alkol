@@ -21,16 +21,16 @@ func (s *ModuleService) Add(name string, description string, courseName string) 
 		return err
 	}
 
-	dbFolderName, err := pkg.CreateUniqueFolder(name, path)
+	dbFolderName, err := pkg.GenerateUniqueFolder(name, path)
 	if err != nil {
 		return err
 	}
 
 	if err := s.repo.Add(name, description, courseName, dbFolderName); err != nil {
-		if rmErr := os.RemoveAll(dbFolderName); rmErr != nil {
-			return rmErr
-		}
+		return err
+	}
 
+	if err := pkg.CreateFolder(dbFolderName); err != nil {
 		return err
 	}
 

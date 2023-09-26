@@ -1,8 +1,6 @@
 package repository
 
 import (
-	"fmt"
-
 	"github.com/KrizzMU/coolback-alkol/internal/core"
 	"github.com/jinzhu/gorm"
 )
@@ -49,8 +47,6 @@ func (r *LessonPostgres) Delete(id uint) (string, error) {
 	if result := r.db.Where("id = ?", id).Unscoped().Delete(&lesson); result.Error != nil {
 		return "", result.Error
 	}
-
-	fmt.Printf("NameFile = %s", lesson.NameFile)
 
 	return lesson.NameFile, nil
 }

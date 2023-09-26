@@ -32,16 +32,16 @@ func (s *LessonService) Add(file multipart.File, fileName string, name string, d
 		return err
 	}
 
-	dbfileName, err := pkg.CreateUniqueFile(file, fileName, name, path, ext)
+	dbfileName, err := pkg.GenerateUniqueFile(fileName, name, path, ext)
 	if err != nil {
 		return err
 	}
 
 	if err := s.repo.Add(name, description, dbfileName, courseName, moduleName); err != nil {
-		if rmErr := os.Remove(dbfileName); rmErr != nil {
-			return rmErr
-		}
+		return err
+	}
 
+	if err := pkg.CreateFile(file, dbfileName); err != nil {
 		return err
 	}
 
