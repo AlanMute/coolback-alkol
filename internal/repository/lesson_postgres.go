@@ -1,6 +1,9 @@
 package repository
 
 import (
+	"errors"
+	"fmt"
+
 	"github.com/KrizzMU/coolback-alkol/internal/core"
 	"github.com/jinzhu/gorm"
 )
@@ -51,7 +54,23 @@ func (r *LessonPostgres) Delete(id uint) (string, error) {
 	return lesson.NameFile, nil
 }
 
-func (r *LessonPostgres) Get(name string) error {
+func (r *LessonPostgres) Get(path string, mdfile []string) (core.LesMd, error) {
 
-	return nil
+	var lesmd core.LesMd
+
+	var lesson core.Lesson
+
+	if result := r.db.Where("name_file = ?", path).Find(&lesson); result.Error != nil {
+		if errors.Is(result.Error, gorm.ErrRecordNotFound) {
+			return lesmd, fmt.Errorf("Lesson not found for path: %s", path)
+		}
+		return lesmd, result.Error
+	}
+
+	lesmd = core.LesMd{
+		Lesson: lesson,
+		Mdfile: mdfile,
+	}
+
+	return lesmd, nil
 }

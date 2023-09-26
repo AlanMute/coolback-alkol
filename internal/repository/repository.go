@@ -22,7 +22,7 @@ type Module interface {
 type Lesson interface {
 	Add(name string, description string, fileName string, courseName string, moduleName string) error
 	Delete(id uint) (string, error)
-	Get(name string) error
+	Get(path string, mdfile []string) (core.LesMd, error)
 }
 
 type Repository struct {

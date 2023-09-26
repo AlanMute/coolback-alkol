@@ -6,6 +6,7 @@ import (
 	"os"
 	"path/filepath"
 
+	"github.com/KrizzMU/coolback-alkol/internal/core"
 	"github.com/KrizzMU/coolback-alkol/internal/repository"
 	"github.com/KrizzMU/coolback-alkol/pkg"
 )
@@ -63,14 +64,24 @@ func (s *LessonService) Delete(id uint) error {
 	return nil
 }
 
-func (s *LessonService) Get(course string, module string, lesson string) ([]string, error) {
+func (s *LessonService) Get(course string, module string, lesson string) (core.LesMd, error) {
+	var lesmd core.LesMd
+
 	path := filepath.Join("./courses", course, module, lesson+".md")
 
 	strFile, err := pkg.ReadFile(path)
 
 	if err != nil {
-		return nil, err
+		return lesmd, err
 	}
 
-	return strFile, nil
+	path = "courses\\" + course + "\\" + module + "\\" + lesson + ".md"
+
+	lesmd, err = s.repo.Get(path, strFile)
+
+	if err != nil {
+		return lesmd, err
+	}
+
+	return lesmd, nil
 }
