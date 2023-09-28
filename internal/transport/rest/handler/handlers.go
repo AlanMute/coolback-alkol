@@ -46,6 +46,6 @@ func (h *Handler) InitRoutes() *gin.Engine {
 
 	r.Handle("GET", "/:coursename/:modulename/", h.GetModule)
 
-	r.Handle("GET", "/:coursename/", h.GetCourse) //
+	r.Handle("GET", "/:coursename/", h.GetCourse)
 	return r
 }

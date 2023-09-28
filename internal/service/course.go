@@ -55,3 +55,16 @@ func (s *CourseService) GetAll() ([]core.Course, error) {
 
 	return s.repo.GetAll()
 }
+
+func (s *CourseService) Get(name string) (core.СourseСontent, error) {
+
+	path := "courses\\" + name
+
+	content, err := s.repo.Get(path)
+
+	if err != nil {
+		return content, err
+	}
+
+	return content, nil
+}

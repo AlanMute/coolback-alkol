@@ -10,6 +10,7 @@ type Course interface {
 	Delete(id uint) (string, error)
 	GetByName(name string) ([]core.Course, error)
 	GetAll() ([]core.Course, error)
+	Get(path string) (core.СourseСontent, error)
 }
 
 type Module interface {
