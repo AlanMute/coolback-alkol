@@ -9,6 +9,6 @@ import (
 // В дальнейшем надо будет сделать через токены
 func IsAdminMW() gin.HandlerFunc {
 	return func(c *gin.Context) {
-
+		c.Next()
 	}
 }
