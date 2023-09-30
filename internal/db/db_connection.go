@@ -22,5 +22,15 @@ func GetConnection() *gorm.DB {
 	db.AutoMigrate(&core.Lesson{})
 	db.Model(&core.Lesson{}).AddForeignKey("module_id", "modules(id)", "CASCADE", "CASCADE")
 
+	db.AutoMigrate(&core.User{})
+	if db.First(&core.User{}).RecordNotFound() {
+		defaultRecord, err := GetDefaultAdmin()
+		if err != nil {
+			return nil
+		}
+
+		db.Create(&defaultRecord)
+	}
+
 	return db
 }

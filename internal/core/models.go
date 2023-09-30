@@ -31,3 +31,11 @@ type Lesson struct {
 
 	Module Module `gorm:"foreignKey:ModuleID"`
 }
+
+type User struct {
+	gorm.Model
+
+	Login    string `gorm:"not null"`
+	Password string `gorm:"not null"`
+	IsAdmin  bool   `gorm:"not null"`
+}
