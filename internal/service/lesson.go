@@ -64,23 +64,26 @@ func (s *LessonService) Delete(id uint) error {
 	return nil
 }
 
-func (s *LessonService) Get(course string, module string, lesson string) (core.LesMd, error) {
+func (s *LessonService) Get(moduleid int, orderid int) (core.LesMd, error) {
 	var lesmd core.LesMd
 
-	path := filepath.Join("./courses", course, module, lesson+".md")
-
-	strFile, err := pkg.ReadFile(path)
+	lesson, err := s.repo.Get(moduleid, orderid)
 
 	if err != nil {
 		return lesmd, err
 	}
 
-	path = "courses\\" + course + "\\" + module + "\\" + lesson + ".md"
+	path := filepath.Join("lessons", fmt.Sprint(lesson.ID)+".md")
 
-	lesmd, err = s.repo.Get(path, strFile)
+	file, err := pkg.ReadFile(path)
 
 	if err != nil {
 		return lesmd, err
+	}
+
+	lesmd = core.LesMd{
+		Lesson: lesson,
+		Mdfile: file,
 	}
 
 	return lesmd, nil

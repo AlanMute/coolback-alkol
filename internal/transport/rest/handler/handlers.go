@@ -18,7 +18,7 @@ func (h *Handler) InitRoutes() *gin.Engine {
 
 	lesson := r.Group("/lesson")
 	{
-		lesson.Handle("GET", "/:id", h.GetLesson)
+		lesson.Handle("GET", "/:orderid/:moduleid", h.GetLesson)
 		// Add swagger (client -> FormFile: file: file, name: string, description: string, courseName: string, moduleName: string. server -> json: {error: string})
 		lesson.Handle("POST", "/", h.AddLesson)
 		//lesson.Handle("GET", "/:orderid/:moduleid")
@@ -30,6 +30,7 @@ func (h *Handler) InitRoutes() *gin.Engine {
 		// Add swagger (client -> json:{name: string, description: string, courseName: string}. server -> json: {error: string})
 		module.Handle("POST", "/", h.AddModule)
 		module.Handle("DELETE", "/", h.DeleteModule)
+		module.Handle("GET", "/:id", h.GetModule)
 		//module.Handle("GET", "/:moduleid")
 	}
 
@@ -43,10 +44,11 @@ func (h *Handler) InitRoutes() *gin.Engine {
 		course.Handle("GET", "/", h.GetAllCourses)        // Add swagger
 		//course.Handle("GET", "/:courseid")
 	}
-	//    local/Golang-for-begginer/Begin/Lets-start
-	r.Handle("GET", "/:coursename/:modulename/:lessonname", h.GetLesson)
 
-	r.Handle("GET", "/:coursename/:modulename/", h.GetModule)
+	//    local/Golang-for-begginer/Begin/Lets-start
+	//r.Handle("GET", "/:coursename/:modulename/:lessonname", h.GetLesson)
+
+	//r.Handle("GET", "/:coursename/:modulename/", h.GetModule)
 
 	r.Handle("GET", "/:coursename/", h.GetCourse)
 	return r

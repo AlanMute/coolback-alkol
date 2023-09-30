@@ -54,23 +54,16 @@ func (r *LessonPostgres) Delete(id uint) (string, error) {
 	return lesson.NameFile, nil
 }
 
-func (r *LessonPostgres) Get(path string, mdfile []string) (core.LesMd, error) {
-
-	var lesmd core.LesMd
+func (r *LessonPostgres) Get(moduleid int, orderid int) (core.Lesson, error) {
 
 	var lesson core.Lesson
 
-	if result := r.db.Where("name_file = ?", path).Find(&lesson); result.Error != nil {
+	if result := r.db.Where("module_id = ? AND order_id = ?", moduleid, orderid).Find(&lesson); result.Error != nil {
 		if errors.Is(result.Error, gorm.ErrRecordNotFound) {
-			return lesmd, fmt.Errorf("Lesson not found for path: %s", path)
+			return lesson, fmt.Errorf("Lesson not found for module_id = %d AND order_id = %d", moduleid, orderid)
 		}
-		return lesmd, result.Error
+		return lesson, result.Error
 	}
 
-	lesmd = core.LesMd{
-		Lesson: lesson,
-		Mdfile: mdfile,
-	}
-
-	return lesmd, nil
+	return lesson, nil
 }

@@ -2,6 +2,7 @@ package handler
 
 import (
 	"net/http"
+	"strconv"
 	"strings"
 
 	"github.com/gin-gonic/gin"
@@ -49,10 +50,14 @@ func (h *Handler) DeleteModule(c *gin.Context) {
 }
 
 func (h *Handler) GetModule(c *gin.Context) {
-	course := c.Param("coursename")
-	module := c.Param("modulename")
+	id, err := strconv.Atoi(c.Param("id"))
 
-	modles, err := h.services.Module.Get(module, course)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Некорректное значение параметра id"})
+		return
+	}
+
+	modles, err := h.services.Module.Get(id)
 
 	if err != nil {
 		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"error": err.Error()})
@@ -61,6 +66,3 @@ func (h *Handler) GetModule(c *gin.Context) {
 
 	c.JSON(http.StatusOK, modles)
 }
-
-// Исправить ошибку когда при создании модуля возникает ошибка но папка остается.
-// Например когда папка называется Json а я написал JSON он считает из за одинаковые папки а дб нет

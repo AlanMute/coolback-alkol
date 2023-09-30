@@ -17,20 +17,19 @@ type Module interface {
 	Add(name string, description string, courseName string, folderName string) error
 
 	Delete(id uint) (string, error)
-	Get(path string) (core.ModLes, error)
+	Get(id int) (core.ModLes, error)
 }
 
 type Lesson interface {
 	Add(name string, description string, fileName string, courseName string, moduleName string) error
 	Delete(id uint) (string, error)
-	Get(path string, mdfile []string) (core.LesMd, error)
+	Get(moduleid int, orderid int) (core.Lesson, error)
 }
 
 type Repository struct {
 	Course
 	Module
 	Lesson
-	//db *gorm.DB
 }
 
 func NewRepository(db *gorm.DB) *Repository {

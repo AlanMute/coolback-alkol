@@ -51,9 +51,8 @@ func (s *ModuleService) Delete(id uint) error {
 	return nil
 }
 
-func (s *ModuleService) Get(moduleName string, courseName string) (core.ModLes, error) {
-	path := "courses\\" + courseName + "\\" + moduleName
-	modles, err := s.repo.Get(path)
+func (s *ModuleService) Get(id int) (core.ModLes, error) {
+	modles, err := s.repo.Get(id)
 	if err != nil {
 		return modles, err
 	}
