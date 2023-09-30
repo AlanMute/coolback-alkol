@@ -31,6 +31,7 @@ func (h *Handler) InitRoutes() *gin.Engine {
 		// Add swagger (client -> json:{name: string, description: string, courseName: string}. server -> json: {error: string})
 		module.Handle("POST", "/", mw.IsAdminMW(), h.AddModule)
 		module.Handle("DELETE", "/", mw.IsAdminMW(), h.DeleteModule)
+		//module.Handle("GET", "/:moduleid")
 	}
 
 	course := r.Group("/course")
@@ -41,7 +42,13 @@ func (h *Handler) InitRoutes() *gin.Engine {
 		course.Handle("DELETE", "/", mw.IsAdminMW(), h.DeleteCourse)
 		course.Handle("GET", "/:name", h.GetCourseByName) // Add swagger
 		course.Handle("GET", "/", h.GetAllCourses)        // Add swagger
+		//course.Handle("GET", "/:courseid")
 	}
+	//    local/Golang-for-begginer/Begin/Lets-start
+	r.Handle("GET", "/:coursename/:modulename/:lessonname", h.GetLesson)
 
+	r.Handle("GET", "/:coursename/:modulename/", h.GetModule)
+
+	r.Handle("GET", "/:coursename/", h.GetCourse)
 	return r
 }

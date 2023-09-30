@@ -7,7 +7,6 @@ type Course struct {
 
 	Name        string `gorm:"not null; unique"`
 	Description string `gorm:"not null"`
-	NameFolder  string `gorm:"not null"`
 }
 
 type Module struct {
@@ -15,10 +14,10 @@ type Module struct {
 
 	Name        string `gorm:"not null"`
 	Description string `gorm:"not null"`
-	NameFolder  string `gorm:"not null"`
+	OrderID     uint   `gorm:"not null"`
 	CourseID    uint
 
-	Course Course `gorm:"foreignKey:CourseID"`
+	Course Course `gorm:"foreignKey:CourseID" json:"-"`
 }
 
 type Lesson struct {
@@ -26,10 +25,10 @@ type Lesson struct {
 
 	Name        string `gorm:"not null"`
 	Description string `gorm:"not null"`
-	NameFile    string `gorm:"not null"`
+	OrderID     uint   `gorm:"not null"`
 	ModuleID    uint
 
-	Module Module `gorm:"foreignKey:ModuleID"`
+	Module Module `gorm:"foreignKey:ModuleID" json:"-"`
 }
 
 type User struct {

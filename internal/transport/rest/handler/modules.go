@@ -24,7 +24,7 @@ func (h *Handler) AddModule(c *gin.Context) {
 		return
 	}
 
-	if err := h.services.Module.Add(info.Name, info.Description, info.CourseName); err != nil {
+	if err := h.services.Module.Add(info.Name, info.Description, info.OrderID, info.CourseName); err != nil {
 		c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
@@ -46,4 +46,18 @@ func (h *Handler) DeleteModule(c *gin.Context) {
 	}
 
 	c.Status(http.StatusOK)
+}
+
+func (h *Handler) GetModule(c *gin.Context) {
+	course := c.Param("coursename")
+	module := c.Param("modulename")
+
+	modles, err := h.services.Module.Get(module, course)
+
+	if err != nil {
+		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	c.JSON(http.StatusOK, modles)
 }
