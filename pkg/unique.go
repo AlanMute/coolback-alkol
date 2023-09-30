@@ -136,3 +136,15 @@ func ReadFile(path string) ([]string, error) {
 
 	return lines, nil
 }
+
+func UpdateFile(path string, file []string) error {
+
+	content := strings.Join(file, "\n")
+
+	err := os.WriteFile(path, []byte(content), os.ModePerm)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}

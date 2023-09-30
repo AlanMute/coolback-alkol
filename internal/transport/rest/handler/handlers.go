@@ -23,6 +23,8 @@ func (h *Handler) InitRoutes() *gin.Engine {
 		lesson.Handle("POST", "/", h.AddLesson)
 		//lesson.Handle("GET", "/:orderid/:moduleid")
 		lesson.Handle("DELETE", "/", h.DeleteLesson)
+
+		lesson.Handle("PUT", "/:id", h.EditLesson)
 	}
 
 	module := r.Group("/module")

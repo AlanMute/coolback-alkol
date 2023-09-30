@@ -24,6 +24,7 @@ type Lesson interface {
 	Add(name string, description string, fileName string, courseName string, moduleName string) error
 	Delete(id uint) (string, error)
 	Get(moduleid int, orderid int) (core.Lesson, error)
+	Put(id int, name string, desc string, orderID uint) error
 }
 
 type Repository struct {
