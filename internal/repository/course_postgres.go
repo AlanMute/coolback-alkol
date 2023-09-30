@@ -59,15 +59,15 @@ func (r *CoursePostgres) GetAll() ([]core.Course, error) {
 	return courses, nil
 }
 
-func (r *CoursePostgres) Get(path string) (core.СourseСontent, error) {
+func (r *CoursePostgres) Get(id int) (core.СourseСontent, error) {
 
 	var content core.СourseСontent
 
 	var course core.Course
 
-	if result := r.db.Where("name_folder = ?", path).Find(&course); result.Error != nil {
+	if result := r.db.Where("id = ?", id).Find(&course); result.Error != nil {
 		if errors.Is(result.Error, gorm.ErrRecordNotFound) {
-			return content, fmt.Errorf("Course not find for path: %s", path)
+			return content, fmt.Errorf("Course not find for id: %d", id)
 		}
 		return content, result.Error
 	}
@@ -75,7 +75,7 @@ func (r *CoursePostgres) Get(path string) (core.СourseСontent, error) {
 	var modles []core.ModLes
 	var modules []core.Module
 
-	if result := r.db.Where("course_id = ?", course.ID).Find(&modules); result.Error != nil {
+	if result := r.db.Where("course_id = ?", id).Order("order_id ASC").Find(&modules); result.Error != nil {
 		return content, result.Error
 	}
 
@@ -83,7 +83,7 @@ func (r *CoursePostgres) Get(path string) (core.СourseСontent, error) {
 
 		var lessons []core.Lesson
 
-		if result := r.db.Where("module_id = ?", m.ID).Find(&lessons); result.Error != nil {
+		if result := r.db.Where("module_id = ?", m.ID).Order("order_id ASC").Find(&lessons); result.Error != nil {
 			if errors.Is(result.Error, gorm.ErrRecordNotFound) {
 				return content, fmt.Errorf("lessons not found for module ID: %d", m.ID)
 			}

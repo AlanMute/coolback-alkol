@@ -2,6 +2,7 @@ package handler
 
 import (
 	"net/http"
+	"strconv"
 	"strings"
 
 	"github.com/gin-gonic/gin"
@@ -71,9 +72,14 @@ func (h *Handler) GetAllCourses(c *gin.Context) {
 
 func (h *Handler) GetCourse(c *gin.Context) {
 
-	coursename := c.Param("coursename")
+	id, err := strconv.Atoi(c.Param("id"))
 
-	content, err := h.services.Course.Get(coursename)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Некорректное значение параметра id"})
+		return
+	}
+
+	content, err := h.services.Course.Get(id)
 
 	if err != nil {
 		c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
