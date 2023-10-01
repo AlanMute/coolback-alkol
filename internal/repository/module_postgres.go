@@ -91,7 +91,9 @@ func (r *ModulePostgres) Put(id int, name string, desc string, orderid uint) err
 	if desc != "" {
 		module.Description = desc
 	}
-	module.OrderID = orderid
+	if orderid != 0 {
+		module.OrderID = orderid
+	}
 
 	if result := r.db.Save(&module); result.Error != nil {
 		return result.Error

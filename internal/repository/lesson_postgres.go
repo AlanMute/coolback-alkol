@@ -82,8 +82,9 @@ func (r *LessonPostgres) Put(id int, name string, desc string, orderID uint) err
 	if desc != "" {
 		lesson.Description = desc
 	}
-
-	lesson.OrderID = orderID
+	if orderID != 0 {
+		lesson.OrderID = orderID
+	}
 
 	if err := r.db.Save(&lesson).Error; err != nil {
 		return err

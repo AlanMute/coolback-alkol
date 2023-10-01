@@ -16,7 +16,7 @@ type Module struct {
 	Name        string `gorm:"not null"`
 	Description string `gorm:"not null"`
 	NameFolder  string `gorm:"not null"` // DELETE
-	OrderID     uint   `gorm:"not null; unique"`
+	OrderID     uint   `gorm:"not null"`
 	CourseID    uint
 
 	Course Course `gorm:"foreignKey:CourseID" json:"-"`
@@ -28,7 +28,7 @@ type Lesson struct {
 	Name        string `gorm:"not null"`
 	Description string `gorm:"not null"`
 	NameFile    string `gorm:"not null"` // DELETE
-	OrderID     uint   `gorm:"not null; unique"`
+	OrderID     uint   `gorm:"not null"`
 	ModuleID    uint
 
 	Module Module `gorm:"foreignKey:ModuleID" json:"-"`

@@ -67,7 +67,7 @@ func (h *Handler) GetLesson(c *gin.Context) {
 		return
 	}
 
-	lesmd, err := h.services.Lesson.Get(orderid, moduleid)
+	lesmd, err := h.services.Lesson.Get(moduleid, orderid)
 
 	if err != nil {
 		c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"error": err.Error()})

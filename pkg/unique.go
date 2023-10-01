@@ -138,10 +138,16 @@ func ReadFile(path string) ([]string, error) {
 }
 
 func UpdateFile(path string, file []string) error {
+	_, err := os.Stat(path)
+	if os.IsNotExist(err) {
+		return fmt.Errorf("File does not exist for path: %s", path)
+	} else if err != nil {
+		return err
+	}
 
 	content := strings.Join(file, "\n")
 
-	err := os.WriteFile(path, []byte(content), os.ModePerm)
+	err = os.WriteFile(path, []byte(content), os.ModePerm)
 	if err != nil {
 		return err
 	}
