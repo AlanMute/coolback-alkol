@@ -72,7 +72,7 @@ func (r *LessonPostgres) Put(id int, name string, desc string, orderID uint) err
 
 	var lesson core.Lesson
 
-	if err := r.db.Where("id = ?", id).First(&lesson).Error; err != nil {
+	if err := r.db.Where("id = ?", id).Find(&lesson).Error; err != nil {
 		return err
 	}
 

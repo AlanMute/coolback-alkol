@@ -33,6 +33,7 @@ func (h *Handler) InitRoutes() *gin.Engine {
 		module.Handle("POST", "/", h.AddModule)
 		module.Handle("DELETE", "/", h.DeleteModule)
 		module.Handle("GET", "/:id", h.GetModule)
+		module.Handle("PUT", "/:id", h.EditModule)
 		//module.Handle("GET", "/:moduleid")
 	}
 
