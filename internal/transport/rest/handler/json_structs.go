@@ -18,6 +18,12 @@ type Delete struct {
 type EdLesson struct {
 	Name        string   `json:"name"`
 	Description string   `json:"description"`
-	OrderID     int      `json:"orderid"`
+	OrderID     uint     `json:"orderid"`
 	Content     []string `json:"content"`
+}
+
+type EdModule struct {
+	Name        string `json:"name"`
+	Description string `json:"description"`
+	OrderID     uint   `json:"orderid"`
 }
