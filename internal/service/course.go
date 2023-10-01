@@ -65,3 +65,11 @@ func (s *CourseService) Get(id int) (core.СourseСontent, error) {
 
 	return content, nil
 }
+
+func (s *CourseService) Put(id int, name string, desc string) error {
+	if err := s.repo.Put(id, name, desc); err != nil {
+		return err
+	}
+
+	return nil
+}

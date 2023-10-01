@@ -89,3 +89,26 @@ func (h *Handler) GetCourse(c *gin.Context) {
 	c.JSON(http.StatusOK, content)
 
 }
+
+func (h *Handler) EditCourse(c *gin.Context) {
+	id, err := strconv.Atoi(c.Param("id"))
+
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Некорректное значение параметра id"})
+		return
+	}
+
+	var edcourse AddCourse
+
+	if err := c.ShouldBindJSON(&edcourse); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	if err := h.services.Course.Put(id, edcourse.Name, edcourse.Description); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	c.Status(http.StatusOK)
+}

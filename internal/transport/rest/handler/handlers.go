@@ -46,6 +46,7 @@ func (h *Handler) InitRoutes() *gin.Engine {
 		course.Handle("GET", "/search/:name", h.GetCourseByName) // Add swagger
 		course.Handle("GET", "/search/", h.GetAllCourses)        // Add swagger
 		course.Handle("GET", "/:id", h.GetCourse)
+		course.Handle("PUT", "/:id", h.EditCourse)
 	}
 
 	return r

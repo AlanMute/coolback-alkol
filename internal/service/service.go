@@ -13,6 +13,7 @@ type Course interface {
 	GetByName(name string) ([]core.Course, error)
 	GetAll() ([]core.Course, error)
 	Get(id int) (core.СourseСontent, error)
+	Put(id int, name string, desc string) error
 }
 
 type Module interface {
