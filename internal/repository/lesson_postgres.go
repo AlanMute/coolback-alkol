@@ -67,3 +67,28 @@ func (r *LessonPostgres) Get(moduleid int, orderid int) (core.Lesson, error) {
 
 	return lesson, nil
 }
+
+func (r *LessonPostgres) Put(id int, name string, desc string, orderID uint) error {
+
+	var lesson core.Lesson
+
+	if err := r.db.Where("id = ?", id).Find(&lesson).Error; err != nil {
+		return err
+	}
+
+	if name != "" {
+		lesson.Name = name
+	}
+	if desc != "" {
+		lesson.Description = desc
+	}
+	if orderID != 0 {
+		lesson.OrderID = orderID
+	}
+
+	if err := r.db.Save(&lesson).Error; err != nil {
+		return err
+	}
+
+	return nil
+}

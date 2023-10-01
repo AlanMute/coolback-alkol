@@ -74,3 +74,30 @@ func (r *ModulePostgres) Get(id int) (core.ModLes, error) {
 
 	return modles, nil
 }
+
+func (r *ModulePostgres) Put(id int, name string, desc string, orderid uint) error {
+	var module core.Module
+
+	if result := r.db.Where("id = ?", id).Find(&module); result.Error != nil {
+		if errors.Is(result.Error, gorm.ErrRecordNotFound) {
+			return fmt.Errorf("module not found for id: %d", id)
+		}
+		return result.Error
+	}
+
+	if name != "" {
+		module.Name = name
+	}
+	if desc != "" {
+		module.Description = desc
+	}
+	if orderid != 0 {
+		module.OrderID = orderid
+	}
+
+	if result := r.db.Save(&module); result.Error != nil {
+		return result.Error
+	}
+
+	return nil
+}

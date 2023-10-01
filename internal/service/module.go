@@ -59,3 +59,13 @@ func (s *ModuleService) Get(id int) (core.ModLes, error) {
 
 	return modles, nil
 }
+
+func (s *ModuleService) Put(id int, name string, desc string, orderid uint) error {
+	err := s.repo.Put(id, name, desc, orderid)
+
+	if err != nil {
+		return err
+	}
+
+	return nil
+}

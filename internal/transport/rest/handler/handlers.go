@@ -23,6 +23,8 @@ func (h *Handler) InitRoutes() *gin.Engine {
 		lesson.Handle("POST", "/", h.AddLesson)
 		//lesson.Handle("GET", "/:orderid/:moduleid")
 		lesson.Handle("DELETE", "/", h.DeleteLesson)
+
+		lesson.Handle("PUT", "/:id", h.EditLesson)
 	}
 
 	module := r.Group("/module")
@@ -31,6 +33,7 @@ func (h *Handler) InitRoutes() *gin.Engine {
 		module.Handle("POST", "/", h.AddModule)
 		module.Handle("DELETE", "/", h.DeleteModule)
 		module.Handle("GET", "/:id", h.GetModule)
+		module.Handle("PUT", "/:id", h.EditModule)
 		//module.Handle("GET", "/:moduleid")
 	}
 
@@ -43,6 +46,7 @@ func (h *Handler) InitRoutes() *gin.Engine {
 		course.Handle("GET", "/search/:name", h.GetCourseByName) // Add swagger
 		course.Handle("GET", "/search/", h.GetAllCourses)        // Add swagger
 		course.Handle("GET", "/:id", h.GetCourse)
+		course.Handle("PUT", "/:id", h.EditCourse)
 	}
 
 	return r

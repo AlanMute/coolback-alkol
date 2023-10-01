@@ -100,3 +100,24 @@ func (r *CoursePostgres) Get(id int) (core.СourseСontent, error) {
 
 	return content, nil
 }
+
+func (r *CoursePostgres) Put(id int, name string, desc string) error {
+	var course core.Course
+
+	if result := r.db.Where("id = ?", id).Find(&course); result.Error != nil {
+		return result.Error
+	}
+
+	if name != "" {
+		course.Name = name
+	}
+	if desc != "" {
+		course.Description = desc
+	}
+
+	if result := r.db.Save(&course); result.Error != nil {
+		return result.Error
+	}
+
+	return nil
+}

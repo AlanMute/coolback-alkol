@@ -66,3 +66,26 @@ func (h *Handler) GetModule(c *gin.Context) {
 
 	c.JSON(http.StatusOK, modles)
 }
+
+func (h *Handler) EditModule(c *gin.Context) {
+	id, err := strconv.Atoi(c.Param("id"))
+
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Некорректное значение параметра id"})
+		return
+	}
+
+	var edmodule EdModule
+	if err := c.ShouldBindJSON(&edmodule); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	if err := h.services.Module.Put(id, edmodule.Name, edmodule.Description, edmodule.OrderID); err != nil {
+		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	c.Status(http.StatusOK)
+
+}

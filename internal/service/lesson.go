@@ -88,3 +88,20 @@ func (s *LessonService) Get(moduleid int, orderid int) (core.LesMd, error) {
 
 	return lesmd, nil
 }
+
+func (s *LessonService) Put(id int, name string, desc string, orderID uint, content []string) error {
+	if len(content) > 0 {
+		path := filepath.Join("lessons", fmt.Sprint(id)+".md")
+		if err := pkg.UpdateFile(path, content); err != nil {
+			return err
+		}
+	}
+
+	err := s.repo.Put(id, name, desc, orderID)
+
+	if err != nil {
+		return err
+	}
+
+	return nil
+}

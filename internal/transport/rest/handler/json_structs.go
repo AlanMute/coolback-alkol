@@ -14,3 +14,16 @@ type AddModule struct {
 type Delete struct {
 	ID uint `json:"id"`
 }
+
+type EdLesson struct {
+	Name        string   `json:"name"`
+	Description string   `json:"description"`
+	OrderID     uint     `json:"orderid"`
+	Content     []string `json:"content"`
+}
+
+type EdModule struct {
+	Name        string `json:"name"`
+	Description string `json:"description"`
+	OrderID     uint   `json:"orderid"`
+}

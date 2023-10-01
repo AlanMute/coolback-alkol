@@ -67,7 +67,7 @@ func (h *Handler) GetLesson(c *gin.Context) {
 		return
 	}
 
-	lesmd, err := h.services.Lesson.Get(orderid, moduleid)
+	lesmd, err := h.services.Lesson.Get(moduleid, orderid)
 
 	if err != nil {
 		c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
@@ -75,4 +75,27 @@ func (h *Handler) GetLesson(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, lesmd)
+}
+
+func (h *Handler) EditLesson(c *gin.Context) {
+	id, err := strconv.Atoi(c.Param("id"))
+
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Некорректное значение параметра id"})
+		return
+	}
+
+	var edlesson EdLesson
+
+	if err := c.ShouldBindJSON(&edlesson); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	if err := h.services.Lesson.Put(id, edlesson.Name, edlesson.Description, edlesson.OrderID, edlesson.Content); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	c.Status(http.StatusOK)
 }

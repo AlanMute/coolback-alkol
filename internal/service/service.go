@@ -13,18 +13,21 @@ type Course interface {
 	GetByName(name string) ([]core.Course, error)
 	GetAll() ([]core.Course, error)
 	Get(id int) (core.СourseСontent, error)
+	Put(id int, name string, desc string) error
 }
 
 type Module interface {
 	Add(name string, description string, courseName string) error
 	Delete(id uint) error
 	Get(id int) (core.ModLes, error)
+	Put(id int, name string, desc string, orderid uint) error
 }
 
 type Lesson interface {
 	Add(file multipart.File, fileName string, name string, description string, moduleName string, courseName string) error
 	Delete(id uint) error
 	Get(moduleid int, orderid int) (core.LesMd, error)
+	Put(id int, name string, desc string, orderID uint, content []string) error
 }
 
 type Service struct {
