@@ -7,7 +7,7 @@ import (
 
 type Course interface {
 	Add(name string, description string) error
-	Delete(id uint) error
+	Delete(id uint) ([]uint, error)
 	GetByName(name string) ([]core.Course, error)
 	GetAll() ([]core.Course, error)
 	Get(path string) (core.CourseContent, error)

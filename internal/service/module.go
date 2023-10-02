@@ -34,9 +34,9 @@ func (s *ModuleService) Delete(id uint) error {
 	}
 
 	for _, lessonToDelete := range lessonsToDelete {
-		FileName := strconv.FormatUint(uint64(lessonToDelete), 10) + ext
+		fileName := strconv.FormatUint(uint64(lessonToDelete), 10) + ext
 
-		pathToLesson := filepath.Join("./lessons", FileName)
+		pathToLesson := filepath.Join("./lessons", fileName)
 
 		if err := os.Remove(pathToLesson); err != nil {
 			return err

@@ -1,6 +1,11 @@
 package service
 
 import (
+	"fmt"
+	"os"
+	"path/filepath"
+	"strconv"
+
 	"github.com/KrizzMU/coolback-alkol/internal/core"
 	"github.com/KrizzMU/coolback-alkol/internal/repository"
 )
@@ -22,9 +27,20 @@ func (s *CourseService) Add(name string, description string) error {
 }
 
 func (s *CourseService) Delete(id uint) error {
-	err := s.repo.Delete(id)
+	lessonsToDelete, err := s.repo.Delete(id)
 	if err != nil {
 		return err
+	}
+
+	for _, lessonToDelete := range lessonsToDelete {
+		fileName := strconv.FormatUint(uint64(lessonToDelete), 10) + ext
+
+		pathToFile := filepath.Join("./lessons", fileName)
+		fmt.Println(pathToFile)
+
+		if err := os.Remove(pathToFile); err != nil {
+			return err
+		}
 	}
 
 	return nil

@@ -38,3 +38,9 @@ type User struct {
 	Password string `gorm:"not null"`
 	IsAdmin  bool   `gorm:"not null"`
 }
+
+type Email struct {
+	gorm.Model
+
+	Email string `gorm:"not null"`
+}

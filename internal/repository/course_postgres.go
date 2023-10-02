@@ -29,14 +29,38 @@ func (r *CoursePostgres) Add(name string, description string) error {
 	return nil
 }
 
-func (r *CoursePostgres) Delete(id uint) error {
+func (r *CoursePostgres) Delete(id uint) ([]uint, error) {
 	var course core.Course
+	var modules []core.Module
+	var lessonsID []uint
 
-	if result := r.db.Where("id = ?", id).Unscoped().Delete(&course); result.Error != nil {
-		return result.Error
+	if result := r.db.Where("id = ?", id).First(&course); result.Error != nil {
+		return nil, result.Error
 	}
 
-	return nil
+	if result := r.db.Where("course_id = ?", id).Find(&modules); result.Error != nil {
+		return nil, result.Error
+	}
+
+	for _, module := range modules {
+		var lessons []core.Lesson
+
+		if result := r.db.Where("module_id = ?", module.ID).Find(&lessons); result.Error != nil {
+			return nil, result.Error
+		}
+
+		for _, lesson := range lessons {
+			lessonsID = append(lessonsID, lesson.ID)
+		}
+	}
+
+	if result := r.db.Where("id = ?", id).Unscoped().Delete(&course); result.Error != nil {
+		return nil, result.Error
+	}
+
+	fmt.Println(lessonsID)
+
+	return lessonsID, nil
 }
 
 func (r *CoursePostgres) GetByName(name string) ([]core.Course, error) {
