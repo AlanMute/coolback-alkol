@@ -35,7 +35,7 @@ func (r *LessonPostgres) Add(name string, description string, orderID uint, cour
 		OrderID:     orderID - 1,
 	}
 
-	if err := r.db.Where("name = ? AND module_id = ?", newLesson.Name, newLesson.ModuleID).First(&core.Lesson{}).Error; err != nil {
+	if err := r.db.Where("name = ? AND module_id = ? OR order_id = ? AND module_id = ?", newLesson.Name, newLesson.ModuleID, newLesson.OrderID, newLesson.ModuleID).First(&core.Lesson{}).Error; err != nil {
 		if gorm.IsRecordNotFoundError(err) {
 			if result := r.db.Create(&newLesson); result.Error != nil {
 				return 0, result.Error

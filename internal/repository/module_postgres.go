@@ -29,7 +29,7 @@ func (r *ModulePostgres) Add(name string, description string, orderID uint, cour
 		OrderID:     orderID - 1,
 	}
 
-	if err := r.db.Where("name = ? AND course_id = ?", newModule.Name, newModule.CourseID).First(&core.Module{}).Error; err != nil {
+	if err := r.db.Where("name = ? AND course_id = ? OR order_id = ? AND course_id = ?", newModule.Name, newModule.CourseID, newModule.OrderID, newModule.CourseID).First(&core.Module{}).Error; err != nil {
 		if gorm.IsRecordNotFoundError(err) {
 			if result := r.db.Create(&newModule); result.Error != nil {
 				return result.Error
@@ -40,7 +40,7 @@ func (r *ModulePostgres) Add(name string, description string, orderID uint, cour
 			return nil
 		}
 	} else {
-		return fmt.Errorf("this module already exists")
+		return fmt.Errorf("this module already exists or order_id is taken")
 	}
 }
 
