@@ -24,6 +24,8 @@ func (h *Handler) InitRoutes() *gin.Engine {
 		lesson.Handle("POST", "/", mw.IsAdminMW(), h.AddLesson)
 
 		lesson.Handle("DELETE", "/", mw.IsAdminMW(), h.DeleteLesson)
+
+		lesson.Handle("POST", "/trial", h.SendTrialLesson)
 	}
 
 	module := r.Group("/module")

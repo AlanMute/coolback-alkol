@@ -42,5 +42,5 @@ type User struct {
 type Email struct {
 	gorm.Model
 
-	Email string `gorm:"not null"`
+	Address string `gorm:"not null; unique"`
 }

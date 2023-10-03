@@ -23,6 +23,7 @@ type Lesson interface {
 	Add(name string, description string, orderID uint, courseName string, moduleName string) (uint, error)
 	Delete(id uint) (string, error)
 	Get(path string, mdfile []string) (core.LesMd, error)
+	SendTrialLesson(address string) error
 }
 
 type Repository struct {

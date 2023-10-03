@@ -71,3 +71,19 @@ func (h *Handler) GetLesson(c *gin.Context) {
 
 	c.JSON(http.StatusOK, strFile)
 }
+
+func (h *Handler) SendTrialLesson(c *gin.Context) {
+	var email Email
+
+	if err := c.ShouldBindJSON(&email); err != nil {
+		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	if err := h.services.Lesson.SendTrialLesson(email.Address); err != nil {
+		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	c.Status(http.StatusOK)
+}

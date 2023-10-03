@@ -15,3 +15,7 @@ type AddModule struct {
 type Delete struct {
 	ID uint `json:"id"`
 }
+
+type Email struct {
+	Address string `json:"address"`
+}

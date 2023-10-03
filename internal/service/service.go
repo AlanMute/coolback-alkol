@@ -25,6 +25,7 @@ type Lesson interface {
 	Add(file multipart.File, fileName string, name string, description string, orderID uint, moduleName string, courseName string) error
 	Delete(id uint) error
 	Get(course string, module string, lesson string) (core.LesMd, error)
+	SendTrialLesson(email string) error
 }
 
 type Service struct {

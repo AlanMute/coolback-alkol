@@ -4,12 +4,12 @@ import (
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/postgres"
 
-	"github.com/KrizzMU/coolback-alkol/internal/config"
+	dbConfig "github.com/KrizzMU/coolback-alkol/internal/config/dbConf"
 	"github.com/KrizzMU/coolback-alkol/internal/core"
 )
 
 func GetConnection() *gorm.DB {
-	db, err := gorm.Open("postgres", config.GetConnectionString())
+	db, err := gorm.Open("postgres", dbConfig.GetConnectionString())
 	if err != nil {
 		panic(err)
 	}

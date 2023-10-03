@@ -81,3 +81,23 @@ func (r *LessonPostgres) Get(path string, mdfile []string) (core.LesMd, error) {
 
 	return lesmd, nil
 }
+
+func (r *LessonPostgres) SendTrialLesson(address string) error {
+	var email core.Email
+
+	email.Address = address
+
+	if err := r.db.Where("address = ?", email.Address).First(&core.Email{}).Error; err != nil {
+		if gorm.IsRecordNotFoundError(err) {
+			if result := r.db.Create(&email); result.Error != nil {
+				return result.Error
+			}
+
+			return nil
+		} else {
+			return err
+		}
+	}
+
+	return fmt.Errorf("this email already exists")
+}
