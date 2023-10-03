@@ -1,3 +1,4 @@
 ./db/sql
 ./lessons
 ./static/letters
+./internal/config/emailConf/conf.yaml
