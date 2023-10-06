@@ -16,7 +16,7 @@ func NewHandler(s *service.Service) *Handler {
 func (h *Handler) InitRoutes() *gin.Engine {
 	r := gin.New()
 
-	adm := r.Group("/adm")
+	adm := r.Group("/adm", h.userRole)
 	{
 		lesson := adm.Group("/lesson")
 		{
