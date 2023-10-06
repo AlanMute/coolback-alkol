@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"os"
 
+	"github.com/joho/godotenv"
 	_ "github.com/lib/pq"
 	"gopkg.in/yaml.v3"
 )
@@ -28,8 +29,11 @@ func GetConnectionString() string {
 	if err != nil {
 		panic(err)
 	}
+	if err := godotenv.Load(); err != nil {
+		panic(err)
+	}
 
-	connectionString := fmt.Sprintf("user=%s password=%s dbname=%s host=%s port=%s sslmode=disable", config.User, config.Password, config.Dbname, config.Host, config.Port)
+	connectionString := fmt.Sprintf("user=%s password=%s dbname=%s host=%s port=%s sslmode=disable", config.User, os.Getenv("DB_PASSWORD"), config.Dbname, config.Host, config.Port)
 
 	return connectionString
 }
