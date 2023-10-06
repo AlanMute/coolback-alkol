@@ -2,21 +2,26 @@ package handler
 
 import (
 	"github.com/KrizzMU/coolback-alkol/internal/service"
+	"github.com/KrizzMU/coolback-alkol/pkg/auth"
 	"github.com/gin-gonic/gin"
 )
 
 type Handler struct {
-	services *service.Service
+	tokenManger auth.TokenManager
+	services    *service.Service
 }
 
-func NewHandler(s *service.Service) *Handler {
-	return &Handler{services: s}
+func NewHandler(s *service.Service, t auth.TokenManager) *Handler {
+	return &Handler{
+		services:    s,
+		tokenManger: t,
+	}
 }
 
 func (h *Handler) InitRoutes() *gin.Engine {
 	r := gin.New()
 
-	adm := r.Group("/adm", h.userRole)
+	adm := r.Group("/adm", h.isAdmin)
 	{
 		lesson := adm.Group("/lesson")
 		{

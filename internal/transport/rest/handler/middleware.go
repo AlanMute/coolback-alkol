@@ -7,7 +7,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func (h *Handler) userRole(c *gin.Context) {
+func (h *Handler) isAdmin(c *gin.Context) {
 	header := c.GetHeader("Authorization")
 
 	if header == "" {
@@ -26,4 +26,15 @@ func (h *Handler) userRole(c *gin.Context) {
 		return
 	}
 
+	role, err := h.tokenManger.Parse(parts[1])
+
+	if err != nil {
+		c.AbortWithStatusJSON(http.StatusUnauthorized, err.Error())
+		return
+	}
+
+	if role != "admin" {
+		c.AbortWithStatusJSON(http.StatusForbidden, "Access denied")
+		return
+	}
 }

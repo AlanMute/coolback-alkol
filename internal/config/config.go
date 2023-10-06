@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/joho/godotenv"
 	_ "github.com/lib/pq"
 	"gopkg.in/yaml.v3"
 )
@@ -27,9 +26,6 @@ func GetConnectionString() string {
 
 	err = yaml.Unmarshal(configData, &config)
 	if err != nil {
-		panic(err)
-	}
-	if err := godotenv.Load(); err != nil {
 		panic(err)
 	}
 
