@@ -21,6 +21,8 @@ func NewHandler(s *service.Service, t auth.TokenManager) *Handler {
 func (h *Handler) InitRoutes() *gin.Engine {
 	r := gin.New()
 
+	r.Handle("POST", "sign-in", h.signIn)
+
 	adm := r.Group("/adm", h.isAdmin)
 	{
 		lesson := adm.Group("/lesson")

@@ -27,3 +27,9 @@ type EdModule struct {
 	Description string `json:"description"`
 	OrderID     uint   `json:"orderid"`
 }
+
+type SignInput struct {
+	Login    string
+	Password string
+	Role     string
+}
