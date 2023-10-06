@@ -25,7 +25,7 @@ func main() {
 		log.Fatal("Fatal tokenManager:", err.Error())
 	}
 	repos := repository.NewRepository(db.GetConnection())
-	services := service.NewService(repos)
+	services := service.NewService(repos, tokenManager)
 	handlers := handler.NewHandler(services, tokenManager)
 
 	if err := s.Run("8080", handlers.InitRoutes()); err != nil {

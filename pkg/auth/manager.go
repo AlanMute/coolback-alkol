@@ -11,6 +11,8 @@ import (
 
 type TokenManager interface {
 	Parse(accessToken string) (string, error)
+	NewAccessToken(role string, ttl time.Duration) (string, error)
+	NewRefreshToken() (string, error)
 }
 
 type Manager struct {
@@ -62,7 +64,7 @@ func (m *Manager) Parse(accessToken string) (string, error) {
 
 	claims, ok := token.Claims.(jwt.MapClaims)
 	if !ok {
-		return "", errors.New("Token claims are not of type *tokenClaims")
+		return "", errors.New("Token claims are not of type tokenClaims")
 	}
 
 	return claims["sub"].(string), nil

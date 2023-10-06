@@ -29,7 +29,6 @@ type EdModule struct {
 }
 
 type SignInput struct {
-	Login    string
-	Password string
-	Role     string
+	Login    string `json:"login"`
+	Password string `json:"password"`
 }

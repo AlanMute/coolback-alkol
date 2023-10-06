@@ -5,6 +5,7 @@ import (
 
 	"github.com/KrizzMU/coolback-alkol/internal/core"
 	"github.com/KrizzMU/coolback-alkol/internal/repository"
+	"github.com/KrizzMU/coolback-alkol/pkg/auth"
 )
 
 type Course interface {
@@ -30,16 +31,22 @@ type Lesson interface {
 	Put(id int, name string, desc string, orderID uint, content []string) error
 }
 
+type Admin interface {
+	SignIn(login string, pass string) (core.Tokens, error)
+}
+
 type Service struct {
 	Course
 	Module
 	Lesson
+	Admin
 }
 
-func NewService(repo *repository.Repository) *Service {
+func NewService(repo *repository.Repository, t auth.TokenManager) *Service {
 	return &Service{
 		Course: NewCourseService(repo.Course),
 		Module: NewModuleService(repo.Module),
 		Lesson: NewLessonService(repo.Lesson),
+		Admin:  NewAdminService(t),
 	}
 }

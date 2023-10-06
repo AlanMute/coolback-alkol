@@ -32,14 +32,14 @@ func (h *Handler) InitRoutes() *gin.Engine {
 			lesson.Handle("PUT", "/:id", h.EditLesson)
 			lesson.Handle("DELETE", "/", h.DeleteLesson)
 		}
-		module := r.Group("/module")
+		module := adm.Group("/module")
 		{
 			module.Handle("DELETE", "/", h.DeleteModule)
 			// Add swagger (client -> json:{name: string, description: string, courseName: string}. server -> json: {error: string})
 			module.Handle("POST", "/", h.AddModule)
 			module.Handle("PUT", "/:id", h.EditModule)
 		}
-		course := r.Group("/course")
+		course := adm.Group("/course")
 		{
 			course.Handle("PUT", "/:id", h.EditCourse)
 			// Add swagger (client -> json:{name: string, description: string}. server -> json: {error: string})
