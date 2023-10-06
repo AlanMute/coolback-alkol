@@ -48,9 +48,9 @@ func (m *Manager) NewRefreshToken() (string, error) {
 }
 
 func (m *Manager) Parse(accessToken string) (string, error) {
-	token, err := jwt.ParseWithClaims(accessToken, func(t *jwt.Token) (interface{}, error) {
-		if _, ok := t.Method.(*jwt.SigningMethodHMAC); !ok {
-			return nil, fmt.Errorf("Unexpected signing method: %v", t.Header["alg"])
+	token, err := jwt.Parse(accessToken, func(token *jwt.Token) (i interface{}, err error) {
+		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
+			return nil, fmt.Errorf("unexpected signing method: %v", token.Header["alg"])
 		}
 
 		return []byte(m.signingKey), nil
@@ -60,11 +60,11 @@ func (m *Manager) Parse(accessToken string) (string, error) {
 		return "", err
 	}
 
-	claims, ok := token.Claims.(*tokenClaims)
+	claims, ok := token.Claims.(jwt.MapClaims)
 	if !ok {
 		return "", errors.New("Token claims are not of type *tokenClaims")
 	}
 
-	return claims.Role, nil
+	return claims["sub"].(string), nil
 
 }
