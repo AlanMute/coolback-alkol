@@ -30,6 +30,7 @@ type Lesson interface {
 
 type Session interface {
 	Add(session core.Sessions) error
+	CheckRefresh(token string) error
 }
 
 type Repository struct {

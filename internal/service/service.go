@@ -33,6 +33,7 @@ type Lesson interface {
 
 type Admin interface {
 	SignIn(login string, pass string) (core.Tokens, error)
+	Refresh(refreshToken string) (string, error)
 }
 
 type Service struct {

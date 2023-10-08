@@ -23,7 +23,7 @@ func (h *Handler) signIn(c *gin.Context) {
 	c.JSON(http.StatusOK, tokens)
 }
 
-func (h *Handler) refresh(c *gin.Context) {
+func (h *Handler) refreshAccess(c *gin.Context) {
 	var refresh Refresh
 
 	if err := c.ShouldBindJSON(&refresh); err != nil {
@@ -31,4 +31,12 @@ func (h *Handler) refresh(c *gin.Context) {
 		return
 	}
 
+	token, err := h.services.Refresh(refresh.RefreshToken)
+
+	if err != nil {
+		c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+
+	c.JSON(http.StatusOK, token)
 }

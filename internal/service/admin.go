@@ -2,7 +2,6 @@ package service
 
 import (
 	"errors"
-	"fmt"
 	"os"
 	"time"
 
@@ -28,7 +27,7 @@ func (s *AdminService) SignIn(login string, pass string) (core.Tokens, error) {
 		return core.Tokens{}, errors.New("Uncorrect login or password!")
 	}
 
-	accessToken, err := s.tockenManager.NewAccessToken("admin", time.Second)
+	accessToken, err := s.tockenManager.NewAccessToken("admin", time.Hour)
 
 	if err != nil {
 		return core.Tokens{}, err
@@ -47,7 +46,6 @@ func (s *AdminService) SignIn(login string, pass string) (core.Tokens, error) {
 		ExpirationTime: t,
 	}
 
-	fmt.Println(t, refreshToken)
 	if err := s.repo.Add(session); err != nil {
 
 		return core.Tokens{}, nil
@@ -59,4 +57,19 @@ func (s *AdminService) SignIn(login string, pass string) (core.Tokens, error) {
 	}
 
 	return token, nil
+}
+
+func (s *AdminService) Refresh(refreshToken string) (string, error) {
+
+	if err := s.repo.CheckRefresh(refreshToken); err != nil {
+		return "", err
+	}
+
+	accessToken, err := s.tockenManager.NewAccessToken("admin", time.Hour)
+
+	if err != nil {
+		return "", err
+	}
+
+	return accessToken, nil
 }

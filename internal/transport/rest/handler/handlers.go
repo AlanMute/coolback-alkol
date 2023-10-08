@@ -23,7 +23,7 @@ func (h *Handler) InitRoutes() *gin.Engine {
 
 	r.Handle("POST", "/sign-in", h.signIn)
 
-	r.Handle("POST", "/refresh", h.refresh)
+	r.Handle("POST", "/refresh", h.refreshAccess)
 
 	adm := r.Group("/adm", h.isAdmin)
 	{
