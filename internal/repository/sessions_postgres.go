@@ -43,6 +43,6 @@ func (r *SessionPostgres) deleteExpiredTokens() {
 	for {
 		r.db.Where("expiration_time < ?", time.Now()).Delete(&core.Sessions{})
 
-		time.Sleep(24 * time.Second)
+		time.Sleep(24 * time.Hour)
 	}
 }
