@@ -47,6 +47,6 @@ func NewService(repo *repository.Repository, t auth.TokenManager) *Service {
 		Course: NewCourseService(repo.Course),
 		Module: NewModuleService(repo.Module),
 		Lesson: NewLessonService(repo.Lesson),
-		Admin:  NewAdminService(t),
+		Admin:  NewAdminService(t, repo.Session),
 	}
 }

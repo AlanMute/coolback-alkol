@@ -2,6 +2,7 @@ package service
 
 import (
 	"errors"
+	"fmt"
 	"os"
 	"time"
 
@@ -15,8 +16,11 @@ type AdminService struct {
 	repo          repository.Session
 }
 
-func NewAdminService(t auth.TokenManager) *AdminService {
-	return &AdminService{tockenManager: t}
+func NewAdminService(t auth.TokenManager, r repository.Session) *AdminService {
+	return &AdminService{
+		tockenManager: t,
+		repo:          r,
+	}
 }
 
 func (s *AdminService) SignIn(login string, pass string) (core.Tokens, error) {
@@ -38,7 +42,14 @@ func (s *AdminService) SignIn(login string, pass string) (core.Tokens, error) {
 
 	t := time.Now().AddDate(0, 0, 30)
 
-	if err := s.repo.Add(refreshToken, t); err != nil {
+	session := core.Sessions{
+		RefreshToken:   refreshToken,
+		ExpirationTime: t,
+	}
+
+	fmt.Println(t, refreshToken)
+	if err := s.repo.Add(session); err != nil {
+
 		return core.Tokens{}, nil
 	}
 

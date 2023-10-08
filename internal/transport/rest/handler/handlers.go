@@ -21,8 +21,9 @@ func NewHandler(s *service.Service, t auth.TokenManager) *Handler {
 func (h *Handler) InitRoutes() *gin.Engine {
 	r := gin.New()
 
-	r.Handle("POST", "sign-in", h.signIn)
-	r.Handle("POST", "refresh")
+	r.Handle("POST", "/sign-in", h.signIn)
+
+	r.Handle("POST", "/refresh", h.refresh)
 
 	adm := r.Group("/adm", h.isAdmin)
 	{

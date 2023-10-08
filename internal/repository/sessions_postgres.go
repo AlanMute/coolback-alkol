@@ -1,8 +1,6 @@
 package repository
 
 import (
-	"time"
-
 	"github.com/KrizzMU/coolback-alkol/internal/core"
 	"github.com/jinzhu/gorm"
 )
@@ -15,12 +13,7 @@ func NewSessionPostgres(db *gorm.DB) *SessionPostgres {
 	return &SessionPostgres{db: db}
 }
 
-func (r *SessionPostgres) Add(refreshToken string, t time.Time) error {
-	session := core.Sessions{
-		RefreshToken:   refreshToken,
-		ExpirationTime: t,
-	}
-
+func (r *SessionPostgres) Add(session core.Sessions) error {
 	if result := r.db.Create(&session); result.Error != nil {
 		return result.Error
 	}

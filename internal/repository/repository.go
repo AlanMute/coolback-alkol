@@ -1,8 +1,6 @@
 package repository
 
 import (
-	"time"
-
 	"github.com/KrizzMU/coolback-alkol/internal/core"
 	"github.com/jinzhu/gorm"
 )
@@ -31,7 +29,7 @@ type Lesson interface {
 }
 
 type Session interface {
-	Add(refreshToken string, t time.Time) error
+	Add(session core.Sessions) error
 }
 
 type Repository struct {
