@@ -14,3 +14,8 @@ type СourseСontent struct {
 	Course
 	Modules []ModLes
 }
+
+type Tokens struct {
+	AccessToken  string
+	RefreshToken string
+}

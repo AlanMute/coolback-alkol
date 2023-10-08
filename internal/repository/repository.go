@@ -28,16 +28,23 @@ type Lesson interface {
 	Put(id int, name string, desc string, orderID uint) error
 }
 
+type Session interface {
+	Add(session core.Sessions) error
+	CheckRefresh(token string) error
+}
+
 type Repository struct {
 	Course
 	Module
 	Lesson
+	Session
 }
 
 func NewRepository(db *gorm.DB) *Repository {
 	return &Repository{
-		Course: NewCoursePostgres(db),
-		Module: NewModulePostgres(db),
-		Lesson: NewLessonPostgres(db),
+		Course:  NewCoursePostgres(db),
+		Module:  NewModulePostgres(db),
+		Lesson:  NewLessonPostgres(db),
+		Session: NewSessionPostgres(db),
 	}
 }
