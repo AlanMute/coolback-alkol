@@ -1,6 +1,10 @@
 package core
 
-import "github.com/jinzhu/gorm"
+import (
+	"time"
+
+	"github.com/jinzhu/gorm"
+)
 
 type Course struct {
 	gorm.Model
@@ -32,4 +36,10 @@ type Lesson struct {
 	ModuleID    uint
 
 	Module Module `gorm:"foreignKey:ModuleID" json:"-"`
+}
+
+type Sessions struct {
+	gorm.Model
+	RefreshToken   string
+	ExpirationTime time.Time
 }

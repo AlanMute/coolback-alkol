@@ -14,6 +14,8 @@ func GetConnection() *gorm.DB {
 		panic(err)
 	}
 
+	db.AutoMigrate(&core.Sessions{})
+
 	db.AutoMigrate(&core.Course{})
 
 	db.AutoMigrate(&core.Module{})
