@@ -48,6 +48,17 @@ func (h *Handler) DeleteCourse(c *gin.Context) {
 	c.Status(http.StatusOK)
 }
 
+// @Summary Searching Courses
+// @Tags course
+// @Description Get courses by name
+// @ID GetCourseByName
+// @Accept  json
+// @Produce  json
+// @Param name path string true "Имя курса для поиска"
+// @Success 200 {object} core.Course
+// @Failure 500 {string} string "error"
+// @Failure default {string} error "error"
+// @Router /course/search/{name}[get]
 func (h *Handler) GetCourseByName(c *gin.Context) {
 	courseName := c.Param("name")
 

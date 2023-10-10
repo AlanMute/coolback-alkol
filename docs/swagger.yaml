@@ -1,11 +1,129 @@
 basePath: /
-host: localhost:8000
+definitions:
+  core.Course:
+    properties:
+      description:
+        type: string
+      id:
+        type: integer
+      name:
+        type: string
+      nameFolder:
+        description: DELETE
+        type: string
+    type: object
+  core.Tokens:
+    properties:
+      accessToken:
+        type: string
+      refreshToken:
+        type: string
+    type: object
+  handler.Refresh:
+    properties:
+      refresh_token:
+        type: string
+    type: object
+  handler.SignInput:
+    properties:
+      login:
+        type: string
+      password:
+        type: string
+    type: object
+host: localhost:8080
 info:
   contact: {}
   description: EptaNit Super Site
-  title: EptaNit dot COM <3
-  version: "1.0"
-paths: {}
+  title: eptanit.com
+  version: "1.1"
+paths:
+  /course/search/:name:
+    get:
+      consumes:
+      - application/json
+      description: Get courses by name
+      operationId: GetCourseByName
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/core.Course'
+        "500":
+          description: error
+          schema:
+            type: string
+        default:
+          description: error
+          schema:
+            type: string
+      summary: Searching Courses
+      tags:
+      - course
+  /refresh:
+    post:
+      consumes:
+      - application/json
+      description: Refresh access token for Admin
+      operationId: refresh
+      parameters:
+      - description: Refresh token
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/handler.Refresh'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: token
+          schema:
+            type: string
+        "500":
+          description: error
+          schema:
+            type: string
+        default:
+          description: error
+          schema:
+            type: string
+      summary: Refresh Access Token
+      tags:
+      - auth
+  /sign-in:
+    post:
+      consumes:
+      - application/json
+      description: login for admins
+      operationId: login
+      parameters:
+      - description: admin info
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/handler.SignInput'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/core.Tokens'
+        "500":
+          description: error
+          schema:
+            type: string
+        default:
+          description: error
+          schema:
+            type: string
+      summary: SignInAdmin
+      tags:
+      - auth
 securityDefinitions:
   ApiKeyAuth:
     in: header

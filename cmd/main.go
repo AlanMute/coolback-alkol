@@ -13,12 +13,12 @@ import (
 	"github.com/joho/godotenv"
 )
 
-//@title EptaNit dot COM <3
-//@version 1.0
+//@title eptanit.com
+//@version 1.1
 //@description EptaNit Super Site
 //contact.email eptanit@gmail.com
 
-// @host localhost:8000
+// @host localhost:8080
 // @BasePath /
 
 // @securityDefinitions.apikey ApiKeyAuth
