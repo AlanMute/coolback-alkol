@@ -16,7 +16,7 @@ import (
 //@title eptanit.com
 //@version 2.71
 //@description EptaNit Super Site
-//contact.email eptanit@gmail.com
+//@contact.email eptanit@gmail.com
 
 // @host localhost:8080
 // @BasePath /

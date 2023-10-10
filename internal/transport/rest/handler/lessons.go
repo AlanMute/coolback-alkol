@@ -53,6 +53,19 @@ func (h *Handler) DeleteLesson(c *gin.Context) {
 	c.Status(http.StatusOK)
 }
 
+// @Summary GetLesson
+// @Tags lesson
+// @Description Get lesson by orderID
+// @ID GetLesson
+// @Accept  json
+// @Produce  json
+// @Param orderid path int true "Lesson sequence number"
+// @Param moduleid path int true "Module ID"
+// @Success 200 {object} core.ModLes
+// @Failure 400 {string} string "error"
+// @Failure 500 {string} string "error"
+// @Failure default {string} error "error"
+// @Router /lesson/{orderid}/{moduleid} [get]
 func (h *Handler) GetLesson(c *gin.Context) {
 	orderid, err := strconv.Atoi(c.Param("orderid"))
 
@@ -78,6 +91,19 @@ func (h *Handler) GetLesson(c *gin.Context) {
 	c.JSON(http.StatusOK, lesmd)
 }
 
+// @Summary EditLesson
+// @Security ApiKeyAuth
+// @Tags lesson
+// @Description Edit lesson by ID
+// @ID EditLesson
+// @Param id path int true "Lesson ID"
+// @Accept  json
+// @Produce  json
+// @Param input body EdLesson true "Edit Lesson (OrderId starts with one)"
+// @Success 200
+// @Failure 400 {string} string "error"
+// @Failure default {string} error "error"
+// @Router /adm/lesson/{id} [put]
 func (h *Handler) EditLesson(c *gin.Context) {
 	id, err := strconv.Atoi(c.Param("id"))
 
