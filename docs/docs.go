@@ -15,7 +15,43 @@ const docTemplate = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
-        "/course/search/:name": {
+        "/course/getall": {
+            "get": {
+                "description": "Get all courses",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "course"
+                ],
+                "summary": "All courses",
+                "operationId": "GetAllCourses",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/core.Course"
+                        }
+                    },
+                    "500": {
+                        "description": "error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "default": {
+                        "description": "error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/course/search/{name}": {
             "get": {
                 "description": "Get courses by name",
                 "consumes": [
@@ -29,6 +65,15 @@ const docTemplate = `{
                 ],
                 "summary": "Searching Courses",
                 "operationId": "GetCourseByName",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Имя курса для поиска",
+                        "name": "name",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "OK",

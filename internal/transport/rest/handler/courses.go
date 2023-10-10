@@ -58,7 +58,7 @@ func (h *Handler) DeleteCourse(c *gin.Context) {
 // @Success 200 {object} core.Course
 // @Failure 500 {string} string "error"
 // @Failure default {string} error "error"
-// @Router /course/search/{name}[get]
+// @Router /course/search/{name} [get]
 func (h *Handler) GetCourseByName(c *gin.Context) {
 	courseName := c.Param("name")
 
@@ -71,6 +71,16 @@ func (h *Handler) GetCourseByName(c *gin.Context) {
 
 }
 
+// @Summary All courses
+// @Tags course
+// @Description Get all courses
+// @ID GetAllCourses
+// @Accept  json
+// @Produce  json
+// @Success 200 {object} core.Course
+// @Failure 500 {string} string "error"
+// @Failure default {string} error "error"
+// @Router /course/getall [get]
 func (h *Handler) GetAllCourses(c *gin.Context) {
 	courses, err := h.services.Course.GetAll()
 	if err != nil {

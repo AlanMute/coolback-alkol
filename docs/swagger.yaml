@@ -38,12 +38,42 @@ info:
   title: eptanit.com
   version: "1.1"
 paths:
-  /course/search/:name:
+  /course/getall:
+    get:
+      consumes:
+      - application/json
+      description: Get all courses
+      operationId: GetAllCourses
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/core.Course'
+        "500":
+          description: error
+          schema:
+            type: string
+        default:
+          description: error
+          schema:
+            type: string
+      summary: All courses
+      tags:
+      - course
+  /course/search/{name}:
     get:
       consumes:
       - application/json
       description: Get courses by name
       operationId: GetCourseByName
+      parameters:
+      - description: Имя курса для поиска
+        in: path
+        name: name
+        required: true
+        type: string
       produces:
       - application/json
       responses:
