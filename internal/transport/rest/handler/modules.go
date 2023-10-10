@@ -81,6 +81,19 @@ func (h *Handler) GetModule(c *gin.Context) {
 	c.JSON(http.StatusOK, modles)
 }
 
+// @Summary EditModule
+// @Security ApiKeyAuth
+// @Tags module
+// @Description Edit module by ID
+// @ID EditModule
+// @Param id path int true "Module ID"
+// @Accept  json
+// @Produce  json
+// @Param input body EdModule true "Edit Module (OrderId starts with one)"
+// @Success 200
+// @Failure 400 {string} string "error"
+// @Failure default {string} error "error"
+// @Router /adm/module/{id} [put]
 func (h *Handler) EditModule(c *gin.Context) {
 	id, err := strconv.Atoi(c.Param("id"))
 

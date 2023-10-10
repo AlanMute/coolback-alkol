@@ -77,6 +77,62 @@ const docTemplate = `{
                 }
             }
         },
+        "/adm/module/{id}": {
+            "put": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Edit module by ID",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "module"
+                ],
+                "summary": "EditModule",
+                "operationId": "EditModule",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Module ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Edit Module (OrderId starts with one)",
+                        "name": "input",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/handler.EdModule"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "400": {
+                        "description": "error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "default": {
+                        "description": "error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
         "/course/getall": {
             "get": {
                 "description": "Get all courses",
@@ -160,7 +216,7 @@ const docTemplate = `{
         },
         "/course/{id}": {
             "get": {
-                "description": "Get courses by ID",
+                "description": "Get courses by ID with all modules\u0026lessons",
                 "consumes": [
                     "application/json"
                 ],
@@ -447,6 +503,20 @@ const docTemplate = `{
                 },
                 "name": {
                     "type": "string"
+                }
+            }
+        },
+        "handler.EdModule": {
+            "type": "object",
+            "properties": {
+                "description": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "orderid": {
+                    "type": "integer"
                 }
             }
         },

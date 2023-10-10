@@ -95,7 +95,7 @@ func (h *Handler) GetAllCourses(c *gin.Context) {
 
 // @Summary GetCourse
 // @Tags course
-// @Description Get courses by ID
+// @Description Get courses by ID with all modules&lessons
 // @ID GetCourse
 // @Accept  json
 // @Produce  json

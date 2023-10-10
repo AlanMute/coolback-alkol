@@ -62,6 +62,15 @@ definitions:
       name:
         type: string
     type: object
+  handler.EdModule:
+    properties:
+      description:
+        type: string
+      name:
+        type: string
+      orderid:
+        type: integer
+    type: object
   handler.Refresh:
     properties:
       refresh_token:
@@ -121,11 +130,47 @@ paths:
       summary: EditCourse
       tags:
       - course
+  /adm/module/{id}:
+    put:
+      consumes:
+      - application/json
+      description: Edit module by ID
+      operationId: EditModule
+      parameters:
+      - description: Module ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Edit Module (OrderId starts with one)
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/handler.EdModule'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: error
+          schema:
+            type: string
+        default:
+          description: error
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: EditModule
+      tags:
+      - module
   /course/{id}:
     get:
       consumes:
       - application/json
-      description: Get courses by ID
+      description: Get courses by ID with all modules&lessons
       operationId: GetCourse
       parameters:
       - description: Course ID
