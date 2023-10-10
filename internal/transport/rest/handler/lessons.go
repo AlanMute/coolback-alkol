@@ -8,6 +8,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+// Нужен свагер!
 func (h *Handler) AddLesson(c *gin.Context) {
 	file, header, err := c.Request.FormFile("file")
 	if err != nil {
@@ -35,6 +36,7 @@ func (h *Handler) AddLesson(c *gin.Context) {
 	c.Status(http.StatusOK)
 }
 
+// Нужен свагер!
 func (h *Handler) DeleteLesson(c *gin.Context) {
 	var info Delete
 
@@ -62,7 +64,6 @@ func (h *Handler) GetLesson(c *gin.Context) {
 	moduleid, err := strconv.Atoi(c.Param("moduleid"))
 
 	if err != nil {
-		// Обработка ошибки, если преобразование не удалось
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Некорректное значение параметра moduleid"})
 		return
 	}

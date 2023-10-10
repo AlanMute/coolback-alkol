@@ -14,7 +14,7 @@ import (
 )
 
 //@title eptanit.com
-//@version 1.1
+//@version 2.71
 //@description EptaNit Super Site
 //contact.email eptanit@gmail.com
 

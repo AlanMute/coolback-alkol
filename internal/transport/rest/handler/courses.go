@@ -8,6 +8,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+// Нужен свагер!
 func (h *Handler) AddCourse(c *gin.Context) {
 	var info AddCourse
 
@@ -32,6 +33,7 @@ func (h *Handler) AddCourse(c *gin.Context) {
 	c.Status(http.StatusOK)
 }
 
+// Нужен свагер!
 func (h *Handler) DeleteCourse(c *gin.Context) {
 	var info Delete
 
@@ -97,7 +99,7 @@ func (h *Handler) GetAllCourses(c *gin.Context) {
 // @ID GetCourse
 // @Accept  json
 // @Produce  json
-// @Param id path string true "Course ID"
+// @Param id path int true "Course ID"
 // @Success 200 {object} core.Course
 // @Failure 400 {string} string "error"
 // @Failure 500 {string} string "error"

@@ -12,6 +12,42 @@ definitions:
         description: DELETE
         type: string
     type: object
+  core.Lesson:
+    properties:
+      description:
+        type: string
+      id:
+        type: integer
+      moduleID:
+        type: integer
+      name:
+        type: string
+      nameFile:
+        description: DELETE
+        type: string
+      orderID:
+        type: integer
+    type: object
+  core.ModLes:
+    properties:
+      courseID:
+        type: integer
+      description:
+        type: string
+      id:
+        type: integer
+      lessons:
+        items:
+          $ref: '#/definitions/core.Lesson'
+        type: array
+      name:
+        type: string
+      nameFolder:
+        description: DELETE
+        type: string
+      orderID:
+        type: integer
+    type: object
   core.Tokens:
     properties:
       accessToken:
@@ -43,7 +79,7 @@ info:
   contact: {}
   description: EptaNit Super Site
   title: eptanit.com
-  version: "1.1"
+  version: "2.71"
 paths:
   /adm/course/{id}:
     put:
@@ -96,7 +132,7 @@ paths:
         in: path
         name: id
         required: true
-        type: string
+        type: integer
       produces:
       - application/json
       responses:
@@ -173,6 +209,40 @@ paths:
       summary: Searching Courses
       tags:
       - course
+  /module/{id}:
+    get:
+      consumes:
+      - application/json
+      description: Get module by ID
+      operationId: GetModule
+      parameters:
+      - description: Module ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/core.ModLes'
+        "400":
+          description: error
+          schema:
+            type: string
+        "500":
+          description: error
+          schema:
+            type: string
+        default:
+          description: error
+          schema:
+            type: string
+      summary: GetModule
+      tags:
+      - module
   /refresh:
     post:
       consumes:

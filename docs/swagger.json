@@ -4,7 +4,7 @@
         "description": "EptaNit Super Site",
         "title": "eptanit.com",
         "contact": {},
-        "version": "1.1"
+        "version": "2.71"
     },
     "host": "localhost:8080",
     "basePath": "/",
@@ -168,7 +168,7 @@
                 "operationId": "GetCourse",
                 "parameters": [
                     {
-                        "type": "string",
+                        "type": "integer",
                         "description": "Course ID",
                         "name": "id",
                         "in": "path",
@@ -180,6 +180,57 @@
                         "description": "OK",
                         "schema": {
                             "$ref": "#/definitions/core.Course"
+                        }
+                    },
+                    "400": {
+                        "description": "error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "default": {
+                        "description": "error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/module/{id}": {
+            "get": {
+                "description": "Get module by ID",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "module"
+                ],
+                "summary": "GetModule",
+                "operationId": "GetModule",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Module ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/core.ModLes"
                         }
                     },
                     "400": {
@@ -314,6 +365,60 @@
                 "nameFolder": {
                     "description": "DELETE",
                     "type": "string"
+                }
+            }
+        },
+        "core.Lesson": {
+            "type": "object",
+            "properties": {
+                "description": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "moduleID": {
+                    "type": "integer"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "nameFile": {
+                    "description": "DELETE",
+                    "type": "string"
+                },
+                "orderID": {
+                    "type": "integer"
+                }
+            }
+        },
+        "core.ModLes": {
+            "type": "object",
+            "properties": {
+                "courseID": {
+                    "type": "integer"
+                },
+                "description": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "lessons": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/core.Lesson"
+                    }
+                },
+                "name": {
+                    "type": "string"
+                },
+                "nameFolder": {
+                    "description": "DELETE",
+                    "type": "string"
+                },
+                "orderID": {
+                    "type": "integer"
                 }
             }
         },
