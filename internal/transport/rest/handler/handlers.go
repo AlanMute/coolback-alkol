@@ -4,6 +4,10 @@ import (
 	"github.com/KrizzMU/coolback-alkol/internal/service"
 	"github.com/KrizzMU/coolback-alkol/pkg/auth"
 	"github.com/gin-gonic/gin"
+	swaggerfiles "github.com/swaggo/files"
+	ginSwagger "github.com/swaggo/gin-swagger"
+
+	_ "github.com/KrizzMU/coolback-alkol/docs"
 )
 
 type Handler struct {
@@ -21,6 +25,7 @@ func NewHandler(s *service.Service, t auth.TokenManager) *Handler {
 func (h *Handler) InitRoutes() *gin.Engine {
 	r := gin.New()
 
+	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerfiles.Handler))
 	r.Handle("POST", "/sign-in", h.signIn)
 
 	r.Handle("POST", "/refresh", h.refreshAccess)

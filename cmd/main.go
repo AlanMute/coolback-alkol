@@ -13,6 +13,18 @@ import (
 	"github.com/joho/godotenv"
 )
 
+//@title EptaNit dot COM <3
+//@version 1.0
+//@description EptaNit Super Site
+//contact.email eptanit@gmail.com
+
+// @host localhost:8000
+// @BasePath /
+
+// @securityDefinitions.apikey ApiKeyAuth
+// @in header
+// @name Authorization
+
 func main() {
 	s := new(rest.Server)
 
