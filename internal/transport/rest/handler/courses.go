@@ -91,6 +91,18 @@ func (h *Handler) GetAllCourses(c *gin.Context) {
 
 }
 
+// @Summary GetCourse
+// @Tags course
+// @Description Get courses by ID
+// @ID GetCourse
+// @Accept  json
+// @Produce  json
+// @Param id path string true "Course ID"
+// @Success 200 {object} core.Course
+// @Failure 400 {string} string "error"
+// @Failure 500 {string} string "error"
+// @Failure default {string} error "error"
+// @Router /course/{id} [get]
 func (h *Handler) GetCourse(c *gin.Context) {
 
 	id, err := strconv.Atoi(c.Param("id"))
@@ -111,6 +123,20 @@ func (h *Handler) GetCourse(c *gin.Context) {
 
 }
 
+// @Summary EditCourse
+// @Security ApiKeyAuth
+// @Tags course
+// @Description Edit course by ID
+// @ID EditCourse
+// @Param id path int true "Идентификатор курса для обновления"
+// @Accept  json
+// @Produce  json
+// @Param input body AddCourse true "Edit Course"
+// @Success 200
+// @Failure 400 {string} string "error"
+// @Failure 500 {string} string "error"
+// @Failure default {string} error "error"
+// @Router /adm/course/{id} [put]
 func (h *Handler) EditCourse(c *gin.Context) {
 	id, err := strconv.Atoi(c.Param("id"))
 

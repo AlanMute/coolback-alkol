@@ -19,6 +19,13 @@ definitions:
       refreshToken:
         type: string
     type: object
+  handler.AddCourse:
+    properties:
+      description:
+        type: string
+      name:
+        type: string
+    type: object
   handler.Refresh:
     properties:
       refresh_token:
@@ -38,6 +45,80 @@ info:
   title: eptanit.com
   version: "1.1"
 paths:
+  /adm/course/{id}:
+    put:
+      consumes:
+      - application/json
+      description: Edit course by ID
+      operationId: EditCourse
+      parameters:
+      - description: Идентификатор курса для обновления
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Edit Course
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/handler.AddCourse'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: error
+          schema:
+            type: string
+        "500":
+          description: error
+          schema:
+            type: string
+        default:
+          description: error
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: EditCourse
+      tags:
+      - course
+  /course/{id}:
+    get:
+      consumes:
+      - application/json
+      description: Get courses by ID
+      operationId: GetCourse
+      parameters:
+      - description: Course ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/core.Course'
+        "400":
+          description: error
+          schema:
+            type: string
+        "500":
+          description: error
+          schema:
+            type: string
+        default:
+          description: error
+          schema:
+            type: string
+      summary: GetCourse
+      tags:
+      - course
   /course/getall:
     get:
       consumes:
