@@ -45,7 +45,7 @@ func (h *Handler) AddLesson(c *gin.Context) {
 // @Success 200
 // @Failure 400 {string} string "error"
 // @Failure default {string} error "error"
-// @Router /adm/lesson/{id} [DELETE]
+// @Router /adm/lesson/ [DELETE]
 func (h *Handler) DeleteLesson(c *gin.Context) {
 	var info Delete
 

@@ -50,7 +50,7 @@ func (h *Handler) AddModule(c *gin.Context) {
 // @Success 200
 // @Failure 400 {string} string "error"
 // @Failure default {string} error "error"
-// @Router /adm/module/{id} [DELETE]
+// @Router /adm/module/ [DELETE]
 func (h *Handler) DeleteModule(c *gin.Context) {
 	var info Delete
 

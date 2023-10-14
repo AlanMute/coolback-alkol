@@ -126,6 +126,67 @@ info:
   title: eptanit.com
   version: "2.71"
 paths:
+  /adm/course/:
+    delete:
+      consumes:
+      - application/json
+      description: Delete Course by ID
+      operationId: DeleteCourse
+      parameters:
+      - description: Course ID
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/handler.Delete'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: error
+          schema:
+            type: string
+        default:
+          description: error
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: DeleteCourse
+      tags:
+      - course
+    post:
+      consumes:
+      - application/json
+      description: Add Course
+      operationId: AddCourse
+      parameters:
+      - description: Add course
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/handler.AddCourse'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: error
+          schema:
+            type: string
+        default:
+          description: error
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: AddCourse
+      tags:
+      - course
   /adm/course/{id}:
     put:
       consumes:
@@ -167,6 +228,36 @@ paths:
       tags:
       - course
   /adm/lesson/:
+    delete:
+      consumes:
+      - application/json
+      description: Delete lesson by ID
+      operationId: DeleteLesson
+      parameters:
+      - description: Lesson ID
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/handler.Delete'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: error
+          schema:
+            type: string
+        default:
+          description: error
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: DeleteLesson
+      tags:
+      - lesson
     post:
       consumes:
       - application/json
@@ -198,36 +289,6 @@ paths:
       tags:
       - lesson
   /adm/lesson/{id}:
-    delete:
-      consumes:
-      - application/json
-      description: Delete lesson by ID
-      operationId: DeleteLesson
-      parameters:
-      - description: Lesson ID
-        in: body
-        name: input
-        required: true
-        schema:
-          $ref: '#/definitions/handler.Delete'
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-        "400":
-          description: error
-          schema:
-            type: string
-        default:
-          description: error
-          schema:
-            type: string
-      security:
-      - ApiKeyAuth: []
-      summary: DeleteLesson
-      tags:
-      - lesson
     put:
       consumes:
       - application/json
@@ -264,6 +325,36 @@ paths:
       tags:
       - lesson
   /adm/module/:
+    delete:
+      consumes:
+      - application/json
+      description: Delete Module by ID
+      operationId: DeleteModule
+      parameters:
+      - description: Module ID
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/handler.Delete'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: error
+          schema:
+            type: string
+        default:
+          description: error
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: DeleteModule
+      tags:
+      - module
     post:
       consumes:
       - application/json
@@ -295,36 +386,6 @@ paths:
       tags:
       - module
   /adm/module/{id}:
-    delete:
-      consumes:
-      - application/json
-      description: Delete Module by ID
-      operationId: DeleteModule
-      parameters:
-      - description: Module ID
-        in: body
-        name: input
-        required: true
-        schema:
-          $ref: '#/definitions/handler.Delete'
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-        "400":
-          description: error
-          schema:
-            type: string
-        default:
-          description: error
-          schema:
-            type: string
-      security:
-      - ApiKeyAuth: []
-      summary: DeleteModule
-      tags:
-      - module
     put:
       consumes:
       - application/json

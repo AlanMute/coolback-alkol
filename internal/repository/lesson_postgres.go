@@ -18,7 +18,6 @@ func NewLessonPostgres(db *gorm.DB) *LessonPostgres {
 }
 
 func (r *LessonPostgres) Add(name string, description string, orderID uint, moduleID uint) (uint, error) {
-	fmt.Println(name, description, orderID, moduleID)
 	newLesson := core.Lesson{
 		Name:        name,
 		Description: description,
@@ -28,7 +27,6 @@ func (r *LessonPostgres) Add(name string, description string, orderID uint, modu
 
 	if err := r.db.Where("name = ? AND module_id = ? OR order_id = ? AND module_id = ?", newLesson.Name, newLesson.ModuleID, newLesson.OrderID, newLesson.ModuleID).First(&core.Lesson{}).Error; err != nil {
 		if gorm.IsRecordNotFoundError(err) {
-			fmt.Println(name, description, orderID, moduleID)
 			if result := r.db.Create(&newLesson); result.Error != nil {
 
 				return 0, result.Error
