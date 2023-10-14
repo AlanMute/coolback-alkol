@@ -4,6 +4,7 @@
 
 <p align="center">
    <img src="https://img.shields.io/badge/golang-v1.20.5-blue?style=plastic&logo=Go&label=Golang" alt="Golang Version">
+      
    <img src="https://img.shields.io/badge/gin-v1.9.1-blue?style=plastic&label=Gin&labelColor=orange&link=https%3A%2F%2Fgithub.com%2Fgin-gonic%2Fgin" alt="Gin Version">
 </p>
 
