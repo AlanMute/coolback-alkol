@@ -611,6 +611,50 @@ const docTemplate = `{
                 }
             }
         },
+        "/lesson/trial": {
+            "post": {
+                "description": "Send email trial lesson",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "email"
+                ],
+                "summary": "SendLetter",
+                "operationId": "SendTrialLesson",
+                "parameters": [
+                    {
+                        "description": "Recipient's e-mail",
+                        "name": "input",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/handler.Email"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "400": {
+                        "description": "error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "default": {
+                        "description": "error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
         "/lesson/{orderid}/{moduleid}": {
             "get": {
                 "description": "Get lesson by orderID",
@@ -977,6 +1021,14 @@ const docTemplate = `{
                 },
                 "orderid": {
                     "type": "integer"
+                }
+            }
+        },
+        "handler.Email": {
+            "type": "object",
+            "properties": {
+                "address": {
+                    "type": "string"
                 }
             }
         },

@@ -136,6 +136,17 @@ func (h *Handler) EditLesson(c *gin.Context) {
 	c.Status(http.StatusOK)
 }
 
+// @Summary SendLetter
+// @Tags email
+// @Description Send email trial lesson
+// @ID SendTrialLesson
+// @Accept  json
+// @Produce  json
+// @Param input body Email true "Recipient's e-mail"
+// @Success 200
+// @Failure 400 {string} string "error"
+// @Failure default {string} error "error"
+// @Router /lesson/trial [post]
 func (h *Handler) SendTrialLesson(c *gin.Context) {
 	var email Email
 
