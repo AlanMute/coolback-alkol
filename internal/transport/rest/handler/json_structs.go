@@ -8,7 +8,16 @@ type AddCourse struct {
 type AddModule struct {
 	Name        string `json:"name"`
 	Description string `json:"description"`
-	CourseName  string `json:"course_name"`
+	OrderID     uint   `json:"order_id"`
+	CourseID    uint   `json:"course_id"`
+}
+
+type AddLesson struct {
+	Name        string   `json:"name"`
+	Description string   `json:"description"`
+	OrderID     uint     `json:"order_id"`
+	ModuleID    uint     `json:"module_id"`
+	Content     []string `json:"content"`
 }
 
 type Delete struct {
@@ -35,4 +44,8 @@ type SignInput struct {
 
 type Refresh struct {
 	RefreshToken string `json:"refresh_token"`
+}
+
+type Email struct {
+	Address string `json:"address"`
 }

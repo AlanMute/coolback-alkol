@@ -19,14 +19,8 @@ func (h *Handler) AddModule(c *gin.Context) {
 
 	info.Name = strings.Trim(info.Name, " ")
 	info.Description = strings.Trim(info.Description, " ")
-	info.CourseName = strings.Trim(info.CourseName, " ")
 
-	if info.Name == "" || info.Description == "" || info.CourseName == "" {
-		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"error": "Bad name, description or course name"})
-		return
-	}
-
-	if err := h.services.Module.Add(info.Name, info.Description, info.CourseName); err != nil {
+	if err := h.services.Module.Add(info.Name, info.Description, info.OrderID, info.CourseID); err != nil {
 		c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}

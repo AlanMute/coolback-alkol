@@ -1,11 +1,13 @@
 package service
 
 import (
+	"fmt"
 	"os"
+	"path/filepath"
+	"strconv"
 
 	"github.com/KrizzMU/coolback-alkol/internal/core"
 	"github.com/KrizzMU/coolback-alkol/internal/repository"
-	"github.com/KrizzMU/coolback-alkol/pkg"
 )
 
 type ModuleService struct {
@@ -16,22 +18,12 @@ func NewModuleService(repo repository.Module) *ModuleService {
 	return &ModuleService{repo: repo}
 }
 
-func (s *ModuleService) Add(name string, description string, courseName string) error {
-	path, err := pkg.GetPath(courseName, "./courses")
-	if err != nil {
-		return err
+func (s *ModuleService) Add(name string, description string, orderID uint, courseID uint) error {
+	if name == "" {
+		name = "New Module" + fmt.Sprint(orderID)
 	}
 
-	dbFolderName, err := pkg.GenerateUniqueFolder(name, path)
-	if err != nil {
-		return err
-	}
-
-	if err := s.repo.Add(name, description, courseName, dbFolderName); err != nil {
-		return err
-	}
-
-	if err := pkg.CreateFolder(dbFolderName); err != nil {
+	if err := s.repo.Add(name, description, orderID, courseID); err != nil {
 		return err
 	}
 
@@ -39,13 +31,19 @@ func (s *ModuleService) Add(name string, description string, courseName string) 
 }
 
 func (s *ModuleService) Delete(id uint) error {
-	dirPath, err := s.repo.Delete(id)
+	lessonsToDelete, err := s.repo.Delete(id)
 	if err != nil {
 		return err
 	}
 
-	if err := os.RemoveAll(dirPath); !os.IsNotExist(err) {
-		return err
+	for _, lessonToDelete := range lessonsToDelete {
+		fileName := strconv.FormatUint(uint64(lessonToDelete), 10) + ext
+
+		pathToLesson := filepath.Join("./lessons", fileName)
+
+		if err := os.Remove(pathToLesson); err != nil {
+			return err
+		}
 	}
 
 	return nil

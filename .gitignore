@@ -2,3 +2,7 @@ internal/db/sql
 lessons
 ./lessons/
 .env
+./db/sql
+./lessons
+./static/letters
+./internal/config/emailConf/conf.yaml

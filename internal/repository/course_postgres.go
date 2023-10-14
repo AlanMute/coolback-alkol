@@ -16,11 +16,10 @@ func NewCoursePostgres(db *gorm.DB) *CoursePostgres {
 	return &CoursePostgres{db: db}
 }
 
-func (r *CoursePostgres) Add(name string, description string, folderName string) error {
+func (r *CoursePostgres) Add(name string, description string) error {
 	newCourse := core.Course{
 		Name:        name,
 		Description: description,
-		NameFolder:  folderName,
 	}
 
 	if result := r.db.Create(&newCourse); result.Error != nil {
@@ -30,18 +29,38 @@ func (r *CoursePostgres) Add(name string, description string, folderName string)
 	return nil
 }
 
-func (r *CoursePostgres) Delete(id uint) (string, error) {
+func (r *CoursePostgres) Delete(id uint) ([]uint, error) {
 	var course core.Course
+	var modules []core.Module
+	var lessonsID []uint
 
-	if result := r.db.Where("id = ?", id).First(&course).Unscoped().Delete(&course); result.Error != nil {
-		return "", result.Error
+	if result := r.db.Where("id = ?", id).First(&course); result.Error != nil {
+		return nil, result.Error
+	}
+
+	if result := r.db.Where("course_id = ?", id).Find(&modules); result.Error != nil {
+		return nil, result.Error
+	}
+
+	for _, module := range modules {
+		var lessons []core.Lesson
+
+		if result := r.db.Where("module_id = ?", module.ID).Find(&lessons); result.Error != nil {
+			return nil, result.Error
+		}
+
+		for _, lesson := range lessons {
+			lessonsID = append(lessonsID, lesson.ID)
+		}
 	}
 
 	if result := r.db.Where("id = ?", id).Unscoped().Delete(&course); result.Error != nil {
-		return "", result.Error
+		return nil, result.Error
 	}
 
-	return course.NameFolder, nil
+	fmt.Println(lessonsID)
+
+	return lessonsID, nil
 }
 
 func (r *CoursePostgres) GetByName(name string) ([]core.Course, error) {
@@ -59,9 +78,9 @@ func (r *CoursePostgres) GetAll() ([]core.Course, error) {
 	return courses, nil
 }
 
-func (r *CoursePostgres) Get(id int) (core.СourseСontent, error) {
+func (r *CoursePostgres) Get(id int) (core.CourseContent, error) {
 
-	var content core.СourseСontent
+	var content core.CourseContent
 
 	var course core.Course
 
@@ -93,7 +112,7 @@ func (r *CoursePostgres) Get(id int) (core.СourseСontent, error) {
 		modles = append(modles, core.ModLes{Module: m, Lessons: lessons})
 	}
 
-	content = core.СourseСontent{
+	content = core.CourseContent{
 		Course:  course,
 		Modules: modles,
 	}

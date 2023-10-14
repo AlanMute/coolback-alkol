@@ -16,37 +16,52 @@ func NewModulePostgres(db *gorm.DB) *ModulePostgres {
 	return &ModulePostgres{db: db}
 }
 
-func (r *ModulePostgres) Add(name string, description string, courseName string, folderName string) error {
-	var course core.Course
-	if result := r.db.Where("name = ?", courseName).First(&course); result.Error != nil {
-		return result.Error
-	}
-
+func (r *ModulePostgres) Add(name string, description string, orderID uint, courseID uint) error {
 	newModule := core.Module{
 		Name:        name,
 		Description: description,
-		NameFolder:  folderName,
-		CourseID:    course.ID,
+		CourseID:    courseID,
+		OrderID:     orderID,
 	}
 
-	if result := r.db.Create(&newModule); result.Error != nil {
-		return result.Error
-	}
+	if err := r.db.Where("name = ? AND course_id = ? OR order_id = ? AND course_id = ?",
+		newModule.Name, newModule.CourseID, newModule.OrderID, newModule.CourseID).First(&core.Module{}).Error; err != nil {
+		if gorm.IsRecordNotFoundError(err) {
+			if result := r.db.Create(&newModule); result.Error != nil {
+				return result.Error
+			}
 
-	return nil
+			return nil
+		} else {
+			return nil
+		}
+	} else {
+		return fmt.Errorf("this module already exists or order_id is taken")
+	}
 }
 
-func (r *ModulePostgres) Delete(id uint) (string, error) {
+func (r *ModulePostgres) Delete(id uint) ([]uint, error) {
 	var module core.Module
+	var lessons []core.Lesson
+	var lessonsID []uint
+
 	if result := r.db.Where("id = ?", id).First(&module); result.Error != nil {
-		return "", result.Error
+		return nil, result.Error
+	}
+
+	if result := r.db.Where("module_id = ?", module.ID).Find(&lessons); result.Error != nil {
+		return nil, result.Error
+	}
+
+	for _, lesson := range lessons {
+		lessonsID = append(lessonsID, lesson.ID)
 	}
 
 	if result := r.db.Where("id = ?", id).Unscoped().Delete(&module); result.Error != nil {
-		return "", result.Error
+		return nil, result.Error
 	}
 
-	return module.NameFolder, nil
+	return lessonsID, nil
 }
 
 func (r *ModulePostgres) Get(id int) (core.ModLes, error) {
