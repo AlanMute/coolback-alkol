@@ -8,6 +8,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+// Нужен свагер!
 func (h *Handler) AddModule(c *gin.Context) {
 	var info AddModule
 
@@ -27,6 +28,7 @@ func (h *Handler) AddModule(c *gin.Context) {
 	c.Status(http.StatusOK)
 }
 
+// Нужен свагер!
 func (h *Handler) DeleteModule(c *gin.Context) {
 	var info Delete
 
@@ -43,6 +45,18 @@ func (h *Handler) DeleteModule(c *gin.Context) {
 	c.Status(http.StatusOK)
 }
 
+// @Summary GetModule
+// @Tags module
+// @Description Get module by ID
+// @ID GetModule
+// @Accept  json
+// @Produce  json
+// @Param id path int true "Module ID"
+// @Success 200 {object} core.ModLes
+// @Failure 400 {string} string "error"
+// @Failure 500 {string} string "error"
+// @Failure default {string} error "error"
+// @Router /module/{id} [get]
 func (h *Handler) GetModule(c *gin.Context) {
 	id, err := strconv.Atoi(c.Param("id"))
 
@@ -54,13 +68,26 @@ func (h *Handler) GetModule(c *gin.Context) {
 	modles, err := h.services.Module.Get(id)
 
 	if err != nil {
-		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
 
 	c.JSON(http.StatusOK, modles)
 }
 
+// @Summary EditModule
+// @Security ApiKeyAuth
+// @Tags module
+// @Description Edit module by ID
+// @ID EditModule
+// @Param id path int true "Module ID"
+// @Accept  json
+// @Produce  json
+// @Param input body EdModule true "Edit Module (OrderId starts with one)"
+// @Success 200
+// @Failure 400 {string} string "error"
+// @Failure default {string} error "error"
+// @Router /adm/module/{id} [put]
 func (h *Handler) EditModule(c *gin.Context) {
 	id, err := strconv.Atoi(c.Param("id"))
 

@@ -2,19 +2,24 @@ package core
 
 import (
 	"time"
-
-	"github.com/jinzhu/gorm"
 )
 
+type GormModel struct {
+	ID        uint       `gorm:"primary_key" json:"id"`
+	CreatedAt time.Time  `json:"-"`
+	UpdatedAt time.Time  `json:"-"`
+	DeletedAt *time.Time `sql:"index" json:"-"`
+}
+
 type Course struct {
-	gorm.Model
+	GormModel
 
 	Name        string `gorm:"not null; unique"`
 	Description string `gorm:"not null"`
 }
 
 type Module struct {
-	gorm.Model
+	GormModel
 
 	Name        string `gorm:"not null"`
 	Description string `gorm:"not null"`
@@ -25,7 +30,7 @@ type Module struct {
 }
 
 type Lesson struct {
-	gorm.Model
+	GormModel
 
 	Name        string `gorm:"not null"`
 	Description string `gorm:"not null"`
@@ -36,7 +41,7 @@ type Lesson struct {
 }
 
 type Sessions struct {
-	gorm.Model
+	GormModel
 	RefreshToken   string
 	ExpirationTime time.Time
 }

@@ -8,6 +8,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+// Нужен свагер!
 func (h *Handler) AddCourse(c *gin.Context) {
 	var info AddCourse
 
@@ -32,6 +33,7 @@ func (h *Handler) AddCourse(c *gin.Context) {
 	c.Status(http.StatusOK)
 }
 
+// Нужен свагер!
 func (h *Handler) DeleteCourse(c *gin.Context) {
 	var info Delete
 
@@ -48,6 +50,17 @@ func (h *Handler) DeleteCourse(c *gin.Context) {
 	c.Status(http.StatusOK)
 }
 
+// @Summary Searching Courses
+// @Tags course
+// @Description Get courses by name
+// @ID GetCourseByName
+// @Accept  json
+// @Produce  json
+// @Param name path string true "Имя курса для поиска"
+// @Success 200 {object} core.Course
+// @Failure 500 {string} string "error"
+// @Failure default {string} error "error"
+// @Router /course/search/{name} [get]
 func (h *Handler) GetCourseByName(c *gin.Context) {
 	courseName := c.Param("name")
 
@@ -60,6 +73,16 @@ func (h *Handler) GetCourseByName(c *gin.Context) {
 
 }
 
+// @Summary All courses
+// @Tags course
+// @Description Get all courses
+// @ID GetAllCourses
+// @Accept  json
+// @Produce  json
+// @Success 200 {object} core.Course
+// @Failure 500 {string} string "error"
+// @Failure default {string} error "error"
+// @Router /course/getall [get]
 func (h *Handler) GetAllCourses(c *gin.Context) {
 	courses, err := h.services.Course.GetAll()
 	if err != nil {
@@ -70,6 +93,18 @@ func (h *Handler) GetAllCourses(c *gin.Context) {
 
 }
 
+// @Summary GetCourse
+// @Tags course
+// @Description Get courses by ID with all modules&lessons
+// @ID GetCourse
+// @Accept  json
+// @Produce  json
+// @Param id path int true "Course ID"
+// @Success 200 {object} core.Course
+// @Failure 400 {string} string "error"
+// @Failure 500 {string} string "error"
+// @Failure default {string} error "error"
+// @Router /course/{id} [get]
 func (h *Handler) GetCourse(c *gin.Context) {
 
 	id, err := strconv.Atoi(c.Param("id"))
@@ -90,6 +125,20 @@ func (h *Handler) GetCourse(c *gin.Context) {
 
 }
 
+// @Summary EditCourse
+// @Security ApiKeyAuth
+// @Tags course
+// @Description Edit course by ID
+// @ID EditCourse
+// @Param id path int true "Идентификатор курса для обновления"
+// @Accept  json
+// @Produce  json
+// @Param input body AddCourse true "Edit Course"
+// @Success 200
+// @Failure 400 {string} string "error"
+// @Failure 500 {string} string "error"
+// @Failure default {string} error "error"
+// @Router /adm/course/{id} [put]
 func (h *Handler) EditCourse(c *gin.Context) {
 	id, err := strconv.Atoi(c.Param("id"))
 
