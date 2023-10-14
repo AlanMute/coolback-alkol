@@ -150,8 +150,8 @@ func sendViaMailRu(email string, path string) error {
 	message := gomail.NewMessage()
 	message.SetHeader("From", config.Address)
 	message.SetHeader("To", email)
-	message.SetHeader("Subject", "Тестовое сообщение")
-	message.SetBody("text/plain", "Тестовое сообщение через Golang с файлом")
+	message.SetHeader("Subject", "Пробный урок")
+	message.SetBody("text/plain", "Приветствую! Как вы и заказывали, ваш пробный урок по Моделированию.\nWith love, Eptanit.")
 	message.Attach(path)
 
 	dialer := gomail.NewDialer("smtp.gmail.com", 587, config.Address, os.Getenv("MAIL_PASSWORD"))
