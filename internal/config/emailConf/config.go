@@ -7,8 +7,7 @@ import (
 )
 
 type Config struct {
-	Address  string `yaml:"address"`
-	Password string `yaml:"password"`
+	Address string `yaml:"address"`
 }
 
 func GetEmailConfig() Config {

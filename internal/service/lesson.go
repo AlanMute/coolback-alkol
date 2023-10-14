@@ -154,7 +154,8 @@ func sendViaMailRu(email string, path string) error {
 	message.SetBody("text/plain", "Тестовое сообщение через Golang с файлом")
 	message.Attach(path)
 
-	dialer := gomail.NewDialer("smtp.mail.ru", 465, config.Address, config.Password)
+	fmt.Println(config.Address, os.Getenv("MAIL_PASSWORD"))
+	dialer := gomail.NewDialer("smtp.gmail.com", 587, config.Address, os.Getenv("MAIL_PASSWORD"))
 
 	dialer.TLSConfig = &tls.Config{InsecureSkipVerify: true}
 
