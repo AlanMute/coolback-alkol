@@ -8,7 +8,18 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-// Нужен свагер!
+// @Summary AddCourse
+// @Security ApiKeyAuth
+// @Tags course
+// @Description Add Course
+// @ID AddCourse
+// @Accept  json
+// @Produce  json
+// @Param input body AddCourse true "Add course"
+// @Success 200
+// @Failure 400 {string} string "error"
+// @Failure default {string} error "error"
+// @Router /adm/course/ [post]
 func (h *Handler) AddCourse(c *gin.Context) {
 	var info AddCourse
 
@@ -33,7 +44,18 @@ func (h *Handler) AddCourse(c *gin.Context) {
 	c.Status(http.StatusOK)
 }
 
-// Нужен свагер!
+// @Summary DeleteCourse
+// @Security ApiKeyAuth
+// @Tags course
+// @Description Delete Course by ID
+// @ID DeleteCourse
+// @Accept  json
+// @Produce  json
+// @Param input body Delete true "Course ID"
+// @Success 200
+// @Failure 400 {string} string "error"
+// @Failure default {string} error "error"
+// @Router /adm/course/ [DELETE]
 func (h *Handler) DeleteCourse(c *gin.Context) {
 	var info Delete
 

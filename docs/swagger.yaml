@@ -8,9 +8,6 @@ definitions:
         type: integer
       name:
         type: string
-      nameFolder:
-        description: DELETE
-        type: string
     type: object
   core.Lesson:
     properties:
@@ -21,9 +18,6 @@ definitions:
       moduleID:
         type: integer
       name:
-        type: string
-      nameFile:
-        description: DELETE
         type: string
       orderID:
         type: integer
@@ -42,9 +36,6 @@ definitions:
         type: array
       name:
         type: string
-      nameFolder:
-        description: DELETE
-        type: string
       orderID:
         type: integer
     type: object
@@ -61,6 +52,37 @@ definitions:
         type: string
       name:
         type: string
+    type: object
+  handler.AddLesson:
+    properties:
+      content:
+        items:
+          type: string
+        type: array
+      description:
+        type: string
+      module_id:
+        type: integer
+      name:
+        type: string
+      order_id:
+        type: integer
+    type: object
+  handler.AddModule:
+    properties:
+      course_id:
+        type: integer
+      description:
+        type: string
+      name:
+        type: string
+      order_id:
+        type: integer
+    type: object
+  handler.Delete:
+    properties:
+      id:
+        type: integer
     type: object
   handler.EdLesson:
     properties:
@@ -84,6 +106,11 @@ definitions:
       orderid:
         type: integer
     type: object
+  handler.Email:
+    properties:
+      address:
+        type: string
+    type: object
   handler.Refresh:
     properties:
       refresh_token:
@@ -104,6 +131,67 @@ info:
   title: eptanit.com
   version: "2.71"
 paths:
+  /adm/course/:
+    delete:
+      consumes:
+      - application/json
+      description: Delete Course by ID
+      operationId: DeleteCourse
+      parameters:
+      - description: Course ID
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/handler.Delete'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: error
+          schema:
+            type: string
+        default:
+          description: error
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: DeleteCourse
+      tags:
+      - course
+    post:
+      consumes:
+      - application/json
+      description: Add Course
+      operationId: AddCourse
+      parameters:
+      - description: Add course
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/handler.AddCourse'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: error
+          schema:
+            type: string
+        default:
+          description: error
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: AddCourse
+      tags:
+      - course
   /adm/course/{id}:
     put:
       consumes:
@@ -144,6 +232,67 @@ paths:
       summary: EditCourse
       tags:
       - course
+  /adm/lesson/:
+    delete:
+      consumes:
+      - application/json
+      description: Delete lesson by ID
+      operationId: DeleteLesson
+      parameters:
+      - description: Lesson ID
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/handler.Delete'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: error
+          schema:
+            type: string
+        default:
+          description: error
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: DeleteLesson
+      tags:
+      - lesson
+    post:
+      consumes:
+      - application/json
+      description: Add lesson
+      operationId: AddLesson
+      parameters:
+      - description: Add Lesson (OrderId starts with one)
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/handler.AddLesson'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: error
+          schema:
+            type: string
+        default:
+          description: error
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: AddLesson
+      tags:
+      - lesson
   /adm/lesson/{id}:
     put:
       consumes:
@@ -180,6 +329,67 @@ paths:
       summary: EditLesson
       tags:
       - lesson
+  /adm/module/:
+    delete:
+      consumes:
+      - application/json
+      description: Delete Module by ID
+      operationId: DeleteModule
+      parameters:
+      - description: Module ID
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/handler.Delete'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: error
+          schema:
+            type: string
+        default:
+          description: error
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: DeleteModule
+      tags:
+      - module
+    post:
+      consumes:
+      - application/json
+      description: Add Module
+      operationId: AddModule
+      parameters:
+      - description: Add Module (OrderId starts with one)
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/handler.AddModule'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: error
+          schema:
+            type: string
+        default:
+          description: error
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: AddModule
+      tags:
+      - module
   /adm/module/{id}:
     put:
       consumes:
@@ -343,6 +553,35 @@ paths:
       summary: GetLesson
       tags:
       - lesson
+  /lesson/trial:
+    post:
+      consumes:
+      - application/json
+      description: Send email trial lesson
+      operationId: SendTrialLesson
+      parameters:
+      - description: Recipient's e-mail
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/handler.Email'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: error
+          schema:
+            type: string
+        default:
+          description: error
+          schema:
+            type: string
+      summary: SendLetter
+      tags:
+      - email
   /module/{id}:
     get:
       consumes:

@@ -7,7 +7,18 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-// Нужен свагер!
+// @Summary AddLesson
+// @Security ApiKeyAuth
+// @Tags lesson
+// @Description Add lesson
+// @ID AddLesson
+// @Accept  json
+// @Produce  json
+// @Param input body AddLesson true "Add Lesson (OrderId starts with one)"
+// @Success 200
+// @Failure 400 {string} string "error"
+// @Failure default {string} error "error"
+// @Router /adm/lesson/ [post]
 func (h *Handler) AddLesson(c *gin.Context) {
 	var lesson AddLesson
 	if err := c.ShouldBindJSON(&lesson); err != nil {
@@ -23,8 +34,18 @@ func (h *Handler) AddLesson(c *gin.Context) {
 	c.Status(http.StatusOK)
 }
 
-
-// Нужен свагер!
+// @Summary DeleteLesson
+// @Security ApiKeyAuth
+// @Tags lesson
+// @Description Delete lesson by ID
+// @ID DeleteLesson
+// @Accept  json
+// @Produce  json
+// @Param input body Delete true "Lesson ID"
+// @Success 200
+// @Failure 400 {string} string "error"
+// @Failure default {string} error "error"
+// @Router /adm/lesson/ [DELETE]
 func (h *Handler) DeleteLesson(c *gin.Context) {
 	var info Delete
 
@@ -115,6 +136,17 @@ func (h *Handler) EditLesson(c *gin.Context) {
 	c.Status(http.StatusOK)
 }
 
+// @Summary SendLetter
+// @Tags email
+// @Description Send email trial lesson
+// @ID SendTrialLesson
+// @Accept  json
+// @Produce  json
+// @Param input body Email true "Recipient's e-mail"
+// @Success 200
+// @Failure 400 {string} string "error"
+// @Failure default {string} error "error"
+// @Router /lesson/trial [post]
 func (h *Handler) SendTrialLesson(c *gin.Context) {
 	var email Email
 
