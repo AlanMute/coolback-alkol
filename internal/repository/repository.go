@@ -26,6 +26,7 @@ type Lesson interface {
 	Delete(id uint) (string, error)
 	Get(moduleid int, orderid int) (core.Lesson, error)
 	Put(id int, name string, desc string, orderID uint) error
+	SendTrialLesson(address string) error
 }
 
 type Session interface {
