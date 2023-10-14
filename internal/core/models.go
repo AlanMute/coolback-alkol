@@ -47,7 +47,7 @@ type Sessions struct {
 }
 
 type Email struct {
-	gorm.Model
+	GormModel
 
 	Address string `gorm:"not null; unique"`
 }
