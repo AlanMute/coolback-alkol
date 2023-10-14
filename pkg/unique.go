@@ -4,7 +4,6 @@ import (
 	"bufio"
 	"fmt"
 	"io"
-	"io/fs"
 	"mime/multipart"
 	"os"
 	"path/filepath"
@@ -12,24 +11,8 @@ import (
 	"strings"
 )
 
-func GetPath(name string, folder string) (string, error) {
-	validName := regexp.MustCompile(`[^\p{L}0-9\s-]`).ReplaceAllString(name, "")
-
-	words := strings.Fields(validName)
-	uniqueName := strings.Join(words, "-")
-
-	dirPath := filepath.Join(folder, uniqueName)
-
-	_, err := os.Stat(dirPath)
-	if !os.IsNotExist(err) {
-		return dirPath, nil
-	}
-
-	return "", fmt.Errorf("folder with that name doesn't exist")
-}
-
 func GetPathToFile(name string, ext string, folder string) (string, error) {
-	validName := regexp.MustCompile(`[^\p{L}0-9\s-]`).ReplaceAllString(name, "")
+	validName := regexp.MustCompile(`[^\d*[1-9]\d*`).ReplaceAllString(name, "")
 
 	words := strings.Fields(validName)
 	uniqueName := strings.Join(words, "-")
@@ -44,31 +27,15 @@ func GetPathToFile(name string, ext string, folder string) (string, error) {
 	return "", fmt.Errorf("folder with that name doesn't exist")
 }
 
-func GenerateUniqueFolder(name string, folder string) (string, error) {
-	validName := regexp.MustCompile(`[^\p{L}0-9\s-]`).ReplaceAllString(name, "")
-
-	words := strings.Fields(validName)
-	uniqueName := strings.Join(words, "-")
-
-	dirPath := filepath.Join(folder, uniqueName)
-
-	_, err := os.Stat(dirPath)
-	if os.IsNotExist(err) {
-		return dirPath, nil
-	}
-
-	return "", fmt.Errorf("directory already exists")
-}
-
-func GenerateUniqueFile(fileName string, name string, folder string, requiredExt string) (string, error) {
+func GenerateUniqueFile(fileName string, fileID string, folder string, requiredExt string) (string, error) {
 	ext := filepath.Ext(fileName)
 	if ext != requiredExt {
 		return "", fmt.Errorf("wrong file extension")
 	}
 
-	nameWithoutExt := name
+	nameWithoutExt := fileID
 
-	validName := regexp.MustCompile(`[^\p{L}0-9\s-]`).ReplaceAllString(nameWithoutExt, "")
+	validName := regexp.MustCompile(`[^\d*[1-9]\d*`).ReplaceAllString(nameWithoutExt, "")
 
 	words := strings.Fields(validName)
 	uniqueName := strings.Join(words, "-")
@@ -81,14 +48,6 @@ func GenerateUniqueFile(fileName string, name string, folder string, requiredExt
 	}
 
 	return "", fmt.Errorf("file already exists")
-}
-
-func CreateFolder(dirPath string) error {
-	if err := os.Mkdir(dirPath, fs.ModePerm); !os.IsNotExist(err) {
-		return err
-	}
-
-	return nil
 }
 
 func CreateFile(file multipart.File, filePath string) error {
