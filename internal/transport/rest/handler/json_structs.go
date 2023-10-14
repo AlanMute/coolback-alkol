@@ -12,6 +12,14 @@ type AddModule struct {
 	CourseName  string `json:"course_name"`
 }
 
+type AddLesson struct {
+	Name        string   `json:"name"`
+	Description string   `json:"description"`
+	OrderID     uint     `json:"order_id"`
+	ModuleID    uint     `json:"module_id"`
+	Content     []string `json:"content"`
+}
+
 type Delete struct {
 	ID uint `json:"id"`
 }

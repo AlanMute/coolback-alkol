@@ -3,8 +3,6 @@ package pkg
 import (
 	"bufio"
 	"fmt"
-	"io"
-	"mime/multipart"
 	"os"
 	"path/filepath"
 	"regexp"
@@ -50,28 +48,6 @@ func GenerateUniqueFile(fileName string, fileID string, folder string, requiredE
 	return "", fmt.Errorf("file already exists")
 }
 
-func CreateFile(file multipart.File, filePath string) error {
-	out, err := os.Create(filePath)
-	if err != nil {
-		return err
-	}
-
-	_, err = io.Copy(out, file)
-	if err != nil {
-		return err
-	}
-
-	if err = out.Close(); err != nil {
-		return err
-	}
-
-	if err = file.Close(); err != nil {
-		return err
-	}
-
-	return nil
-}
-
 func ReadFile(path string) ([]string, error) {
 	file, err := os.Open(path)
 
@@ -96,6 +72,17 @@ func ReadFile(path string) ([]string, error) {
 	return lines, nil
 }
 
+func CreateFile(path string, file []string) error {
+	content := strings.Join(file, "\n")
+
+	err := os.WriteFile(path, []byte(content), os.ModePerm)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
 func UpdateFile(path string, file []string) error {
 	_, err := os.Stat(path)
 	if os.IsNotExist(err) {
@@ -113,3 +100,25 @@ func UpdateFile(path string, file []string) error {
 
 	return nil
 }
+
+// func CreateFile(file multipart.File, filePath string) error {
+// 	out, err := os.Create(filePath)
+// 	if err != nil {
+// 		return err
+// 	}
+
+// 	_, err = io.Copy(out, file)
+// 	if err != nil {
+// 		return err
+// 	}
+
+// 	if err = out.Close(); err != nil {
+// 		return err
+// 	}
+
+// 	if err = file.Close(); err != nil {
+// 		return err
+// 	}
+
+// 	return nil
+// }

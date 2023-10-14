@@ -17,27 +17,20 @@ func NewLessonPostgres(db *gorm.DB) *LessonPostgres {
 	return &LessonPostgres{db: db}
 }
 
-func (r *LessonPostgres) Add(name string, description string, orderID uint, courseName string, moduleName string) (uint, error) {
-	var course core.Course
-	if result := r.db.Where("name = ?", courseName).First(&course); result.Error != nil {
-		return 0, result.Error
-	}
-
-	var module core.Module
-	if result := r.db.Where("name = ? AND course_id = ?", moduleName, course.ID).First(&module); result.Error != nil {
-		return 0, result.Error
-	}
-
+func (r *LessonPostgres) Add(name string, description string, orderID uint, moduleID uint) (uint, error) {
+	fmt.Println(name, description, orderID, moduleID)
 	newLesson := core.Lesson{
 		Name:        name,
 		Description: description,
-		ModuleID:    module.ID,
-		OrderID:     orderID - 1,
+		ModuleID:    moduleID,
+		OrderID:     orderID,
 	}
 
 	if err := r.db.Where("name = ? AND module_id = ? OR order_id = ? AND module_id = ?", newLesson.Name, newLesson.ModuleID, newLesson.OrderID, newLesson.ModuleID).First(&core.Lesson{}).Error; err != nil {
 		if gorm.IsRecordNotFoundError(err) {
+			fmt.Println(name, description, orderID, moduleID)
 			if result := r.db.Create(&newLesson); result.Error != nil {
+
 				return 0, result.Error
 			}
 

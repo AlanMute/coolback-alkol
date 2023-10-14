@@ -22,7 +22,7 @@ type Module interface {
 }
 
 type Lesson interface {
-	Add(name string, description string, orderID uint, courseName string, moduleName string) (uint, error)
+	Add(name string, description string, orderID uint, moduleID uint) (uint, error)
 	Delete(id uint) (string, error)
 	Get(moduleid int, orderid int) (core.Lesson, error)
 	Put(id int, name string, desc string, orderID uint) error

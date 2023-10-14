@@ -2,10 +2,8 @@ package service
 
 import (
 	"fmt"
-	"mime/multipart"
 	"os"
 	"path/filepath"
-	"strconv"
 
 	"github.com/KrizzMU/coolback-alkol/internal/core"
 	"github.com/KrizzMU/coolback-alkol/internal/repository"
@@ -24,15 +22,24 @@ func NewLessonService(repo repository.Lesson) *LessonService {
 	return &LessonService{repo: repo}
 }
 
-func (s *LessonService) Add(file multipart.File, fileName string, name string, description string, orderID uint, moduleName string, courseName string) error {
-	fileID, err := s.repo.Add(name, description, orderID, courseName, moduleName)
+func (s *LessonService) Add(name string, description string, orderID uint, moduleID uint, content []string) error {
+
+	if name == "" {
+		name = "New lesson " + fmt.Sprint(orderID)
+	}
+
+	lessonID, err := s.repo.Add(name, description, orderID, moduleID)
 	if err != nil {
 		return err
 	}
 
-	filePath := filepath.Join("./lessons", strconv.FormatUint(uint64(fileID), 10)+ext)
+	filePath := filepath.Join("./lessons", fmt.Sprint(lessonID)+ext)
 
-	if err := pkg.CreateFile(file, filePath); err != nil {
+	if err := pkg.CreateFile(filePath, content); err != nil {
+		_, errDel := s.repo.Delete(lessonID)
+		if errDel != nil {
+			return errDel
+		}
 		return err
 	}
 
@@ -66,7 +73,7 @@ func (s *LessonService) Get(moduleid int, orderid int) (core.LesMd, error) {
 		return lesmd, err
 	}
 
-	path := filepath.Join("lessons", fmt.Sprint(lesson.ID)+".md")
+	path := filepath.Join("lessons", fmt.Sprint(lesson.ID)+ext)
 
 	file, err := pkg.ReadFile(path)
 
@@ -84,7 +91,7 @@ func (s *LessonService) Get(moduleid int, orderid int) (core.LesMd, error) {
 
 func (s *LessonService) Put(id int, name string, desc string, orderID uint, content []string) error {
 	if len(content) > 0 {
-		path := filepath.Join("lessons", fmt.Sprint(id)+".md")
+		path := filepath.Join("lessons", fmt.Sprint(id)+ext)
 		if err := pkg.UpdateFile(path, content); err != nil {
 			return err
 		}
