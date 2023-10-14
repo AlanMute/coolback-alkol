@@ -3,6 +3,7 @@ package repository
 import (
 	"errors"
 	"fmt"
+	"strconv"
 
 	"github.com/KrizzMU/coolback-alkol/internal/core"
 	"github.com/jinzhu/gorm"
@@ -16,29 +17,37 @@ func NewLessonPostgres(db *gorm.DB) *LessonPostgres {
 	return &LessonPostgres{db: db}
 }
 
-func (r *LessonPostgres) Add(name string, description string, fileName string, courseName string, moduleName string) error {
+func (r *LessonPostgres) Add(name string, description string, orderID uint, courseName string, moduleName string) (uint, error) {
 	var course core.Course
 	if result := r.db.Where("name = ?", courseName).First(&course); result.Error != nil {
-		return result.Error
+		return 0, result.Error
 	}
 
 	var module core.Module
 	if result := r.db.Where("name = ? AND course_id = ?", moduleName, course.ID).First(&module); result.Error != nil {
-		return result.Error
+		return 0, result.Error
 	}
 
 	newLesson := core.Lesson{
 		Name:        name,
 		Description: description,
-		NameFile:    fileName,
 		ModuleID:    module.ID,
+		OrderID:     orderID - 1,
 	}
 
-	if result := r.db.Create(&newLesson); result.Error != nil {
-		return result.Error
-	}
+	if err := r.db.Where("name = ? AND module_id = ? OR order_id = ? AND module_id = ?", newLesson.Name, newLesson.ModuleID, newLesson.OrderID, newLesson.ModuleID).First(&core.Lesson{}).Error; err != nil {
+		if gorm.IsRecordNotFoundError(err) {
+			if result := r.db.Create(&newLesson); result.Error != nil {
+				return 0, result.Error
+			}
 
-	return nil
+			return newLesson.ID, nil
+		} else {
+			return 0, err
+		}
+	} else {
+		return 0, fmt.Errorf("this lesson already exists")
+	}
 }
 
 func (r *LessonPostgres) Delete(id uint) (string, error) {
@@ -47,11 +56,9 @@ func (r *LessonPostgres) Delete(id uint) (string, error) {
 		return "", result.Error
 	}
 
-	if result := r.db.Where("id = ?", id).Unscoped().Delete(&lesson); result.Error != nil {
-		return "", result.Error
-	}
+	fileName := strconv.Itoa(int(lesson.ID))
 
-	return lesson.NameFile, nil
+	return fileName, nil
 }
 
 func (r *LessonPostgres) Get(moduleid int, orderid int) (core.Lesson, error) {

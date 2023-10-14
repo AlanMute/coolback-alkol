@@ -5,6 +5,7 @@ import (
 	"mime/multipart"
 	"os"
 	"path/filepath"
+	"strconv"
 
 	"github.com/KrizzMU/coolback-alkol/internal/core"
 	"github.com/KrizzMU/coolback-alkol/internal/repository"
@@ -23,27 +24,15 @@ func NewLessonService(repo repository.Lesson) *LessonService {
 	return &LessonService{repo: repo}
 }
 
-func (s *LessonService) Add(file multipart.File, fileName string, name string, description string, moduleName string, courseName string) error {
-	coursePath, err := pkg.GetPath(courseName, "./courses")
+func (s *LessonService) Add(file multipart.File, fileName string, name string, description string, orderID uint, moduleName string, courseName string) error {
+	fileID, err := s.repo.Add(name, description, orderID, courseName, moduleName)
 	if err != nil {
 		return err
 	}
 
-	path, err := pkg.GetPath(moduleName, coursePath)
-	if err != nil {
-		return err
-	}
+	filePath := filepath.Join("./lessons", strconv.FormatUint(uint64(fileID), 10)+ext)
 
-	dbfileName, err := pkg.GenerateUniqueFile(fileName, name, path, ext)
-	if err != nil {
-		return err
-	}
-
-	if err := s.repo.Add(name, description, dbfileName, courseName, moduleName); err != nil {
-		return err
-	}
-
-	if err := pkg.CreateFile(file, dbfileName); err != nil {
+	if err := pkg.CreateFile(file, filePath); err != nil {
 		return err
 	}
 
@@ -51,10 +40,14 @@ func (s *LessonService) Add(file multipart.File, fileName string, name string, d
 }
 
 func (s *LessonService) Delete(id uint) error {
-	filePath, err := s.repo.Delete(id)
+	fileID, err := s.repo.Delete(id)
 	if err != nil {
 		return err
 	}
+
+	fileName := fileID + ext
+
+	filePath := filepath.Join("./lessons", fileName)
 
 	if err := os.Remove(filePath); !os.IsNotExist(err) {
 		fmt.Printf("err = %e", err)

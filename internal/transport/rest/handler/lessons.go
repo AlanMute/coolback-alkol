@@ -22,12 +22,18 @@ func (h *Handler) AddLesson(c *gin.Context) {
 	moduleName := strings.Trim(c.Request.FormValue("moduleName"), " ")
 	courseName := strings.Trim(c.Request.FormValue("courseName"), " ")
 
+	orderID, err := strconv.ParseUint(c.Request.FormValue("orderID"), 10, 0)
+	if err != nil {
+		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
 	if name == "" || description == "" || moduleName == "" || courseName == "" {
 		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"error": "Bad name, description, module name or course name"})
 		return
 	}
 
-	if err := h.services.Lesson.Add(file, fileName, name, description, moduleName, courseName); err != nil {
+	if err := h.services.Lesson.Add(file, fileName, name, description, uint(orderID), moduleName, courseName); err != nil {
 		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}

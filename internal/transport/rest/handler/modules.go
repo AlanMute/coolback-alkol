@@ -25,7 +25,7 @@ func (h *Handler) AddModule(c *gin.Context) {
 		return
 	}
 
-	if err := h.services.Module.Add(info.Name, info.Description, info.CourseName); err != nil {
+	if err := h.services.Module.Add(info.Name, info.Description, info.OrderID, info.CourseName); err != nil {
 		c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}

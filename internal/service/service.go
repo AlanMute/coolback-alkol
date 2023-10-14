@@ -18,14 +18,14 @@ type Course interface {
 }
 
 type Module interface {
-	Add(name string, description string, courseName string) error
+	Add(name string, description string, orderID uint, courseName string) error
 	Delete(id uint) error
 	Get(id int) (core.ModLes, error)
 	Put(id int, name string, desc string, orderid uint) error
 }
 
 type Lesson interface {
-	Add(file multipart.File, fileName string, name string, description string, moduleName string, courseName string) error
+	Add(file multipart.File, fileName string, name string, description string, orderID uint, moduleName string, courseName string) error
 	Delete(id uint) error
 	Get(moduleid int, orderid int) (core.LesMd, error)
 	Put(id int, name string, desc string, orderID uint, content []string) error
