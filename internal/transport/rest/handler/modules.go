@@ -8,7 +8,18 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-// Нужен свагер!
+// @Summary AddModule
+// @Security ApiKeyAuth
+// @Tags module
+// @Description Add Module
+// @ID AddModule
+// @Accept  json
+// @Produce  json
+// @Param input body AddModule true "Add Module (OrderId starts with one)"
+// @Success 200
+// @Failure 400 {string} string "error"
+// @Failure default {string} error "error"
+// @Router /adm/module/ [post]
 func (h *Handler) AddModule(c *gin.Context) {
 	var info AddModule
 
@@ -28,7 +39,18 @@ func (h *Handler) AddModule(c *gin.Context) {
 	c.Status(http.StatusOK)
 }
 
-// Нужен свагер!
+// @Summary DeleteModule
+// @Security ApiKeyAuth
+// @Tags module
+// @Description Delete Module by ID
+// @ID DeleteModule
+// @Accept  json
+// @Produce  json
+// @Param input body Delete true "Module ID"
+// @Success 200
+// @Failure 400 {string} string "error"
+// @Failure default {string} error "error"
+// @Router /adm/module/{id} [DELETE]
 func (h *Handler) DeleteModule(c *gin.Context) {
 	var info Delete
 
