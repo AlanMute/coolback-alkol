@@ -1,6 +1,7 @@
 package service
 
 import (
+	"fmt"
 	"os"
 	"path/filepath"
 	"strconv"
@@ -17,8 +18,12 @@ func NewModuleService(repo repository.Module) *ModuleService {
 	return &ModuleService{repo: repo}
 }
 
-func (s *ModuleService) Add(name string, description string, orderID uint, courseName string) error {
-	if err := s.repo.Add(name, description, orderID, courseName); err != nil {
+func (s *ModuleService) Add(name string, description string, orderID uint, courseID uint) error {
+	if name == "" {
+		name = "New Module" + fmt.Sprint(orderID)
+	}
+
+	if err := s.repo.Add(name, description, orderID, courseID); err != nil {
 		return err
 	}
 

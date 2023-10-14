@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
+	"strings"
 
 	"github.com/KrizzMU/coolback-alkol/internal/core"
 	"github.com/KrizzMU/coolback-alkol/internal/repository"
@@ -23,6 +24,9 @@ func NewLessonService(repo repository.Lesson) *LessonService {
 }
 
 func (s *LessonService) Add(name string, description string, orderID uint, moduleID uint, content []string) error {
+	name = strings.Trim(name, " ")
+
+	description = strings.Trim(description, " ")
 
 	if name == "" {
 		name = "New lesson " + fmt.Sprint(orderID)

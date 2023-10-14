@@ -16,7 +16,7 @@ type Course interface {
 }
 
 type Module interface {
-	Add(name string, description string, orderID uint, courseName string) error
+	Add(name string, description string, orderID uint, courseID uint) error
 	Delete(id uint) error
 	Get(id int) (core.ModLes, error)
 	Put(id int, name string, desc string, orderid uint) error
