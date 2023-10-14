@@ -1,14 +1,17 @@
 package service
 
 import (
+	"crypto/tls"
 	"fmt"
 	"os"
 	"path/filepath"
 	"strings"
 
+	"github.com/KrizzMU/coolback-alkol/internal/config/emailConf"
 	"github.com/KrizzMU/coolback-alkol/internal/core"
 	"github.com/KrizzMU/coolback-alkol/internal/repository"
 	"github.com/KrizzMU/coolback-alkol/pkg"
+	"gopkg.in/gomail.v2"
 )
 
 const (
@@ -104,6 +107,58 @@ func (s *LessonService) Put(id int, name string, desc string, orderID uint, cont
 	err := s.repo.Put(id, name, desc, orderID)
 
 	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (s *LessonService) SendTrialLesson(email string) error {
+
+	// check, err := regexp.Match(`^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$`, []byte(email))
+	// if err != nil {
+	// 	return err
+	// } else if !check {
+	// 	return fmt.Errorf("wrong email format")
+	// }
+
+	// fmt.Println(check, err)
+
+	absolutePath, err := os.Getwd()
+	if err != nil {
+		return err
+	}
+
+	filePath := "/static/letters/trial.pdf"
+
+	pdfFilePath := filepath.Join(absolutePath, filePath)
+
+	if err := s.repo.SendTrialLesson(email); err != nil {
+		return err
+	}
+
+	if err := sendViaMailRu(email, pdfFilePath); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func sendViaMailRu(email string, path string) error {
+	config := emailConf.GetEmailConfig()
+
+	message := gomail.NewMessage()
+	message.SetHeader("From", config.Address)
+	message.SetHeader("To", email)
+	message.SetHeader("Subject", "Тестовое сообщение")
+	message.SetBody("text/plain", "Тестовое сообщение через Golang с файлом")
+	message.Attach(path)
+
+	dialer := gomail.NewDialer("smtp.mail.ru", 465, config.Address, config.Password)
+
+	dialer.TLSConfig = &tls.Config{InsecureSkipVerify: true}
+
+	if err := dialer.DialAndSend(message); err != nil {
 		return err
 	}
 

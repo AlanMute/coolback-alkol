@@ -56,7 +56,7 @@ func (s *CourseService) GetAll() ([]core.Course, error) {
 	return s.repo.GetAll()
 }
 
-func (s *CourseService) Get(id int) (core.СourseСontent, error) {
+func (s *CourseService) Get(id int) (core.CourseContent, error) {
 	content, err := s.repo.Get(id)
 
 	if err != nil {

@@ -11,7 +11,7 @@ type Course interface {
 	Delete(id uint) error
 	GetByName(name string) ([]core.Course, error)
 	GetAll() ([]core.Course, error)
-	Get(id int) (core.СourseСontent, error)
+	Get(id int) (core.CourseContent, error)
 	Put(id int, name string, desc string) error
 }
 
@@ -27,6 +27,7 @@ type Lesson interface {
 	Delete(id uint) error
 	Get(moduleid int, orderid int) (core.LesMd, error)
 	Put(id int, name string, desc string, orderID uint, content []string) error
+	SendTrialLesson(email string) error
 }
 
 type Admin interface {

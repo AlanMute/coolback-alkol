@@ -45,3 +45,7 @@ type SignInput struct {
 type Refresh struct {
 	RefreshToken string `json:"refresh_token"`
 }
+
+type Email struct {
+	Address string `json:"address"`
+}

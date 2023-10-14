@@ -10,7 +10,7 @@ type Course interface {
 	Delete(id uint) ([]uint, error)
 	GetByName(name string) ([]core.Course, error)
 	GetAll() ([]core.Course, error)
-	Get(id int) (core.СourseСontent, error)
+	Get(id int) (core.CourseContent, error)
 	Put(id int, name string, desc string) error
 }
 

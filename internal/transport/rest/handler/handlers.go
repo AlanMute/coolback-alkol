@@ -54,6 +54,7 @@ func (h *Handler) InitRoutes() *gin.Engine {
 	lesson := r.Group("/lesson")
 	{
 		lesson.Handle("GET", "/:orderid/:moduleid", h.GetLesson)
+		lesson.Handle("POST", "/trial", h.SendTrialLesson)
 		//lesson.Handle("GET", "/:orderid/:moduleid")
 	}
 

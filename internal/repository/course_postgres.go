@@ -78,9 +78,9 @@ func (r *CoursePostgres) GetAll() ([]core.Course, error) {
 	return courses, nil
 }
 
-func (r *CoursePostgres) Get(id int) (core.СourseСontent, error) {
+func (r *CoursePostgres) Get(id int) (core.CourseContent, error) {
 
-	var content core.СourseСontent
+	var content core.CourseContent
 
 	var course core.Course
 
@@ -112,7 +112,7 @@ func (r *CoursePostgres) Get(id int) (core.СourseСontent, error) {
 		modles = append(modles, core.ModLes{Module: m, Lessons: lessons})
 	}
 
-	content = core.СourseСontent{
+	content = core.CourseContent{
 		Course:  course,
 		Modules: modles,
 	}

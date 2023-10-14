@@ -10,7 +10,7 @@ type LesMd struct {
 	Mdfile []string
 }
 
-type СourseСontent struct {
+type CourseContent struct {
 	Course
 	Modules []ModLes
 }

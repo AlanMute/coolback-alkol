@@ -11,7 +11,6 @@ type Course struct {
 
 	Name        string `gorm:"not null; unique"`
 	Description string `gorm:"not null"`
-	NameFolder  string `gorm:"not null"` // DELETE
 }
 
 type Module struct {
@@ -19,7 +18,6 @@ type Module struct {
 
 	Name        string `gorm:"not null"`
 	Description string `gorm:"not null"`
-	NameFolder  string `gorm:"not null"` // DELETE
 	OrderID     uint   `gorm:"not null"`
 	CourseID    uint
 
@@ -31,7 +29,6 @@ type Lesson struct {
 
 	Name        string `gorm:"not null"`
 	Description string `gorm:"not null"`
-	NameFile    string `gorm:"not null"` // DELETE
 	OrderID     uint   `gorm:"not null"`
 	ModuleID    uint
 
@@ -42,4 +39,10 @@ type Sessions struct {
 	gorm.Model
 	RefreshToken   string
 	ExpirationTime time.Time
+}
+
+type Email struct {
+	gorm.Model
+
+	Address string `gorm:"not null; unique"`
 }
