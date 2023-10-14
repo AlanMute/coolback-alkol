@@ -3,6 +3,7 @@ package repository
 import (
 	"errors"
 	"fmt"
+	"strconv"
 
 	"github.com/KrizzMU/coolback-alkol/internal/core"
 	"github.com/jinzhu/gorm"
@@ -16,29 +17,30 @@ func NewLessonPostgres(db *gorm.DB) *LessonPostgres {
 	return &LessonPostgres{db: db}
 }
 
-func (r *LessonPostgres) Add(name string, description string, fileName string, courseName string, moduleName string) error {
-	var course core.Course
-	if result := r.db.Where("name = ?", courseName).First(&course); result.Error != nil {
-		return result.Error
-	}
-
-	var module core.Module
-	if result := r.db.Where("name = ? AND course_id = ?", moduleName, course.ID).First(&module); result.Error != nil {
-		return result.Error
-	}
-
+func (r *LessonPostgres) Add(name string, description string, orderID uint, moduleID uint) (uint, error) {
+	fmt.Println(name, description, orderID, moduleID)
 	newLesson := core.Lesson{
 		Name:        name,
 		Description: description,
-		NameFile:    fileName,
-		ModuleID:    module.ID,
+		ModuleID:    moduleID,
+		OrderID:     orderID,
 	}
 
-	if result := r.db.Create(&newLesson); result.Error != nil {
-		return result.Error
-	}
+	if err := r.db.Where("name = ? AND module_id = ? OR order_id = ? AND module_id = ?", newLesson.Name, newLesson.ModuleID, newLesson.OrderID, newLesson.ModuleID).First(&core.Lesson{}).Error; err != nil {
+		if gorm.IsRecordNotFoundError(err) {
+			fmt.Println(name, description, orderID, moduleID)
+			if result := r.db.Create(&newLesson); result.Error != nil {
 
-	return nil
+				return 0, result.Error
+			}
+
+			return newLesson.ID, nil
+		} else {
+			return 0, err
+		}
+	} else {
+		return 0, fmt.Errorf("this lesson already exists")
+	}
 }
 
 func (r *LessonPostgres) Delete(id uint) (string, error) {
@@ -47,11 +49,9 @@ func (r *LessonPostgres) Delete(id uint) (string, error) {
 		return "", result.Error
 	}
 
-	if result := r.db.Where("id = ?", id).Unscoped().Delete(&lesson); result.Error != nil {
-		return "", result.Error
-	}
+	fileName := strconv.Itoa(int(lesson.ID))
 
-	return lesson.NameFile, nil
+	return fileName, nil
 }
 
 func (r *LessonPostgres) Get(moduleid int, orderid int) (core.Lesson, error) {
@@ -91,4 +91,24 @@ func (r *LessonPostgres) Put(id int, name string, desc string, orderID uint) err
 	}
 
 	return nil
+}
+
+func (r *LessonPostgres) SendTrialLesson(address string) error {
+	var email core.Email
+
+	email.Address = address
+
+	if err := r.db.Where("address = ?", email.Address).First(&core.Email{}).Error; err != nil {
+		if gorm.IsRecordNotFoundError(err) {
+			if result := r.db.Create(&email); result.Error != nil {
+				return result.Error
+			}
+
+			return nil
+		} else {
+			return err
+		}
+	}
+
+	return fmt.Errorf("this email already exists")
 }

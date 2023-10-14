@@ -1,11 +1,13 @@
 package service
 
 import (
+	"fmt"
 	"os"
+	"path/filepath"
+	"strconv"
 
 	"github.com/KrizzMU/coolback-alkol/internal/core"
 	"github.com/KrizzMU/coolback-alkol/internal/repository"
-	"github.com/KrizzMU/coolback-alkol/pkg"
 )
 
 type CourseService struct {
@@ -17,16 +19,7 @@ func NewCourseService(repo repository.Course) *CourseService {
 }
 
 func (s *CourseService) Add(name string, description string) error {
-	dbFolderName, err := pkg.GenerateUniqueFolder(name, "./courses")
-	if err != nil {
-		return err
-	}
-
-	if err := s.repo.Add(name, description, dbFolderName); err != nil {
-		return err
-	}
-
-	if err := pkg.CreateFolder(dbFolderName); err != nil {
+	if err := s.repo.Add(name, description); err != nil {
 		return err
 	}
 
@@ -34,13 +27,20 @@ func (s *CourseService) Add(name string, description string) error {
 }
 
 func (s *CourseService) Delete(id uint) error {
-	dirPath, err := s.repo.Delete(id)
+	lessonsToDelete, err := s.repo.Delete(id)
 	if err != nil {
 		return err
 	}
 
-	if err := os.RemoveAll(dirPath); !os.IsNotExist(err) {
-		return err
+	for _, lessonToDelete := range lessonsToDelete {
+		fileName := strconv.FormatUint(uint64(lessonToDelete), 10) + ext
+
+		pathToFile := filepath.Join("./lessons", fileName)
+		fmt.Println(pathToFile)
+
+		if err := os.Remove(pathToFile); err != nil {
+			return err
+		}
 	}
 
 	return nil
@@ -56,7 +56,7 @@ func (s *CourseService) GetAll() ([]core.Course, error) {
 	return s.repo.GetAll()
 }
 
-func (s *CourseService) Get(id int) (core.СourseСontent, error) {
+func (s *CourseService) Get(id int) (core.CourseContent, error) {
 	content, err := s.repo.Get(id)
 
 	if err != nil {

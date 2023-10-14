@@ -1,14 +1,17 @@
 package service
 
 import (
+	"crypto/tls"
 	"fmt"
-	"mime/multipart"
 	"os"
 	"path/filepath"
+	"strings"
 
+	"github.com/KrizzMU/coolback-alkol/internal/config/emailConf"
 	"github.com/KrizzMU/coolback-alkol/internal/core"
 	"github.com/KrizzMU/coolback-alkol/internal/repository"
 	"github.com/KrizzMU/coolback-alkol/pkg"
+	"gopkg.in/gomail.v2"
 )
 
 const (
@@ -23,27 +26,27 @@ func NewLessonService(repo repository.Lesson) *LessonService {
 	return &LessonService{repo: repo}
 }
 
-func (s *LessonService) Add(file multipart.File, fileName string, name string, description string, moduleName string, courseName string) error {
-	coursePath, err := pkg.GetPath(courseName, "./courses")
+func (s *LessonService) Add(name string, description string, orderID uint, moduleID uint, content []string) error {
+	name = strings.Trim(name, " ")
+
+	description = strings.Trim(description, " ")
+
+	if name == "" {
+		name = "New lesson " + fmt.Sprint(orderID)
+	}
+
+	lessonID, err := s.repo.Add(name, description, orderID, moduleID)
 	if err != nil {
 		return err
 	}
 
-	path, err := pkg.GetPath(moduleName, coursePath)
-	if err != nil {
-		return err
-	}
+	filePath := filepath.Join("./lessons", fmt.Sprint(lessonID)+ext)
 
-	dbfileName, err := pkg.GenerateUniqueFile(fileName, name, path, ext)
-	if err != nil {
-		return err
-	}
-
-	if err := s.repo.Add(name, description, dbfileName, courseName, moduleName); err != nil {
-		return err
-	}
-
-	if err := pkg.CreateFile(file, dbfileName); err != nil {
+	if err := pkg.CreateFile(filePath, content); err != nil {
+		_, errDel := s.repo.Delete(lessonID)
+		if errDel != nil {
+			return errDel
+		}
 		return err
 	}
 
@@ -51,10 +54,14 @@ func (s *LessonService) Add(file multipart.File, fileName string, name string, d
 }
 
 func (s *LessonService) Delete(id uint) error {
-	filePath, err := s.repo.Delete(id)
+	fileID, err := s.repo.Delete(id)
 	if err != nil {
 		return err
 	}
+
+	fileName := fileID + ext
+
+	filePath := filepath.Join("./lessons", fileName)
 
 	if err := os.Remove(filePath); !os.IsNotExist(err) {
 		fmt.Printf("err = %e", err)
@@ -73,7 +80,7 @@ func (s *LessonService) Get(moduleid int, orderid int) (core.LesMd, error) {
 		return lesmd, err
 	}
 
-	path := filepath.Join("lessons", fmt.Sprint(lesson.ID)+".md")
+	path := filepath.Join("lessons", fmt.Sprint(lesson.ID)+ext)
 
 	file, err := pkg.ReadFile(path)
 
@@ -91,7 +98,7 @@ func (s *LessonService) Get(moduleid int, orderid int) (core.LesMd, error) {
 
 func (s *LessonService) Put(id int, name string, desc string, orderID uint, content []string) error {
 	if len(content) > 0 {
-		path := filepath.Join("lessons", fmt.Sprint(id)+".md")
+		path := filepath.Join("lessons", fmt.Sprint(id)+ext)
 		if err := pkg.UpdateFile(path, content); err != nil {
 			return err
 		}
@@ -100,6 +107,58 @@ func (s *LessonService) Put(id int, name string, desc string, orderID uint, cont
 	err := s.repo.Put(id, name, desc, orderID)
 
 	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (s *LessonService) SendTrialLesson(email string) error {
+
+	// check, err := regexp.Match(`^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$`, []byte(email))
+	// if err != nil {
+	// 	return err
+	// } else if !check {
+	// 	return fmt.Errorf("wrong email format")
+	// }
+
+	// fmt.Println(check, err)
+
+	absolutePath, err := os.Getwd()
+	if err != nil {
+		return err
+	}
+
+	filePath := "/static/letters/trial.pdf"
+
+	pdfFilePath := filepath.Join(absolutePath, filePath)
+
+	if err := s.repo.SendTrialLesson(email); err != nil {
+		return err
+	}
+
+	if err := sendViaMailRu(email, pdfFilePath); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func sendViaMailRu(email string, path string) error {
+	config := emailConf.GetEmailConfig()
+
+	message := gomail.NewMessage()
+	message.SetHeader("From", config.Address)
+	message.SetHeader("To", email)
+	message.SetHeader("Subject", "Пробный урок")
+	message.SetBody("text/plain", "Приветствую! Как вы и заказывали, ваш пробный урок по Моделированию.\nWith love, Eptanit.")
+	message.Attach(path)
+
+	dialer := gomail.NewDialer("smtp.gmail.com", 587, config.Address, os.Getenv("MAIL_PASSWORD"))
+
+	dialer.TLSConfig = &tls.Config{InsecureSkipVerify: true}
+
+	if err := dialer.DialAndSend(message); err != nil {
 		return err
 	}
 
