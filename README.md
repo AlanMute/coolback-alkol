@@ -14,9 +14,58 @@
 
 ## Функциональности
 
-- Аутентификация с использованием JWT-токенов access & refresh.
-- Взаимодействие с базой данных PostgreSQL с помощью ORM Gorm.
-- Настройка Swagger для документации API.
+- Аутентификация с использованием JWT-токенов с помощью фреймфорка [jwt](https://github.com/golang-jwt/jwt)
+- Взаимодействие с базой данных PostgreSQL с помощью ORM [Gorm](https://github.com/go-gorm/gorm).
+- Настройка Swagger для документации API с помощью библиотеки [swaggo/swagg](https://github.com/swaggo/swag).
+- Реализована рассылка сообщений по email адресам с помощью [gomail](https://github.com/go-gomail/gomail)
+- Настройка Docker контейнеров
+
+## Для запуска приложения:
+
+Склонируйте репозиторий:
+   
+   ``` bash
+   git clone https://github.com/KrizzMU/coolback-alkol.git
+   ```
+
+### Конфигурация .env
+
+Прежде чем запустить проект, убедитесь, что в вашей директории проекта создан файл `.env` с необходимыми переменными окружения. Далее представлен шаблон содержимого файла `.env`:
+
+```plaintext
+JWT_SIGNING_KEY=
+DB_PASSWORD=
+DB_NAME=
+DB_USER=
+ADM_LOGIN=
+ADM_PASSWORD=
+MAIL_PASSWORD=
+```
+
+### Запуск сервера
+
+1. Если у вас UNIX подобная ОС (таких как Linux и macOS), вополните следующие команды:
+      - Запуск:
+   
+         ```
+         make build
+         ```
+      - Запуск уже сбилженного контейнера:
+   
+         ```
+         make run
+         ```
+2. Если в вашей OC не установлена утилита make, то можно выполнить следующие команды:
+      - Запуск:
+   
+         ```
+         docker-compose up --build epta-app
+         ```
+      - Запуск уже сбилженного контейнера:
+   
+         ```
+         docker-compose up epta-app
+         ```
 
 ## Разработчики
 Разработкой сервера занимались:
