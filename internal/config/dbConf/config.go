@@ -17,6 +17,7 @@ type Config struct {
 }
 
 func GetConnectionString() string {
+
 	configData, err := os.ReadFile("./internal/config/dbConf/conf.yaml")
 	if err != nil {
 		panic(err)
@@ -28,6 +29,9 @@ func GetConnectionString() string {
 	if err != nil {
 		panic(err)
 	}
+
+	fmt.Printf("user=%s password=%s dbname=%s host=%s port=%s sslmode=disable\n", config.User, os.Getenv("DB_PASSWORD"),
+		config.Dbname, config.Host, config.Port)
 
 	connectionString := fmt.Sprintf("user=%s password=%s dbname=%s host=%s port=%s sslmode=disable", config.User, os.Getenv("DB_PASSWORD"),
 		config.Dbname, config.Host, config.Port)
