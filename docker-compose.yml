@@ -1,0 +1,32 @@
+version: '3.9'
+services:
+  epta-app:
+    container_name: eptagolang
+    build: ./
+    command: ./wait-for-postgres.sh eptadb ./eptanit
+    ports:
+      - '8000:8080'
+    depends_on:
+      - db
+    environment:
+      - DB_PASSWORD=${DB_PASSWORD}
+    networks:
+      - eptastack
+    
+
+  db:
+    restart: always
+    image: postgres:latest
+    container_name: eptadb
+    environment:
+      - POSTGRES_USER=${DB_USER}  
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
+      - POSTGRES_DB=${DB_NAME}
+    ports:
+      - '5436:5432'
+    networks:
+      - eptastack
+
+networks:
+  eptastack:
+    driver: bridge
