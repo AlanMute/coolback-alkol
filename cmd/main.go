@@ -18,7 +18,7 @@ import (
 //@description EptaNit Super Site
 //@contact.email eptanit@gmail.com
 
-// @host localhost:8080
+// @host 26.39.212.218:8000
 // @BasePath /
 
 // @securityDefinitions.apikey ApiKeyAuth

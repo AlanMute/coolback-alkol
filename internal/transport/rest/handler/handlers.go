@@ -3,6 +3,7 @@ package handler
 import (
 	"github.com/KrizzMU/coolback-alkol/internal/service"
 	"github.com/KrizzMU/coolback-alkol/pkg/auth"
+	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	swaggerfiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
@@ -24,6 +25,10 @@ func NewHandler(s *service.Service, t auth.TokenManager) *Handler {
 
 func (h *Handler) InitRoutes() *gin.Engine {
 	r := gin.New()
+
+	config := cors.DefaultConfig()
+	config.AllowOrigins = []string{"*"}
+	r.Use(cors.New(config))
 
 	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerfiles.Handler))
 	r.Handle("POST", "/sign-in", h.signIn)
