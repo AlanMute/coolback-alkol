@@ -8,6 +8,7 @@ import (
 
 	"github.com/KrizzMU/coolback-alkol/internal/core"
 	"github.com/KrizzMU/coolback-alkol/internal/repository"
+	"github.com/jinzhu/gorm"
 )
 
 type ModuleService struct {
@@ -37,7 +38,7 @@ func (s *ModuleService) Delete(id uint) error {
 	}
 
 	for _, lessonToDelete := range lessonsToDelete {
-		fileName := strconv.FormatUint(uint64(lessonToDelete), 10) + ext
+		fileName := strconv.FormatUint(uint64(lessonToDelete), 10) + lessonExt
 
 		pathToLesson := filepath.Join("./lessons", fileName)
 
@@ -62,6 +63,34 @@ func (s *ModuleService) Put(id int, name string, desc string, orderid uint) erro
 	err := s.repo.Put(id, name, desc, orderid)
 
 	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (s *ModuleService) GetImage(id uint) (string, error) {
+	if err := s.repo.CheckID(id); gorm.IsRecordNotFoundError(err) {
+		return "", fmt.Errorf("no record with such ID")
+	} else if err != nil {
+		return "", err
+	}
+
+	fileName := strconv.Itoa(int(id)) + imageExt
+
+	filepath := filepath.Join("./images/m", fileName)
+
+	return filepath, nil
+}
+
+func (s *ModuleService) DeleteImage(id uint) error {
+	if err := s.repo.CheckID(id); err != nil {
+		return err
+	}
+
+	fileName := strconv.Itoa(int(id)) + imageExt
+
+	if err := os.Remove(filepath.Join("./images/m", fileName)); err != nil {
 		return err
 	}
 

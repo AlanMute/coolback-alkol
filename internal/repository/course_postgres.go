@@ -140,3 +140,17 @@ func (r *CoursePostgres) Put(id int, name string, desc string) error {
 
 	return nil
 }
+
+func (r *CoursePostgres) CheckID(id uint) error {
+	var course core.Course
+
+	err := r.db.Where("id = ?", id).First(&course).Error
+
+	if gorm.IsRecordNotFoundError(err) {
+		return fmt.Errorf("no record with such ID")
+	} else if err != nil {
+		return err
+	}
+
+	return nil
+}

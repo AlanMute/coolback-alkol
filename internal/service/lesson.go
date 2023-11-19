@@ -14,10 +14,6 @@ import (
 	"gopkg.in/gomail.v2"
 )
 
-const (
-	ext string = ".md"
-)
-
 type LessonService struct {
 	repo repository.Lesson
 }
@@ -40,7 +36,7 @@ func (s *LessonService) Add(name string, description string, orderID uint, modul
 		return err
 	}
 
-	filePath := filepath.Join("./lessons", fmt.Sprint(lessonID)+ext)
+	filePath := filepath.Join("./lessons", fmt.Sprint(lessonID)+lessonExt)
 
 	if err := pkg.CreateFile(filePath, content); err != nil {
 		_, errDel := s.repo.Delete(lessonID)
@@ -59,7 +55,7 @@ func (s *LessonService) Delete(id uint) error {
 		return err
 	}
 
-	fileName := fileID + ext
+	fileName := fileID + lessonExt
 
 	filePath := filepath.Join("./lessons", fileName)
 
@@ -80,7 +76,7 @@ func (s *LessonService) Get(moduleid int, orderid int) (core.LesMd, error) {
 		return lesmd, err
 	}
 
-	path := filepath.Join("lessons", fmt.Sprint(lesson.ID)+ext)
+	path := filepath.Join("lessons", fmt.Sprint(lesson.ID)+lessonExt)
 
 	file, err := pkg.ReadFile(path)
 
@@ -98,7 +94,7 @@ func (s *LessonService) Get(moduleid int, orderid int) (core.LesMd, error) {
 
 func (s *LessonService) Put(id int, name string, desc string, orderID uint, content []string) error {
 	if len(content) > 0 {
-		path := filepath.Join("lessons", fmt.Sprint(id)+ext)
+		path := filepath.Join("lessons", fmt.Sprint(id)+lessonExt)
 		if err := pkg.UpdateFile(path, content); err != nil {
 			return err
 		}

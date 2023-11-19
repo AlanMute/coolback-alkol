@@ -183,3 +183,97 @@ func (h *Handler) EditCourse(c *gin.Context) {
 
 	c.Status(http.StatusOK)
 }
+
+// @Summary Upload Course Image
+// @Security ApiKeyAuth
+// @Description Uploads an image for a course by its ID. Also can be used to change image.
+// @Tags course
+// @ID UploadCourseImage
+// @Accept multipart/form-data
+// @Produce json
+// @Param id path int true "Course ID"
+// @Param image formData file true "Image file to upload for the course."
+// @Success 200 {string} string "OK"
+// @Failure 400 {string} string "Bad Request"
+// @Failure 404 {string} string "Not Found"
+// @Failure 500 {string} string "Internal Server Error"
+// @Router /adm/course/image/{id} [post]
+func (h *Handler) UploadCourseImage(c *gin.Context) {
+	file, err := c.FormFile("image")
+	if err != nil {
+		c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+
+	id, err := strconv.Atoi(c.Param("id"))
+	if err != nil {
+		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	filepath, err := h.services.Course.GetImage(uint(id))
+	if err != nil {
+		c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+
+	if err := c.SaveUploadedFile(file, filepath); err != nil {
+		c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+
+	c.Status(http.StatusOK)
+}
+
+// @Summary Download Course Image
+// @Description Downloads an image for a course by its ID.
+// @Tags course
+// @ID DownloadCourseImage
+// @Produce image/*
+// @Param id path int true "Course ID"
+// @Success 200 {string} string "OK"
+// @Failure 400 {string} string "Bad Request"
+// @Failure 404 {string} string "Not Found"
+// @Failure 500 {string} string "Internal Server Error"
+// @Router /adm/course/image/{id} [get]
+func (h *Handler) DownloadCourseImage(c *gin.Context) {
+	id, err := strconv.Atoi(c.Param("id"))
+	if err != nil {
+		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+	}
+
+	filepath, err := h.services.Course.GetImage(uint(id))
+	if err != nil {
+		c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+
+	c.File(filepath)
+}
+
+// @Summary Delete Course Image
+// @Security ApiKeyAuth
+// @Description Deletes an image for a course by its ID.
+// @Tags course
+// @ID DeleteCourseImage
+// @Produce json
+// @Param id path int true "Course ID"
+// @Success 200 {string} string "OK"
+// @Failure 400 {string} string "Bad Request"
+// @Failure 404 {string} string "Not Found"
+// @Failure 500 {string} string "Internal Server Error"
+// @Router /adm/course/image/{id} [delete]
+func (h *Handler) DeleteCourseImage(c *gin.Context) {
+	id, err := strconv.Atoi(c.Param("id"))
+	if err != nil {
+		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	if err := h.services.Course.DeleteImage(uint(id)); err != nil {
+		c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+
+	c.Status(http.StatusOK)
+}

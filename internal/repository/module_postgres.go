@@ -116,3 +116,17 @@ func (r *ModulePostgres) Put(id int, name string, desc string, orderid uint) err
 
 	return nil
 }
+
+func (r *ModulePostgres) CheckID(id uint) error {
+	var module core.Module
+
+	err := r.db.Where("id = ?", id).First(&module).Error
+
+	if gorm.IsRecordNotFoundError(err) {
+		return fmt.Errorf("no record with such ID")
+	} else if err != nil {
+		return err
+	}
+
+	return nil
+}

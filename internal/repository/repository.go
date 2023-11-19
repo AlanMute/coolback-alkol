@@ -12,6 +12,7 @@ type Course interface {
 	GetAll() ([]core.Course, error)
 	Get(id int) (core.CourseContent, error)
 	Put(id int, name string, desc string) error
+	CheckID(id uint) error
 }
 
 type Module interface {
@@ -19,6 +20,7 @@ type Module interface {
 	Put(id int, name string, desc string, orderid uint) error
 	Delete(id uint) ([]uint, error)
 	Get(id int) (core.ModLes, error)
+	CheckID(id uint) error
 }
 
 type Lesson interface {
