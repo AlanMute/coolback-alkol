@@ -8,7 +8,6 @@ import (
 
 	"github.com/KrizzMU/coolback-alkol/internal/core"
 	"github.com/KrizzMU/coolback-alkol/internal/repository"
-	"github.com/jinzhu/gorm"
 )
 
 type CourseService struct {
@@ -76,9 +75,7 @@ func (s *CourseService) Put(id int, name string, desc string) error {
 }
 
 func (s *CourseService) GetImage(id uint) (string, error) {
-	if err := s.repo.CheckID(id); gorm.IsRecordNotFoundError(err) {
-		return "", fmt.Errorf("no record with such ID")
-	} else if err != nil {
+	if err := s.repo.CheckID(id); err != nil {
 		return "", err
 	}
 

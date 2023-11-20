@@ -8,7 +8,6 @@ import (
 
 	"github.com/KrizzMU/coolback-alkol/internal/core"
 	"github.com/KrizzMU/coolback-alkol/internal/repository"
-	"github.com/jinzhu/gorm"
 )
 
 type ModuleService struct {
@@ -70,9 +69,7 @@ func (s *ModuleService) Put(id int, name string, desc string, orderid uint) erro
 }
 
 func (s *ModuleService) GetImage(id uint) (string, error) {
-	if err := s.repo.CheckID(id); gorm.IsRecordNotFoundError(err) {
-		return "", fmt.Errorf("no record with such ID")
-	} else if err != nil {
+	if err := s.repo.CheckID(id); err != nil {
 		return "", err
 	}
 
