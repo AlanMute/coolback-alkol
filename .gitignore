@@ -1,6 +1,7 @@
 internal/db/sql
 lessons
 ./lessons/
+./images/
 .env
 ./db/sql
 ./lessons

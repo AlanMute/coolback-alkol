@@ -24,7 +24,7 @@ func NewAdminService(t auth.TokenManager, r repository.Session) *AdminService {
 
 func (s *AdminService) SignIn(login string, pass string) (core.Tokens, error) {
 	if login != os.Getenv("ADM_LOGIN") || pass != os.Getenv("ADM_PASSWORD") {
-		return core.Tokens{}, errors.New("Uncorrect login or password!")
+		return core.Tokens{}, errors.New("uncorrect login or password")
 	}
 
 	accessToken, err := s.tockenManager.NewAccessToken("admin", time.Hour)

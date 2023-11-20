@@ -6,6 +6,11 @@ import (
 	"github.com/KrizzMU/coolback-alkol/pkg/auth"
 )
 
+const (
+	lessonExt = ".md"
+	imageExt  = ".jpg"
+)
+
 type Course interface {
 	Add(name string, description string) error
 	Delete(id uint) error
@@ -13,6 +18,8 @@ type Course interface {
 	GetAll() ([]core.Course, error)
 	Get(id int) (core.CourseContent, error)
 	Put(id int, name string, desc string) error
+	GetImage(id uint) (string, error)
+	DeleteImage(id uint) error
 }
 
 type Module interface {
@@ -20,6 +27,8 @@ type Module interface {
 	Delete(id uint) error
 	Get(id int) (core.ModLes, error)
 	Put(id int, name string, desc string, orderid uint) error
+	GetImage(id uint) (string, error)
+	DeleteImage(id uint) error
 }
 
 type Lesson interface {

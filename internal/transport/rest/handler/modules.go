@@ -132,3 +132,98 @@ func (h *Handler) EditModule(c *gin.Context) {
 	c.Status(http.StatusOK)
 
 }
+
+// @Summary Upload Module Image
+// @Security ApiKeyAuth
+// @Description Uploads an image for a module by its ID. Also can be used to change image.
+// @Tags module
+// @ID UploadModuleImage
+// @Accept multipart/form-data
+// @Produce json
+// @Param id path int true "Module ID"
+// @Param image formData file true "Image file to upload for the module."
+// @Success 200 {string} string "OK"
+// @Failure 400 {string} string "Bad Request"
+// @Failure 404 {string} string "Not Found"
+// @Failure 500 {string} string "Internal Server Error"
+// @Router /adm/module/image/{id} [post]
+func (h *Handler) UploadModuleImage(c *gin.Context) {
+	file, err := c.FormFile("image")
+	if err != nil {
+		c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+
+	id, err := strconv.Atoi(c.Param("id"))
+	if err != nil {
+		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	filepath, err := h.services.Module.GetImage(uint(id))
+	if err != nil {
+		c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+
+	if err := c.SaveUploadedFile(file, filepath); err != nil {
+		c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+
+	c.Status(http.StatusOK)
+}
+
+// @Summary Download Module Image
+// @Description Downloads an image for a module by its ID.
+// @Tags module
+// @ID DownloadModuleImage
+// @Produce image/*
+// @Param id path int true "Module ID"
+// @Success 200 {string} string "OK"
+// @Failure 400 {string} string "Bad Request"
+// @Failure 404 {string} string "Not Found"
+// @Failure 500 {string} string "Internal Server Error"
+// @Router /adm/module/image/{id} [get]
+func (h *Handler) DownloadModuleImage(c *gin.Context) {
+	id, err := strconv.Atoi(c.Param("id"))
+	if err != nil {
+		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	filepath, err := h.services.Module.GetImage(uint(id))
+	if err != nil {
+		c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+
+	c.File(filepath)
+}
+
+// @Summary Delete Module Image
+// @Security ApiKeyAuth
+// @Description Deletes an image for a module by its ID.
+// @Tags module
+// @ID DeleteModuleImage
+// @Produce json
+// @Param id path int true "Module ID"
+// @Success 200 {string} string "OK"
+// @Failure 400 {string} string "Bad Request"
+// @Failure 404 {string} string "Not Found"
+// @Failure 500 {string} string "Internal Server Error"
+// @Router /adm/module/image/{id} [delete]
+func (h *Handler) DeleteModuleImage(c *gin.Context) {
+	id, err := strconv.Atoi(c.Param("id"))
+	if err != nil {
+		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	if err := h.services.Module.DeleteImage(uint(id)); err != nil {
+		c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+
+	c.Status(http.StatusOK)
+}
