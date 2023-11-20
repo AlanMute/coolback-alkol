@@ -101,12 +101,11 @@ func (r *LessonPostgres) SendTrialLesson(address string) error {
 			if result := r.db.Create(&email); result.Error != nil {
 				return result.Error
 			}
-
 			return nil
 		} else {
 			return err
 		}
 	}
 
-	return fmt.Errorf("this email already exists")
+	return nil
 }
