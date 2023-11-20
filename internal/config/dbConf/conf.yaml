@@ -1,4 +1,4 @@
-host: "localhost"
+host: "eptadb"
 port: "5432"
-dbname: "postgres"
-user: "postgres"
+dbname: "eptanitdb"
+user: "eptanit"
